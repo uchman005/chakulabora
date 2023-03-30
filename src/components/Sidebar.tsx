@@ -1,27 +1,15 @@
 import React, { ReactNode, useEffect } from 'react';
+import { MdClose } from 'react-icons/md';
 import {
-    IconButton,
     Avatar,
     Box,
-    CloseButton,
-    Flex,
-    HStack,
-    VStack,
     Icon,
     useColorModeValue,
-    Link,
     useToast,
     Drawer,
-    DrawerContent,
-    Text,
     useDisclosure,
     BoxProps,
     FlexProps,
-    Menu,
-    MenuButton,
-    MenuDivider,
-    MenuItem,
-    MenuList,
 } from '@chakra-ui/react';
 import {
     FiHome,
@@ -42,8 +30,9 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../store/user';
 import { IUser } from '../../interface';
 import axios from 'axios';
+import Link from 'next/link';
+import Image from 'next/image';
 import { useSelector } from 'react-redux';
-import { PayloadAction } from '@reduxjs/toolkit';
 interface LinkItemProps {
     name: string;
     icon: IconType;
@@ -62,12 +51,12 @@ export default function Sidebar({
 }: {
     children: ReactNode;
 }) {
-    const user = useSelector((state:any) => state.user);    
+    const user = useSelector((state: any) => state.user);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { data: session } = useSession();
     const dispatch = useDispatch();
     useEffect(() => {
-        if(user.role == ''){
+        if (user.role == '') {
             const getUser = async () => {
                 if (session) {
                     const response = await axios.get(`/api/${session?.user?.email}/user`, {
@@ -82,7 +71,7 @@ export default function Sidebar({
                 }
             }
             getUser();
-        }else{
+        } else {
             dispatch(setUser(user));
         }
     }, [session, dispatch, user]);
@@ -99,13 +88,16 @@ export default function Sidebar({
                 onClose={onClose}
                 returnFocusOnClose={false}
                 onOverlayClick={onClose}
-                size="full">
-                <DrawerContent>
+            >
+                <div
+                    className={`fixed inset-0 bg-gray-800 bg-opacity-75 z-50 transition-opacity duration-500 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                        }`}
+                >
                     <SidebarContent onClose={onClose} />
-                </DrawerContent>
+                </div>
             </Drawer>
             {/* mobilenav */}
-            <MobileNav onOpen={onOpen} user={user}/>
+            <MobileNav onOpen={onOpen} user={user} />
             <Box ml={{ base: 0, md: 60 }} p="4">
                 {children}
             </Box>
@@ -128,12 +120,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             pos="fixed"
             h="full"
             {...rest}>
-            <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-                <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
+            <div className='h-20 flex justify-between mx-8 items-center'>
+                <h1 className="flex text-2xl font-mono font-bold">
                     Chakulabora
-                </Text>
-                <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
-            </Flex>
+                </h1>
+                <button className="block md:hidden" onClick={onClose}>
+                    <MdClose className="h-6 w-6" aria-hidden="true" />
+                </button>
+            </div>
             {LinkItems.map((link) => (
                 <NavItem key={link.name} link={link.link} icon={link.icon}>
                     {link.name}
@@ -150,19 +144,8 @@ interface NavItemProps extends FlexProps {
 }
 const NavItem = ({ link, icon, children, ...rest }: NavItemProps) => {
     return (
-        <Link href={link} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
-            <Flex
-                align="center"
-                p="4"
-                mx="4"
-                borderRadius="lg"
-                role="group"
-                cursor="pointer"
-                _hover={{
-                    bg: 'cyan.400',
-                    color: 'white',
-                }}
-                {...rest}>
+        <Link href={link} style={{ textDecoration: 'none' }}>
+            <div className="flex items-center p-4 mx-4 rounded-lg group cursor-pointer hover:bg-cyan-400 hover:text-white">
                 {icon && (
                     <Icon
                         mr="4"
@@ -174,7 +157,7 @@ const NavItem = ({ link, icon, children, ...rest }: NavItemProps) => {
                     />
                 )}
                 {children}
-            </Flex>
+            </div>
         </Link>
     );
 };
@@ -186,92 +169,69 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
     const toast = useToast();
     return (
-        <Flex
-            ml={{ base: 0, md: 60 }}
-            px={{ base: 4, md: 4 }}
-            height="20"
-            alignItems="center"
-            bg={useColorModeValue('white', 'gray.900')}
-            borderBottomWidth="1px"
-            borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
-            justifyContent={{ base: 'space-between', md: 'flex-end' }}
-            {...rest}>
-            <IconButton
-                display={{ base: 'flex', md: 'none' }}
-                onClick={onOpen}
-                variant="outline"
-                aria-label="open menu"
-                icon={<FiMenu />}
-            />
+        <div className='flex md:ml-2 ml-0 px-1 py-3 align-center justify-between md:justify-end bg-white h-20 border-b-1 border-b-gray-200'
+        >
+            <button className="flex md:hidden border-hidden mr-1 outline-none py-2" onClick={onOpen} aria-label="open menu">
+                <FiMenu className='text-2xl' />
+            </button>
+            <h1 className="flex text-2xl font-mono py-1 font-bold md:hidden">
+                Chakulabora
+            </h1>
 
-            <Text
-                display={{ base: 'flex', md: 'none' }}
-                fontSize="2xl"
-                fontFamily="monospace"
-                fontWeight="bold">
-                Logo
-            </Text>
 
-            <HStack spacing={{ base: '0', md: '6' }}>
-                <IconButton
-                    size="lg"
-                    variant="ghost"
-                    aria-label="open menu"
-                    icon={<FiBell />}
-                />
-                <Flex alignItems={'center'}>
-                    <Menu>
-                        <MenuButton
-                            py={2}
-                            transition="all 0.3s"
-                            _focus={{ boxShadow: 'none' }}>
-                            <HStack>
-                                <Avatar
-                                    size={'sm'}
+            <div className='flex flex-col items-center '>
+                <div>
+                    <div className='py-2 transition duration-300 focus:outline-none focus:shadow-none'>
+                        <div className='flex md:items-center md:justify-center'>
+                            <div className='flex flex-row'>
+                                <button className="p-2 rounded-lg hover:bg-gray-200">
+                                    <FiBell className="h-6 w-6" aria-hidden="true" />
+                                </button>
+                                <Image
+                                    className="h-8 w-8 rounded-full object-cover"
                                     src={
-                                        'https://www.bing.com/ck/a?!&&p=63c22b71630dce50JmltdHM9MTY3OTYxNjAwMCZpZ3VpZD0zNDRjZTc4OC1mNGJmLTYyYWMtMjZjMi1mNWIzZjVkNDYzYTYmaW5zaWQ9NTQ3OA&ptn=3&hsh=3&fclid=344ce788-f4bf-62ac-26c2-f5b3f5d463a6&u=a1L2ltYWdlcy9zZWFyY2g_cT1JbWFnZSUyMFBsYWNlaG9sZGVyJTIwUG5nJkZPUk09SVFGUkJBJmlkPTk2QkYyQkEzODZGMTE1MkFEMTk5NUI0Mjg3RTBFMzcwMUFDMzlFQTI&ntb=1'
+                                        '/placeholder.png'
                                     }
+                                    alt="User Avatar"
+                                    width={8}
+                                    height={8}
                                 />
-                                <VStack
-                                    display={{ base: 'none', md: 'flex' }}
-                                    alignItems="flex-start"
-                                    spacing="1px"
-                                    ml="2">
-                                    <Text fontSize="sm">{user?.fname} {user?.lname}</Text>
-                                    <Text fontSize="xs" color="gray.600">
-                                        {user?.role}
-                                    </Text>
-                                </VStack>
-                                <Box display={{ base: 'none', md: 'flex' }}>
-                                    <FiChevronDown />
-                                </Box>
-                            </HStack>
-                        </MenuButton>
-                        <MenuList
-                            bg={useColorModeValue('white', 'gray.900')}
-                            borderColor={useColorModeValue('gray.200', 'gray.700')}>
-                            <MenuItem><Link href='/dashboard/profile'>Profile</Link></MenuItem>
-                            <MenuItem><Link href='/dashboard/setting'>Settings</Link></MenuItem>
-                            <MenuDivider />
-                            <MenuItem
-                                onClick={() => signOut().then(() => {
-                                    toast({
-                                        title: 'SignOut Success',
-                                        description: "You have been signed out successfully",
-                                        status: 'success',
-                                        duration: 5000,
-                                        isClosable: true,
-                                        position: "top",
-                                        size: { width: '300', height: '200' },
-                                        variant: 'top-accent'
-                                    })
-                                })}>
-                                <FaSignOutAlt style={{ color: 'red' }} /> Sign Out
-                            </MenuItem>
-                        </MenuList>
-                    </Menu>
-                </Flex>
-            </HStack>
-        </Flex>
+
+                            </div>
+                            <div className='hidden md:flex md:flex-col md:items-start md:ml-2'>
+                                <span className='text-sm'>{user?.fname} {user?.lname}</span>
+                                <span className='text-xs text-gray-600'>
+                                    {user?.role}
+                                </span>
+                            </div>
+                            <div className="md:flex ml-1 py-2">
+                                <FiChevronDown />
+                            </div>
+
+                        </div>
+                    </div>
+                    <ul className={' bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 px-3'}>
+                        <li className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'><Link href='/dashboard/profile'>Profile</Link></li>
+                        <li className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'><Link href='/dashboard/setting'>Settings</Link></li>
+                        <hr className='border-gray-200 my-1' />
+                        <li className='flex items-center cursor-pointer px-4 py-2 mb-2 text-sm text-gray-700 hover:bg-gray-100'
+                            onClick={() => signOut().then(() => {
+                                toast({
+                                    title: 'SignOut Success',
+                                    description: "You have been signed out successfully",
+                                    status: 'success',
+                                    duration: 5000,
+                                    isClosable: true,
+                                    position: "top",
+                                    size: { width: '300', height: '200' },
+                                    variant: 'top-accent'
+                                })
+                            })}>
+                            <FaSignOutAlt style={{ color: 'red' }} /> Sign Out
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     );
 };

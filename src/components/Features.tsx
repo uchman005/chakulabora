@@ -1,11 +1,8 @@
 import {
     Box,
-    Container,
-    Heading,
     SimpleGrid,
     Icon,
     Text,
-    Stack,
     HStack,
     VStack,
   } from '@chakra-ui/react';
@@ -22,31 +19,31 @@ import {
   
   export default function Features() {
     return (
-      <Box p={4}>
-        <Stack spacing={4} as={Container} maxW={'3xl'} textAlign={'center'}>
-          <Heading fontSize={'3xl'}>This is the headline</Heading>
-          <Text color={'gray.600'} fontSize={'xl'}>
+      <Box className='p-4'>
+        <div className='text-center container my-4 max-w-3xl'>
+          <h1 className='underline text-3xl bold'>This is the headline</h1>
+          <p className='gray.600 text-xl text-center'>
             Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
             nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
             sed diam voluptua.
-          </Text>
-        </Stack>
+          </p>
+        </div>
   
-        <Container maxW={'6xl'} mt={10}>
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
+        <div className='mt-10'>
+          <div className='row m-10'>
             {features.map((feature) => (
-              <HStack key={feature.id} align={'top'}>
+              <div className='flex flex-row col-sm-12 col-md-6 col-lg-3' key={feature.id} >
                 <Box color={'green.400'} px={2}>
                   <Icon as={CheckIcon} />
                 </Box>
-                <VStack align={'start'}>
-                  <Text fontWeight={600}>{feature.title}</Text>
-                  <Text color={'gray.600'}>{feature.text}</Text>
-                </VStack>
-              </HStack>
+                <div className='flex flex-col'>
+                  <p className='bold'>{feature.title}</p>
+                  <p className='text-gray-600'>{feature.text}</p>
+                </div>
+              </div>
             ))}
-          </SimpleGrid>
-        </Container>
+          </div>
+        </div>
       </Box>
     );
   }

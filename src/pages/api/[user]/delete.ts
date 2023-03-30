@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { dbCon } from '../../../models';
-import { ResponseFunctions } from '../../../interface';
+import { dbCon } from '../../../../models';
+import { ResponseFunctions } from '../../../../interface';
 const deleteRecord = async (req: NextApiRequest, res: NextApiResponse) => {
     const method: keyof ResponseFunctions = req.method as keyof ResponseFunctions;
     const handle: ResponseFunctions = {

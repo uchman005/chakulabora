@@ -1,24 +1,18 @@
 import {
     Box,
     chakra,
-    Container,
-    Link,
-    SimpleGrid,
-    Stack,
-    Text,
     VisuallyHidden,
     Input,
     IconButton,
     useColorModeValue,
-    Heading,
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { BiMailSend } from 'react-icons/bi';
-
+import Link from 'next/link'
 const Logo = (props: any) => {
     return (
-       <Heading>Chakulabora</Heading>
+        <h1 className='bold text-3xl'>Chakulabora</h1>
     );
 };
 
@@ -55,9 +49,9 @@ const SocialButton = ({
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
     return (
-        <Text fontWeight={'500'} fontSize={'lg'} mb={2}>
+        <p className='text-base text-lg mb-2'>
             {children}
-        </Text>
+        </p>
     );
 };
 
@@ -66,18 +60,16 @@ export default function Footer() {
         <Box
             bg={useColorModeValue('gray.50', 'gray.900')}
             color={useColorModeValue('gray.700', 'gray.200')}>
-            <Container as={Stack} maxW={'6xl'} py={10}>
-                <SimpleGrid
-                    templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 1fr 2fr' }}
-                    spacing={8}>
-                    <Stack spacing={6}>
+            <div className='container flex max-w-6xl py-10' >
+                <div className='grid sm:grid-cols-12 md:grid-cols-5 gap-8'>
+                    <div className='space-y-6'>
                         <Box>
                             <Logo color={useColorModeValue('gray.700', 'white')} />
                         </Box>
-                        <Text fontSize={'sm'}>
+                        <span className='text-sm'>
                             © 2022 - {new Date().getFullYear()} Chakulabora. All rights reserved
-                        </Text>
-                        <Stack direction={'row'} spacing={6}>
+                        </span>
+                        <div className='flex gap-4'>
                             <SocialButton label={'Twitter'} href={'#'}>
                                 <FaTwitter />
                             </SocialButton>
@@ -87,46 +79,38 @@ export default function Footer() {
                             <SocialButton label={'Instagram'} href={'#'}>
                                 <FaInstagram />
                             </SocialButton>
-                        </Stack>
-                    </Stack>
-                    <Stack align={'flex-start'}>
+                        </div>
+                    </div>
+                    <div className='flex flex-col gap-2'>
                         <ListHeader>Company</ListHeader>
                         <Link href={'#'}>About us</Link>
                         <Link href={'#'}>Blog</Link>
                         <Link href={'#'}>Contact us</Link>
                         <Link href={'#'}>Testimonials</Link>
-                    </Stack>
-                    <Stack align={'flex-start'}>
+                    </div>
+                    <div className='flex flex-col gap-2'>
                         <ListHeader>Support</ListHeader>
                         <Link href={'#'}>Help Center</Link>
                         <Link href={'#'}>Terms of Service</Link>
                         <Link href={'#'}>Legal</Link>
                         <Link href={'#'}>Privacy Policy</Link>
-                    </Stack>
-                    <Stack align={'flex-start'}>
+                    </div>
+                    <div className='flex flex-col gap-2'>
                         <ListHeader>Stay up to date</ListHeader>
-                        <Stack direction={'row'}>
-                            <Input
-                                placeholder={'Your email address'}
-                                bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
-                                border={0}
-                                _focus={{
-                                    bg: 'whiteAlpha.300',
-                                }}
+                        <div className='flex flex-row '>
+                            <input
+                                type="email"
+                                placeholder="Your email address"
+                                className="bg-black-100 form-control text-black focus:bg-white-300"
                             />
-                            <IconButton
-                                bg={useColorModeValue('blue.400', 'blue.800')}
-                                color={useColorModeValue('white', 'gray.800')}
-                                _hover={{
-                                    bg: 'blue.600',
-                                }}
+                            <button
+                                className="bg-blue-400 hover:bg-blue-600 text-white hover:text-white py-2 px-4 rounded"
                                 aria-label="Subscribe"
-                                icon={<BiMailSend />}
-                            />
-                        </Stack>
-                    </Stack>
-                </SimpleGrid>
-            </Container>
+                            ><BiMailSend /></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </Box>
     );
 }

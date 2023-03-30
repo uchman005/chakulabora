@@ -21,7 +21,7 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from '@chakra-ui/icons';
-
+import NextLink from 'next/link'
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
 
@@ -69,7 +69,7 @@ export default function Navbar() {
           direction={'row'}
           spacing={6}>
           <Button
-            as={'a'}
+            as={NextLink}
             fontSize={'sm'}
             fontWeight={400}
             variant={'link'}
@@ -77,7 +77,7 @@ export default function Navbar() {
             Sign In
           </Button>
           <Button
-            as={'a'}
+            as={NextLink}
             display={{ base: 'none', md: 'inline-flex' }}
             fontSize={'sm'}
             fontWeight={600}
@@ -112,6 +112,7 @@ const DesktopNav = () => {
             <PopoverTrigger>
               <Link
                 p={2}
+                as={NextLink}
                 href={navItem.href ?? '#'}
                 fontSize={'sm'}
                 fontWeight={500}
@@ -149,6 +150,7 @@ const DesktopNav = () => {
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
     <Link
+    as={NextLink}
       href={href}
       role={'group'}
       display={'block'}
@@ -200,7 +202,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
     <Stack spacing={4} onClick={children && onToggle}>
       <Flex
         py={2}
-        as={Link}
+        as={NextLink}
         href={href ?? '#'}
         justify={'space-between'}
         align={'center'}
@@ -233,7 +235,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           align={'start'}>
           {children &&
             children.map((child) => (
-              <Link key={child.label} py={2} href={child.href}>
+              <Link key={child.label} py={2} as={NextLink} href={child.href}>
                 {child.label}
               </Link>
             ))}
@@ -259,34 +261,34 @@ const NAV_ITEMS: Array<NavItem> = [
     label: 'About',
     href: '/about'
   },
-  {
-    label: 'Learn Design',
-    children: [
-      {
-        label: 'Explore Design Work',
-        subLabel: 'Trending Design to inspire you',
-        href: '#',
-      },
-      {
-        label: 'New & Noteworthy',
-        subLabel: 'Up-and-coming Designers',
-        href: '#',
-      },
-    ]
-  },
-  {
-    label: 'Hire Designers',
-    children: [
-      {
-        label: 'Job Board',
-        subLabel: 'Find your dream design job',
-        href: '#',
-      },
-      {
-        label: 'Freelance Projects',
-        subLabel: 'An exclusive list for contract work',
-        href: '#',
-      },
-    ],
-  },
+  // {
+  //   label: 'Learn Design',
+  //   children: [
+  //     {
+  //       label: 'Explore Design Work',
+  //       subLabel: 'Trending Design to inspire you',
+  //       href: '#',
+  //     },
+  //     {
+  //       label: 'New & Noteworthy',
+  //       subLabel: 'Up-and-coming Designers',
+  //       href: '#',
+  //     },
+  //   ]
+  // },
+  // {
+  //   label: 'Hire Designers',
+  //   children: [
+  //     {
+  //       label: 'Job Board',
+  //       subLabel: 'Find your dream design job',
+  //       href: '#',
+  //     },
+  //     {
+  //       label: 'Freelance Projects',
+  //       subLabel: 'An exclusive list for contract work',
+  //       href: '#',
+  //     },
+  //   ],
+  // },
 ];

@@ -1,4 +1,5 @@
 import '@/styles/globals.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import type { AppProps } from 'next/app'
 import 'react-quill/dist/quill.snow.css'
 // 1. import `ChakraProvider` component
