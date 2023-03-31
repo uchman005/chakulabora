@@ -113,7 +113,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 
 const MobileNav = () => {
   return (
-    <div className={`bg-${useColorModeValue('white', 'gray.800')} p-4 hidden md:block`}>
+    <div className={`bg-${useColorModeValue('white', 'gray.800')} p-4  md:block`}>
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
@@ -128,7 +128,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
     <div className="stack space-y-4" onClick={children && onToggle}>
       <div className="flex py-2 justify-between items-center hover:no-underline">
         <NextLink href={href ?? '#'}>
-          <div className="font-semibold text-gray-600 dark:text-gray-200">
+          <div className="font-semibold text-gray-600">
             {label}
           </div>
           {children && (
@@ -173,34 +173,34 @@ const NAV_ITEMS: Array<NavItem> = [
     label: 'About',
     href: '/about'
   },
-  {
-    label: 'Learn Design',
-    children: [
-      {
-        label: 'Explore Design Work',
-        subLabel: 'Trending Design to inspire you',
-        href: '#',
-      },
-      {
-        label: 'New & Noteworthy',
-        subLabel: 'Up-and-coming Designers',
-        href: '#',
-      },
-    ]
-  },
-  {
-    label: 'Hire Designers',
-    children: [
-      {
-        label: 'Job Board',
-        subLabel: 'Find your dream design job',
-        href: '#',
-      },
-      {
-        label: 'Freelance Projects',
-        subLabel: 'An exclusive list for contract work',
-        href: '#',
-      },
-    ],
-  },
+  // {
+  //   label: 'Learn Design',
+  //   children: [
+  //     {
+  //       label: 'Explore Design Work',
+  //       subLabel: 'Trending Design to inspire you',
+  //       href: '#',
+  //     },
+  //     {
+  //       label: 'New & Noteworthy',
+  //       subLabel: 'Up-and-coming Designers',
+  //       href: '#',
+  //     },
+  //   ]
+  // },
+  // {
+  //   label: 'Hire Designers',
+  //   children: [
+  //     {
+  //       label: 'Job Board',
+  //       subLabel: 'Find your dream design job',
+  //       href: '#',
+  //     },
+  //     {
+  //       label: 'Freelance Projects',
+  //       subLabel: 'An exclusive list for contract work',
+  //       href: '#',
+  //     },
+  //   ],
+  // },
 ];
