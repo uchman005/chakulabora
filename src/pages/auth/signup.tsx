@@ -1,23 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import {
   Progress,
   Box,
   ButtonGroup,
   Button,
-  Heading,
   Flex,
-  FormControl,
-  GridItem,
-  FormLabel,
-  Input,
-  Select,
-  SimpleGrid,
-  InputLeftAddon,
-  InputGroup,
-  Textarea,
-  FormHelperText,
-  InputRightElement,
   useToast
 } from '@chakra-ui/react';
 import Navbar from '@/components/Navbar';
@@ -26,66 +14,94 @@ import axios from 'axios';
 import { useRouter } from 'next/router'
 
 const Form1 = (props: any) => {
-  const [show, setShow] = React.useState(false);
+  const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   return (
     <>
-      <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
+      <h1 className='flex justify-center w-full font-xl mb-[2%]'>
         User Registration
-      </Heading>
-      <Flex>
-        <FormControl mr="5%">
-          <FormLabel htmlFor="first-name" fontWeight={'normal'}>
+      </h1>
+      <div className="flex flex-col">
+        <div className="">
+          <label htmlFor="first-name" className="form-label">
             First name
-          </FormLabel>
-          <Input
+          </label>
+          <input
+            type="text"
+            name="fname"
             id="first-name"
+            className="form-control shadow-sm focus:ring-brand-400 focus:border-brand-400 border-gray-300 rounded-md"
             placeholder="First name"
-            name='fname' value={props.Data.name}
-            onChange={props.setFormData} />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel htmlFor="last-name" fontWeight={'normal'}>
+            value={props.Data.name}
+            onChange={props.setFormData}
+          />
+        </div>
+        <div className="">
+          <label htmlFor="last-name" className="form-label">
             Last name
-          </FormLabel>
-          <Input id="last-name" placeholder="Last name" name='lname' value={props.Data.lname} onChange={props.setFormData} />
-        </FormControl>
-      </Flex>
-      <FormControl mt="2%">
-        <FormLabel htmlFor="email" fontWeight={'normal'}>
+          </label>
+          <input
+            type="text"
+            name="lname"
+            id="last-name"
+            className="form-control shadow-sm focus:ring-brand-400 focus:border-brand-400 border-gray-300 rounded-md"
+            placeholder="Last name"
+            value={props.Data.lname}
+            onChange={props.setFormData}
+          />
+        </div>
+      </div>
+      <div className="mt-4">
+        <label htmlFor="email" className="block font-medium text-gray-700">
           Email address
-        </FormLabel>
-        <Input id="email" type="email" name='email' value={props.Data.email} onChange={props.setFormData} />
-        <FormHelperText>We will never share your email.</FormHelperText>
-      </FormControl>
-      <FormControl mt="2%">
-        <FormLabel htmlFor="tel" fontWeight={'normal'}>
-          Phone
-        </FormLabel>
-        <Input id="tel" type="tel" name='phone' value={props.Data.phone} onChange={props.setFormData} />
-      </FormControl>
+        </label>
+        <div className="mt-1">
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-400 focus:border-brand-400 focus:placeholder-gray-500 sm:text-sm"
+            value={props.Data.email}
+            onChange={props.setFormData}
+          />
+        </div>
+        <p className="mt-2 text-sm text-gray-500">
+          {"We'll never share your email with anyone else."}
+        </p>
+      </div>
 
-      <FormControl>
-        <FormLabel htmlFor="password" fontWeight={'normal'} mt="2%">
-          Password
-        </FormLabel>
-        <InputGroup size="md">
-          <Input
-            pr="4.5rem"
-            type={show ? 'text' : 'password'}
+      <div className="mt-4">
+        <label htmlFor="tel" className="block font-medium text-gray-700">
+          Phone
+        </label>
+        <input
+          id="tel"
+          type="tel"
+          name="phone"
+          value={props.Data.phone}
+          onChange={props.setFormData}
+          className="mt-1 focus:ring-brand-400 focus:border-brand-400 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+        />
+      </div>
+
+      <div className="mt-4">
+        <label htmlFor="password" className="block font-medium text-gray-700">Password</label>
+        <div>
+          <input
+            type={show ? "text" : "password"}
             placeholder="Enter password"
-            name='password'
+            name="password"
             value={props.Data.password}
             onChange={props.setFormData}
           />
-          <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? 'Hide' : 'Show'}
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
+          <button type='button' onClick={handleClick}>{show ? "Hide" : "Show"}</button>
+        </div>
+      </div>
+
+
+
     </>
   );
 };
@@ -93,146 +109,97 @@ const Form1 = (props: any) => {
 const Form2 = (props: any) => {
   return (
     <>
-      <h1 className='w-full items-center font-xl mb-[2%]'>
+      <h1 className='flex justify-center w-full font-xl mb-[2%]'>
         User Details
       </h1>
-      <FormControl as={GridItem} colSpan={[6, 3]}>
-        <FormLabel
-          htmlFor="country"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}>
+      <div className="flex flex-col gap-4">
+        <label htmlFor="country" className="block text-sm font-medium text-gray-700col-span-6">
           Country / Region
-        </FormLabel>
-        <Select
-          id="country"
-          name="country"
-          autoComplete="country"
-          placeholder="Select option"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-          value={props.Data.country}
-          onChange={props.setFormData}
-        >
-          <option>United States</option>
-          <option>Canada</option>
-          <option>Mexico</option>
-        </Select>
-      </FormControl>
+        </label>
+        <div className="col-span-6 sm:col-span-3 w-full">
+          <select
+            id="country"
+            name="country"
+            autoComplete="country"
+            className="form-control block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-brand-400 focus:border-brand-400 sm:text-sm rounded-md"
+            value={props.Data.country}
+            onChange={props.setFormData}
+          >
+            <option>United States</option>
+            <option>Canada</option>
+            <option>Mexico</option>
+          </select>
+        </div>
+      </div>
 
-      <FormControl as={GridItem} colSpan={6}>
-        <FormLabel
-          htmlFor="street_address"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}
-          mt="2%">
+      <div className="col-span-6">
+        <label htmlFor="street_address" className="block text-sm text-base font-medium  mt-2">
           Street address
-        </FormLabel>
-        <Input
+        </label>
+        <input
           type="text"
           name="street_address"
           id="street_address"
           autoComplete="street-address"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
+          className="form-control mt-1 rounded-md"
           value={props.Data.street_address}
           onChange={props.setFormData}
         />
-      </FormControl>
+      </div>
 
-      <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
-        <FormLabel
-          htmlFor="city"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}
-          mt="2%">
+
+      <div className="flex flex-col">
+        <label htmlFor="city" className="block text-sm font-medium text-gray-700 mt-2 col-span-2">
           City
-        </FormLabel>
-        <Input
+        </label>
+        <input
           type="text"
           name="city"
           id="city"
           autoComplete="city"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
+          className="form-control mt-2 focus:border-brand-400 shadow-sm sm:text-sm rounded-md col-span-6 sm:col-span-4"
           value={props.Data.city}
           onChange={props.setFormData}
         />
-      </FormControl>
+      </div>
 
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-        <FormLabel
+      <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+        <label
           htmlFor="state"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}
-          mt="2%">
+          className="block text-sm font-medium text-gray-700  my-2"
+        >
           State / Province
-        </FormLabel>
-        <Input
+        </label>
+        <input
           type="text"
           name="state"
           id="state"
           autoComplete="state"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
+          className="form-control mt-1 focus:ring-brand-400 focus:border-brand-400 block w-full sm:text-sm border-gray-300 rounded-md shadow-sm"
           value={props.Data.state}
           onChange={props.setFormData}
         />
-      </FormControl>
+      </div>
 
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-        <FormLabel
+
+      <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+        <label
           htmlFor="postal_code"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}
-          mt="2%">
+          className="block text-sm font-medium text-gray-700 mt-2"
+        >
           ZIP / Postal
-        </FormLabel>
-        <Input
+        </label>
+        <input
           type="text"
           name="postal_code"
           id="postal_code"
           autoComplete="postal-code"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
+          className="form-control mt-1 focus:ring-brand-400 focus:border-brand-400 block w-full sm:text-sm border-gray-300 rounded-md shadow-sm"
           value={props.Data.postal_code}
           onChange={props.setFormData}
         />
-      </FormControl>
+      </div>
+
     </>
   );
 };
@@ -240,69 +207,51 @@ const Form2 = (props: any) => {
 const Form3 = (props: any) => {
   return (
     <>
-      <Heading w="100%" textAlign={'center'} fontWeight="normal">
+      <h1 className='flex justify-center w-full font-xl mb-[2%]'>
         Social Handles
-      </Heading>
-      <SimpleGrid columns={1} spacing={6}>
-        <FormControl as={GridItem} colSpan={[3, 2]}>
-          <FormLabel
-            fontSize="sm"
-            fontWeight="md"
-            color="gray.700"
-            _dark={{
-              color: 'gray.50',
-            }}>
+      </h1>
+      <div className='flex flex-col space-6'>
+        <div className="col-span-3 sm:col-span-2">
+          <label htmlFor="website" className="block text-sm font-medium text-gray-700 dark:text-gray-50">
             Website
-          </FormLabel>
-          <InputGroup size="sm">
-            <InputLeftAddon
-              bg="gray.50"
-              _dark={{
-                bg: 'gray.800',
-              }}
-              color="gray.500"
-              rounded="md">
+          </label>
+          <div className="mt-1 flex rounded-md shadow-sm">
+            <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-100 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 sm:text-sm">
               http://
-            </InputLeftAddon>
-            <Input
+            </span>
+            <input
               type="url"
-              placeholder="www.example.com"
-              focusBorderColor="brand.400"
-              rounded="md"
-              name='website'
+              name="website"
+              id="website"
               value={props.Data.website}
               onChange={props.setFormData}
+              className="form-control focus:ring-brand-400 focus:border-brand-400 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300 dark:border-gray-700 dark:text-gray-50"
+              placeholder="www.example.com"
             />
-          </InputGroup>
-        </FormControl>
+          </div>
+        </div>
 
-        <FormControl id="email" mt={1}>
-          <FormLabel
-            fontSize="sm"
-            fontWeight="md"
-            color="gray.700"
-            _dark={{
-              color: 'gray.50',
-            }}>
+        <div className="mt-2">
+          <label htmlFor="about" className="block text-sm font-medium text-gray-700">
             About
-          </FormLabel>
-          <Textarea
-            placeholder="About you "
-            rows={3}
-            shadow="sm"
-            focusBorderColor="brand.400"
-            fontSize={{
-              sm: 'sm',
-            }}
-            name='bio'
-            value={props.Data.bio}
-            onChange={props.setFormData}
-          />
-          <FormHelperText>
+          </label>
+          <div className="mt-2">
+            <textarea
+              id="about"
+              name="bio"
+              rows={3}
+              className="form-control shadow-sm focus:ring-brand-400 focus:border-brand-400 block w-full sm:text-sm border-gray-300 rounded-md"
+              placeholder="About you"
+              value={props.Data.bio}
+              onChange={props.setFormData}
+            />
+          </div>
+          <p className="mt-2 text-sm text-gray-500">
             Brief description for your profile. URLs are hyperlinked.
-          </FormHelperText>
-        </FormControl>
-      </SimpleGrid>
+          </p>
+        </div>
+
+      </div>
     </>
   );
 };
@@ -338,7 +287,7 @@ export default function Form() {
         duration: 7000,
         isClosable: true,
         position: "top",
-        size: {width: '300', height: '200'},
+        size: { width: '300', height: '200' },
         variant: 'top-accent'
       });
       Router.push("/auth/signin");
@@ -352,7 +301,7 @@ export default function Form() {
       duration: 5000,
       isClosable: true,
       position: "top",
-      size: {width: '300', height: '200'},
+      size: { width: '300', height: '200' },
       variant: 'top-accent'
     });
     const res = await signIn("credentials", {
@@ -369,7 +318,7 @@ export default function Form() {
           duration: 5000,
           isClosable: true,
           position: "top",
-          size: {width: '300', height: '200'},
+          size: { width: '300', height: '200' },
           variant: 'top-accent'
         });
         Router.push("/dashboard");
@@ -381,7 +330,7 @@ export default function Form() {
           duration: 5000,
           isClosable: true,
           position: "top",
-          size: {width: '300', height: '200'},
+          size: { width: '300', height: '200' },
           variant: 'top-accent'
         });
       }
@@ -395,39 +344,34 @@ export default function Form() {
   return (
     <>
       <Navbar />
-      <Box
-        borderWidth="1px"
-        rounded="lg"
-        shadow="1px 1px 3px rgba(0,0,0,0.3)"
-        maxWidth={800}
-        p={6}
-        m="50px auto"
-        as="form">
-        <Progress
-          hasStripe
-          value={progress}
-          mb="5%"
-          mx="5%"
-          isAnimated></Progress>
+      <form className="border border-gray-300 rounded-lg shadow-md max-w-lg p-6 mx-auto my-10">
+        <div className="w-full bg-gray-200 rounded-full overflow-hidden">
+          <div
+            className="h-3 bg-green-400"
+            style={{ width: `${progress}%` }}
+          ></div>
+        </div>
         {step === 1 ? <Form1 Data={formData} setFormData={handleChange} /> : step === 2 ? <Form2 Data={formData} setFormData={handleChange} /> : <Form3 Data={formData} setFormData={handleChange} />}
-        <ButtonGroup mt="5%" w="100%">
-          <Flex w="100%" justifyContent="space-between">
-            <Flex>
-              <Button
+        <div className='w-full mt-[5%]'>
+          <div className='flex w-full justify-between'>
+            <div className='flex'>
+              <button
+              type='button'
                 onClick={() => {
                   setStep(step - 1);
                   setProgress(progress - 33.33);
                 }}
-                isDisabled={step === 1}
-                colorScheme="teal"
-                variant="solid"
-                w="7rem"
-                mr="5%">
+                className={`'hover:bg-teal-300 disabled:opacity-30'`}
+                disabled={step === 1}
+                style={{ backgroundColor: "teal", color: "white", width: "7rem", marginRight: "5%" }}
+              >
                 Back
-              </Button>
-              <Button
-                w="7rem"
-                isDisabled={step === 3}
+              </button>
+
+              <button
+                className="w-28 disabled:opacity-10 border-2 border-teal-500 text-teal-500 rounded-md py-2 px-4 font-semibold hover:text-white hover:bg-teal-500 hover:border-teal-500 transition-colors duration-300"
+                disabled={step === 3}
+                type='button'
                 onClick={() => {
                   setStep(step + 1);
                   if (step === 3) {
@@ -436,23 +380,23 @@ export default function Form() {
                     setProgress(progress + 33.33);
                   }
                 }}
-                colorScheme="teal"
-                variant="outline">
+              >
                 Next
-              </Button>
-            </Flex>
+              </button>
+
+            </div>
             {step === 3 && (
-              <Button
-                w="7rem"
-                colorScheme="red"
-                variant="solid"
-                onClick={handleSubmit}>
-                Submit
-              </Button>
+              <button
+              className="w-28 px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              onClick={handleSubmit}
+            >
+              Submit
+            </button>
+            
             )}
-          </Flex>
-        </ButtonGroup>
-      </Box>
+          </div>
+        </div>
+      </form>
       <Footer />
     </>
   );
