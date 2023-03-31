@@ -93,9 +93,9 @@ const Form1 = (props: any) => {
 const Form2 = (props: any) => {
   return (
     <>
-      <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
+      <h1 className='w-full items-center font-xl mb-[2%]'>
         User Details
-      </Heading>
+      </h1>
       <FormControl as={GridItem} colSpan={[6, 3]}>
         <FormLabel
           htmlFor="country"

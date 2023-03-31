@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import Image from 'next/image';
 const Testimonial = ({ children }: { children: ReactNode }) => {
-  return <div className='lg:mr-2'>{children}</div>;
+  return <div className=''>{children}</div>;
 };
 
 const TestimonialContent = ({ children }: { children: ReactNode }) => {
@@ -68,7 +68,7 @@ export default function Testimonials() {
           <h2 className='text-bold text-4xl'>Our Clients Speak</h2>
           <p>We have been working with clients around the world</p>
         </div>
-        <div className='flex flex-col md:flex-row space-4 md:space-4 lg:space-10'>
+        <div className='flex gap-4  flex-col md:flex-row space-4 md:space-4 lg:space-10'>
           <Testimonial>
             <TestimonialContent>
               <TestimonialHeading>Efficient Collaborating</TestimonialHeading>

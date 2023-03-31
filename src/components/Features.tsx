@@ -1,10 +1,5 @@
 import {
-    Box,
-    SimpleGrid,
-    Icon,
-    Text,
-    HStack,
-    VStack,
+    Icon
   } from '@chakra-ui/react';
   import { CheckIcon } from '@chakra-ui/icons';
   
@@ -19,7 +14,7 @@ import {
   
   export default function Features() {
     return (
-      <Box className='p-4'>
+      <div className='p-4'>
         <div className='text-center container my-4 max-w-3xl'>
           <h1 className='underline text-3xl bold'>This is the headline</h1>
           <p className='gray.600 text-xl text-center'>
@@ -33,9 +28,9 @@ import {
           <div className='row m-10'>
             {features.map((feature) => (
               <div className='flex flex-row col-sm-12 col-md-6 col-lg-3' key={feature.id} >
-                <Box color={'green.400'} px={2}>
+                <div className='px-2 text-green-400'>
                   <Icon as={CheckIcon} />
-                </Box>
+                </div>
                 <div className='flex flex-col'>
                   <p className='bold'>{feature.title}</p>
                   <p className='text-gray-600'>{feature.text}</p>
@@ -44,6 +39,6 @@ import {
             ))}
           </div>
         </div>
-      </Box>
+      </div>
     );
   }

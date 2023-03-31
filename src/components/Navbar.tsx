@@ -1,13 +1,9 @@
+import {useState} from 'react';
 import {
-  Box,
-  Flex,
-  Text,
-  IconButton,
-  Button,
+  Link,
   Stack,
   Collapse,
   Icon,
-  Link,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -26,172 +22,102 @@ export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Box>
-      <Flex
-        bg={useColorModeValue('white', 'gray.800')}
-        color={useColorModeValue('gray.600', 'white')}
-        minH={'60px'}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
-        borderBottom={1}
-        borderStyle={'solid'}
-        borderColor={useColorModeValue('gray.200', 'gray.900')}
-        align={'center'}>
-        <Flex
-          flex={{ base: 1, md: 'auto' }}
-          ml={{ base: -2 }}
-          display={{ base: 'flex', md: 'none' }}>
-          <IconButton
-            onClick={onToggle}
-            icon={
-              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
-            }
-            variant={'ghost'}
-            aria-label={'Toggle Navigation'}
-          />
-        </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-          <Text
-            textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-            fontFamily={'heading'}
-            color={useColorModeValue('gray.800', 'white')}>
+    <div className=''>
+      <div className='bg-white dark:bg-gray-800 text-gray-600 dark:text-white border border-gray-200 dark:border-gray-900 py-2 px-2 justify-center flex items-center w-full'>
+        <div className="lg:hidden mr-4 md:flex-none ml-[-1px]">
+          <button onClick={onToggle} aria-label={'Toggle Navigation'} className='text-gray-600'>
+            {isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
+          </button>
+        </div>
+        <div className="flex flex-1 justify-center md:justify-start">
+          <h1 className={`text-2xl font-bold ${useBreakpointValue({ base: 'text-center', md: 'text-left' })} ${useColorModeValue('text-gray-800', 'text-white')}`}>
             Chakulabora
-          </Text>
+          </h1>
 
-          <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
+          <div className="hidden md:flex md:ml-10">
             <DesktopNav />
-          </Flex>
-        </Flex>
+          </div>
+        </div>
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={'flex-end'}
-          direction={'row'}
-          spacing={6}>
-          <Button
-            as={NextLink}
-            fontSize={'sm'}
-            fontWeight={400}
-            variant={'link'}
-            href={'/auth/signin'}>
+        <div className="flex flex-1 justify-end md:flex-none md:justify-end">
+          <NextLink href="/auth/signin" className="font-medium text-sm mt-1 text-gray-500 hover:text-gray-900">
             Sign In
-          </Button>
-          <Button
-            as={NextLink}
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'blue.400'}
-            href={'/auth/signup'}
-            _hover={{
-              bg: 'blue.300',
-            }}>
+          </NextLink>
+          <NextLink href="/auth/signup" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 ml-1 font-bold text-white bg-blue-400 rounded hover:bg-blue-300">
             Sign Up
-          </Button>
-        </Stack>
-      </Flex>
+          </NextLink>
+        </div>
+      </div>
 
       <Collapse in={isOpen} animateOpacity>
         <MobileNav />
       </Collapse>
-    </Box>
+    </div>
   );
 }
 
 const DesktopNav = () => {
-  const linkColor = useColorModeValue('gray.600', 'gray.200');
-  const linkHoverColor = useColorModeValue('gray.800', 'white');
-  const popoverContentBgColor = useColorModeValue('white', 'gray.800');
-
+  const linkColor = useColorModeValue('text-gray-600', 'text-gray-200');
+  const linkHoverColor = useColorModeValue('text-gray-800', 'white');
+  const [sublink, setSublink] = useState(true);
   return (
-    <Stack direction={'row'} spacing={4}>
+    <div className='flex flex-row p-1'>
       {NAV_ITEMS.map((navItem) => (
-        <Box key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
+        <div key={navItem.label}>
+          <Popover>
             <PopoverTrigger>
-              <Link
-                p={2}
-                as={NextLink}
+              <NextLink
+                className={`p-2 text-sm text-semibold ${linkColor} hover:${linkHoverColor}`}
                 href={navItem.href ?? '#'}
-                fontSize={'sm'}
-                fontWeight={500}
-                color={linkColor}
-                _hover={{
-                  textDecoration: 'none',
-                  color: linkHoverColor,
-                }}>
+              >
                 {navItem.label}
-              </Link>
+              </NextLink>
             </PopoverTrigger>
 
             {navItem.children && (
-              <PopoverContent
-                border={0}
-                boxShadow={'xl'}
-                bg={popoverContentBgColor}
-                p={4}
-                rounded={'xl'}
-                minW={'sm'}>
-                <Stack>
+              <div className="shadow-xl bg-white rounded-xl p-4 min-w-sm hidden">
+                <div className='flex flex-col'>
                   {navItem.children.map((child) => (
                     <DesktopSubNav key={child.label} {...child} />
                   ))}
-                </Stack>
-              </PopoverContent>
+                </div>
+              </div>
             )}
           </Popover>
-        </Box>
+        </div>
       ))}
-    </Stack>
+    </div>
   );
 };
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
-    <Link
-    as={NextLink}
-      href={href}
-      role={'group'}
-      display={'block'}
-      p={2}
-      rounded={'md'}
-      _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}>
-      <Stack direction={'row'} align={'center'}>
-        <Box>
-          <Text
-            transition={'all .3s ease'}
-            _groupHover={{ color: 'pink.400' }}
-            fontWeight={500}>
+    <NextLink
+      href={href ? href : '#'}
+      className="block p-2 rounded-md group hover:bg-pink-50 text-black">
+      <div className='flex items-center'>
+        <div className='space-y-2'>
+          <span className="transition duration-300 ease-in-out group-hover:text-pink-400">
             {label}
-          </Text>
-          <Text fontSize={'sm'}>{subLabel}</Text>
-        </Box>
-        <Flex
-          transition={'all .3s ease'}
-          transform={'translateX(-10px)'}
-          opacity={0}
-          _groupHover={{ opacity: '100%', transform: 'translateX(0)' }}
-          justify={'flex-end'}
-          align={'center'}
-          flex={1}>
+          </span>
+          <p className="text-sm">{subLabel}</p>
+        </div>
+        <div className="flex transition-all duration-300 transform translate-x-[-10px] opacity-0 group-hover:opacity-100 group-hover:translate-x-0 justify-end items-center flex-1">
+
           <Icon color={'pink.400'} w={5} h={5} as={ChevronRightIcon} />
-        </Flex>
-      </Stack>
-    </Link>
+        </div>
+      </div>
+    </NextLink>
   );
 };
 
 const MobileNav = () => {
   return (
-    <Stack
-      bg={useColorModeValue('white', 'gray.800')}
-      p={4}
-      display={{ md: 'none' }}>
+    <div className={`bg-${useColorModeValue('white', 'gray.800')} p-4 hidden md:block`}>
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
-    </Stack>
+    </div>
   );
 };
 
@@ -199,49 +125,35 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Stack spacing={4} onClick={children && onToggle}>
-      <Flex
-        py={2}
-        as={NextLink}
-        href={href ?? '#'}
-        justify={'space-between'}
-        align={'center'}
-        _hover={{
-          textDecoration: 'none',
-        }}>
-        <Text
-          fontWeight={600}
-          color={useColorModeValue('gray.600', 'gray.200')}>
-          {label}
-        </Text>
-        {children && (
-          <Icon
-            as={ChevronDownIcon}
-            transition={'all .25s ease-in-out'}
-            transform={isOpen ? 'rotate(180deg)' : ''}
-            w={6}
-            h={6}
-          />
-        )}
-      </Flex>
+    <div className="stack space-y-4" onClick={children && onToggle}>
+      <div className="flex py-2 justify-between items-center hover:no-underline">
+        <NextLink href={href ?? '#'}>
+          <div className="font-semibold text-gray-600 dark:text-gray-200">
+            {label}
+          </div>
+          {children && (
+            <Icon
+              as={ChevronDownIcon}
+              transition={'all .25s ease-in-out'}
+              transform={isOpen ? 'rotate(180deg)' : ''}
+              w={6}
+              h={6}
+            />
+          )}
+        </NextLink>
+      </div>
 
       <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
-        <Stack
-          mt={2}
-          pl={4}
-          borderLeft={1}
-          borderStyle={'solid'}
-          borderColor={useColorModeValue('gray.200', 'gray.700')}
-          align={'start'}>
+        <div className="mt-2 pl-4 border-l border-solid border-gray-200 dark:border-gray-700 items-start">
           {children &&
             children.map((child) => (
-              <Link key={child.label} py={2} as={NextLink} href={child.href}>
+              <NextLink key={child.label} className='py-2' href={child.href ?? '#'}>
                 {child.label}
-              </Link>
+              </NextLink>
             ))}
-        </Stack>
+        </div>
       </Collapse>
-    </Stack>
+    </div>
   );
 };
 
@@ -261,34 +173,34 @@ const NAV_ITEMS: Array<NavItem> = [
     label: 'About',
     href: '/about'
   },
-  // {
-  //   label: 'Learn Design',
-  //   children: [
-  //     {
-  //       label: 'Explore Design Work',
-  //       subLabel: 'Trending Design to inspire you',
-  //       href: '#',
-  //     },
-  //     {
-  //       label: 'New & Noteworthy',
-  //       subLabel: 'Up-and-coming Designers',
-  //       href: '#',
-  //     },
-  //   ]
-  // },
-  // {
-  //   label: 'Hire Designers',
-  //   children: [
-  //     {
-  //       label: 'Job Board',
-  //       subLabel: 'Find your dream design job',
-  //       href: '#',
-  //     },
-  //     {
-  //       label: 'Freelance Projects',
-  //       subLabel: 'An exclusive list for contract work',
-  //       href: '#',
-  //     },
-  //   ],
-  // },
+  {
+    label: 'Learn Design',
+    children: [
+      {
+        label: 'Explore Design Work',
+        subLabel: 'Trending Design to inspire you',
+        href: '#',
+      },
+      {
+        label: 'New & Noteworthy',
+        subLabel: 'Up-and-coming Designers',
+        href: '#',
+      },
+    ]
+  },
+  {
+    label: 'Hire Designers',
+    children: [
+      {
+        label: 'Job Board',
+        subLabel: 'Find your dream design job',
+        href: '#',
+      },
+      {
+        label: 'Freelance Projects',
+        subLabel: 'An exclusive list for contract work',
+        href: '#',
+      },
+    ],
+  },
 ];
