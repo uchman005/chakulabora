@@ -1,86 +1,54 @@
-import {
-    Heading,
-    Avatar,
-    Box,
-    Center,
-    Image,
-    Flex,
-    Text,
-    Stack,
-    Button,
-    useColorModeValue,
-} from '@chakra-ui/react';
-
+import Link from 'next/link'
+import Image from 'next/image'
 export default function Profile({ user }: any) {
     return (
-        <Center py={6}>
-            <Box
-                maxW={'270px'}
-                w={'full'}
-                bg={useColorModeValue('white', 'gray.800')}
-                boxShadow={'2xl'}
-                rounded={'md'}
-                overflow={'hidden'}>
-                <Image
-                    h={'120px'}
-                    w={'full'}
-                    alt='Profile background image'
-                    src={
-                        'https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
-                    }
-                    objectFit={'cover'}
-                />
-                <Flex justify={'center'} mt={-12}>
-                    <Avatar
-                        size={'xl'}
-                        src={
-                            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ'
-                        }
-                        css={{
-                            border: '2px solid white',
-                        }}
-                    />
-                </Flex>
+        <div className='flex py-6 w-[70%]'>
+            <div className="max-w-270 w-full bg-white shadow-2xl rounded-md overflow-hidden">
 
-                <Box p={6}>
-                    <Stack spacing={0} align={'center'} mb={5}>
-                        <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
-                            {user?.fname} {user?.lname}
-                        </Heading>
-                        <Text color={'gray.500'}>{user?.role}</Text>
-                    </Stack>
+                <div className='justify-center mt-12'>
+                    <div className="relative rounded-full overflow-hidden w-40 h-40 mx-auto mb-5">
+                        <Image
+                            width={1}
+                            height={1}
+                            className="w-full h-full object-cover"
+                            src="/placeholder.png"
+                            alt="Profile avatar"
+                        />
+                        <div className="absolute inset-0 bg-black opacity-40"></div>
+                    </div>
+                </div>
 
-                    <Stack direction={'row'} justify={'center'} spacing={6}>
-                        <Stack spacing={0} align={'center'}>
-                            <Text fontWeight={600}>{120}</Text>
-                            <Text fontSize={'sm'} color={'gray.500'}>
+                <div className='p-6'>
+                    <div className="flex flex-col justify-center items-center mb-5">
+                        <h2 className="md:text-xl lg:text-2xl font-medium text-nowrap">{user?.fname} {user?.lname}</h2>
+                        <span className="text-gray-500">{user?.role}</span>
+                    </div>
+
+
+                    <div className='flex justify-center space-6 gap-4'>
+                        <div className='flex flex-col space-0 items-center'>
+                            <span className='font-semibold'>{120}</span>
+                            <p className='font-sm text-gray-500'>
                                 Questions
-                            </Text>
-                        </Stack>
-                        <Stack spacing={0} align={'center'}>
-                            <Text fontWeight={600}>{12}</Text>
-                            <Text fontSize={'sm'} color={'gray.500'}>
+                            </p>
+                        </div>
+                        <div className='flex flex-col space-0 items-center justify-center'>
+                            <span className='font-semibold'>{12}</span>
+                            <p className='font-sm text-gray-500'>
                                 Answers
-                            </Text>
-                        </Stack>
-                    </Stack>
+                            </p>
+                        </div>
 
-                    <Button
-                        as={'a'}
-                        href={'/dashboard/setting'}
-                        w={'full'}
-                        mt={8}
-                        bg={useColorModeValue('#151f21', 'gray.900')}
-                        color={'white'}
-                        rounded={'md'}
-                        _hover={{
-                            transform: 'translateY(-2px)',
-                            boxShadow: 'lg',
-                        }}>
-                        Settings
-                    </Button>
-                </Box>
-            </Box>
-        </Center>
+                    </div>
+
+                    <button
+                        className="w-full mt-8 bg-blue-800 text-white rounded-md py-2 px-4 hover:bg-blue-700 transition-all duration-200"
+                    >
+                        <Link href='/dashboard/settings'>Settings</Link>
+                    </button>
+
+                </div>
+            </div>
+        </div>
     );
 }

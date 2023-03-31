@@ -20,7 +20,9 @@ export default function Index() {
     return (
         <>
             <Sidebar>
+                <div className='flex items-center lg:justify-center z-0'>
                 <Profile user={user} />
+                </div>
             </Sidebar>
         </>
     )

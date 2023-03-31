@@ -1,7 +1,6 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { MdClose } from 'react-icons/md';
 import {
-    Avatar,
     Box,
     Icon,
     useColorModeValue,
@@ -168,6 +167,7 @@ interface MobileProps extends FlexProps {
 }
 const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
     const toast = useToast();
+    const [dropdown, setDropdown] = useState(false);
     return (
         <div className='flex md:ml-2 ml-0 px-1 py-3 align-center justify-between md:justify-end bg-white h-20 border-b-1 border-b-gray-200'
         >
@@ -198,19 +198,23 @@ const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
                                 />
 
                             </div>
-                            <div className='hidden md:flex md:flex-col md:items-start md:ml-2'>
-                                <span className='text-sm'>{user?.fname} {user?.lname}</span>
-                                <span className='text-xs text-gray-600'>
-                                    {user?.role}
-                                </span>
+                            <div className='flex' onClick={() => {
+                            setDropdown(!dropdown);
+                            }}>
+                                <div className='hidden md:flex md:flex-col md:items-start md:ml-2'>
+                                    <span className='text-sm'>{user?.fname} {user?.lname}</span>
+                                    <span className='text-xs text-gray-600'>
+                                        {user?.role}
+                                    </span>
+                                </div>
+                                <div className="md:flex ml-1 py-2">
+                                    <FiChevronDown />
+                                </div>
                             </div>
-                            <div className="md:flex ml-1 py-2">
-                                <FiChevronDown />
-                            </div>
-
                         </div>
                     </div>
-                    <ul className={' bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 px-3'}>
+                </div>
+                    {dropdown && <ul className={'z-100 ease-in-out duration-500 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 px-3'}>
                         <li className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'><Link href='/dashboard/profile'>Profile</Link></li>
                         <li className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'><Link href='/dashboard/setting'>Settings</Link></li>
                         <hr className='border-gray-200 my-1' />
@@ -229,8 +233,7 @@ const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
                             })}>
                             <FaSignOutAlt style={{ color: 'red' }} /> Sign Out
                         </li>
-                    </ul>
-                </div>
+                    </ul>}
             </div>
         </div>
     );
