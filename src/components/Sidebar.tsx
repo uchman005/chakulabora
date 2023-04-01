@@ -42,6 +42,13 @@ const LinkItems: Array<LinkItemProps> = [
     { name: 'Questions', icon: FiTrendingUp, link: '/dashboard/questions' },
     // { name: 'Explore', icon: FiCompass, link: '' },
     // { name: 'Favourites', icon: FiStar, link: '' },
+    // { name: 'Settings', icon: FiSettings, link: '/dashboard/setting' },
+];
+const authLinkItems: Array<LinkItemProps> = [
+    { name: 'Home', icon: FiHome, link: '/dashboard' },
+    { name: 'Questions', icon: FiTrendingUp, link: '/dashboard/questions' },
+    // { name: 'Explore', icon: FiCompass, link: '' },
+    // { name: 'Favourites', icon: FiStar, link: '' },
     { name: 'Settings', icon: FiSettings, link: '/dashboard/setting' },
 ];
 
@@ -75,9 +82,10 @@ export default function Sidebar({
         }
     }, [session, dispatch, user]);
     return (
-        <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+        <div className='min-h-[100vh] bg-gray-100 '>
             <SidebarContent
                 onClose={() => onClose}
+                user={user}
                 display={{ base: 'none', md: 'block' }}
             />
             <Drawer
@@ -92,23 +100,24 @@ export default function Sidebar({
                     className={`fixed inset-0 bg-gray-800 bg-opacity-75 z-50 transition-opacity duration-500 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
                         }`}
                 >
-                    <SidebarContent onClose={onClose} />
+                    <SidebarContent onClose={onClose} user={user}/>
                 </div>
             </Drawer>
             {/* mobilenav */}
             <MobileNav onOpen={onOpen} user={user} />
-            <Box ml={{ base: 0, md: 60 }} p="4">
+            <div className='ml-0 md:ml-60 p-4'>
                 {children}
-            </Box>
-        </Box>
+            </div>
+        </div>
     );
 }
 
 interface SidebarProps extends BoxProps {
     onClose: () => void;
+    user: IUser | null;
 }
 
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+const SidebarContent = ({user,  onClose, ...rest }: SidebarProps) => {
     return (
         <Box
             transition="3s ease"
@@ -127,7 +136,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                     <MdClose className="h-6 w-6" aria-hidden="true" />
                 </button>
             </div>
-            {LinkItems.map((link) => (
+            {user?.role == '' && LinkItems.map((link) => (
+                <NavItem key={link.name} link={link.link} icon={link.icon}>
+                    {link.name}
+                </NavItem>
+            ))}
+         {user?.role !== '' && authLinkItems.map((link) => (
                 <NavItem key={link.name} link={link.link} icon={link.icon}>
                     {link.name}
                 </NavItem>
@@ -163,7 +177,7 @@ const NavItem = ({ link, icon, children, ...rest }: NavItemProps) => {
 
 interface MobileProps extends FlexProps {
     onOpen: () => void;
-    user: IUser;
+    user: IUser | null;
 }
 const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
     const toast = useToast();
@@ -179,7 +193,7 @@ const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
             </h1>
 
 
-            <div className='flex flex-col items-center '>
+            {user?.role != '' ? <div className='flex flex-col items-center '>
                 <div>
                     <div className='py-2 transition duration-300 focus:outline-none focus:shadow-none'>
                         <div className='flex md:items-center md:justify-center'>
@@ -234,7 +248,7 @@ const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
                             <FaSignOutAlt style={{ color: 'red' }} /> Sign Out
                         </li>
                     </ul>}
-            </div>
+            </div> : <button className="btn btn-success btn-xs"><Link href="/auth/signin" className='nounderline text-white hover:text-gray-200 duration-300'>Login</Link></button>}
         </div>
     );
 };

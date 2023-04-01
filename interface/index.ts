@@ -1,4 +1,4 @@
-export interface IUser extends Document {
+export interface IUser {
     fname: string;
     lname: string;
     email: string;
@@ -12,9 +12,21 @@ export interface IUser extends Document {
     city?: string;
     state?: string;
     website?: string;
+    pv?: number
+}
+export interface IPost {
+    title?: string;
+    body: string;
+    author: IUser;
+    date?: string;
+    upvotes?: number;
+    downvotes?: number;
+    category?: string;
+    image?: string;
+    blob?: string;
 }
 
 export interface ResponseFunctions {
     GET?: Function;
     POST?: Function;
-  }
+}
