@@ -16,7 +16,7 @@ export default function Index() {
 
     return (
         <Sidebar>
-            <Heading>Settings: {user.country}</Heading>
+            <h1 className='font-bold'>Settings: {user.country}</h1>
         </Sidebar>
     )
 }

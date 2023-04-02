@@ -16,13 +16,13 @@ export interface IUser {
 }
 export interface IPost {
     title?: string;
+    approved: boolean;
     body: string;
     author: IUser;
-    date?: string;
-    upvotes?: number;
-    downvotes?: number;
+    date?: number;
+    upvotes?: Array<string>;
+    downvotes?: Array<string>;
     category?: string;
-    image?: string;
     blob?: string;
 }
 

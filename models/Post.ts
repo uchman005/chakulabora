@@ -1,6 +1,5 @@
 import mongoose, { Schema, model, models } from 'mongoose';
 import { IPost } from '../interface';
-import { timeStamp } from 'console';
 mongoose.Promise = global.Promise;
 
 const PostSchema: Schema = new Schema({
@@ -9,15 +8,17 @@ const PostSchema: Schema = new Schema({
     author: { type: Object, required: true },
     category: String,
     image: String,
-    upvotes: Number,
-    downvotes: Number,
+    upvotes: Array<String>,
+    downvotes: Array<String>,
     blob: String,
+    time : { type : Date, default: Date.now },
+    approved:{type:Boolean, default: false} ,
 });
 try {
-    delete models.User
+    delete models.Post
 } catch (err) {
     console.log(err);
 }
-const User = model<IPost>('User', PostSchema);
+const Post = model<IPost>('Post', PostSchema);
 
-export default User; 
+export default Post; 

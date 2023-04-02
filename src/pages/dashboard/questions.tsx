@@ -19,7 +19,7 @@ export default function Index() {
 
     return (
         <Sidebar>
-            <Heading>Questions from : {user.fname} {user.lname}</Heading>
+            <h2 className='font-semibold'>Questions from : {user.fname} {user.lname}</h2>
         </Sidebar>
     )
 }

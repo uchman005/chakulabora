@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import User from "./User";
+import Post from "./Post";
 const { MONGODB_URL_LOCAL } = process.env;
 
 
@@ -15,6 +16,7 @@ export const dbCon = async () => {
   return {
     conn,
     User,
+    Post,
   };
 };
 

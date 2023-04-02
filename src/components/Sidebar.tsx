@@ -59,7 +59,7 @@ export default function Sidebar({
 }) {
     const user = useSelector((state: any) => state.user);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const dispatch = useDispatch();
     useEffect(() => {
         if (user.role == '') {
@@ -87,6 +87,7 @@ export default function Sidebar({
                 onClose={() => onClose}
                 user={user}
                 display={{ base: 'none', md: 'block' }}
+                status={status}
             />
             <Drawer
                 autoFocus={false}
@@ -100,7 +101,7 @@ export default function Sidebar({
                     className={`fixed inset-0 bg-gray-800 bg-opacity-75 z-50 transition-opacity duration-500 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
                         }`}
                 >
-                    <SidebarContent onClose={onClose} user={user}/>
+                    <SidebarContent onClose={onClose} user={user} status={status} />
                 </div>
             </Drawer>
             {/* mobilenav */}
@@ -115,9 +116,10 @@ export default function Sidebar({
 interface SidebarProps extends BoxProps {
     onClose: () => void;
     user: IUser | null;
+    status: 'authenticated' | 'loading' | 'unauthenticated';
 }
 
-const SidebarContent = ({user,  onClose, ...rest }: SidebarProps) => {
+const SidebarContent = ({ user, status, onClose, ...rest }: SidebarProps) => {
     return (
         <Box
             transition="3s ease"
@@ -136,16 +138,17 @@ const SidebarContent = ({user,  onClose, ...rest }: SidebarProps) => {
                     <MdClose className="h-6 w-6" aria-hidden="true" />
                 </button>
             </div>
-            {user?.role == '' && LinkItems.map((link) => (
+            {status === 'unauthenticated' && LinkItems.map((link) => (
                 <NavItem key={link.name} link={link.link} icon={link.icon}>
                     {link.name}
                 </NavItem>
             ))}
-         {user?.role !== '' && authLinkItems.map((link) => (
+            {status === 'authenticated' && authLinkItems.map((link) => (
                 <NavItem key={link.name} link={link.link} icon={link.icon}>
                     {link.name}
                 </NavItem>
             ))}
+            {status === 'loading' && <NavItem icon={FiCompass} link='#'>Loading...</NavItem>}
         </Box>
     );
 };
@@ -213,7 +216,7 @@ const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
 
                             </div>
                             <div className='flex' onClick={() => {
-                            setDropdown(!dropdown);
+                                setDropdown(!dropdown);
                             }}>
                                 <div className='hidden md:flex md:flex-col md:items-start md:ml-2'>
                                     <span className='text-sm'>{user?.fname} {user?.lname}</span>
@@ -228,26 +231,26 @@ const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
                         </div>
                     </div>
                 </div>
-                    {dropdown && <ul className={'z-100 ease-in-out duration-500 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 px-3'}>
-                        <li className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'><Link href='/dashboard/profile'>Profile</Link></li>
-                        <li className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'><Link href='/dashboard/setting'>Settings</Link></li>
-                        <hr className='border-gray-200 my-1' />
-                        <li className='flex items-center cursor-pointer px-4 py-2 mb-2 text-sm text-gray-700 hover:bg-gray-100'
-                            onClick={() => signOut().then(() => {
-                                toast({
-                                    title: 'SignOut Success',
-                                    description: "You have been signed out successfully",
-                                    status: 'success',
-                                    duration: 5000,
-                                    isClosable: true,
-                                    position: "top",
-                                    size: { width: '300', height: '200' },
-                                    variant: 'top-accent'
-                                })
-                            })}>
-                            <FaSignOutAlt style={{ color: 'red' }} /> Sign Out
-                        </li>
-                    </ul>}
+                {dropdown && <ul className={'z-100 ease-in-out duration-500 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 px-3'}>
+                    <li className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'><Link href='/dashboard/profile'>Profile</Link></li>
+                    <li className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'><Link href='/dashboard/setting'>Settings</Link></li>
+                    <hr className='border-gray-200 my-1' />
+                    <li className='flex items-center cursor-pointer px-4 py-2 mb-2 text-sm text-gray-700 hover:bg-gray-100'
+                        onClick={() => signOut().then(() => {
+                            toast({
+                                title: 'SignOut Success',
+                                description: "You have been signed out successfully",
+                                status: 'success',
+                                duration: 5000,
+                                isClosable: true,
+                                position: "top",
+                                size: { width: '300', height: '200' },
+                                variant: 'top-accent'
+                            })
+                        })}>
+                        <FaSignOutAlt style={{ color: 'red' }} /> Sign Out
+                    </li>
+                </ul>}
             </div> : <button className="btn btn-success btn-xs"><Link href="/auth/signin" className='nounderline text-white hover:text-gray-200 duration-300'>Login</Link></button>}
         </div>
     );
