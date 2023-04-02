@@ -3,11 +3,7 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { signIn, useSession } from 'next-auth/react';
 import Router from 'next/router'
-import {
-  Checkbox,
-  useColorModeValue,
-  useToast
-} from '@chakra-ui/react';
+import {  useColorModeValue,  useToast} from '@chakra-ui/react';
 import Link from 'next/link';
 export default function SignIn() {
   const { status } = useSession();
