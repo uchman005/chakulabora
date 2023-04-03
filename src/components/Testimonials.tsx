@@ -1,13 +1,4 @@
 import { ReactNode } from 'react';
-import {
-  Box,
-  Flex,
-  Heading,
-  Text,
-  Stack,
-  Container,
-  useColorModeValue,
-} from '@chakra-ui/react';
 import Image from 'next/image';
 const Testimonial = ({ children }: { children: ReactNode }) => {
   return <div className=''>{children}</div>;
@@ -65,8 +56,8 @@ export default function Testimonials() {
     <div className='bg-gray-100'>
       <div className="container mx-auto max-w-7xl py-16 space-y-12">
         <div className='flex flex-col space-0 items-center'>
-          <h2 className='text-bold text-4xl'>Our Clients Speak</h2>
-          <p>We have been working with clients around the world</p>
+          <h2 className='text-bold text-4xl'>From Our Board</h2>
+          <p>Hear our board of directors speak</p>
         </div>
         <div className='flex gap-4  flex-col md:flex-row space-4 md:space-4 lg:space-10'>
           <Testimonial>
@@ -78,8 +69,8 @@ export default function Testimonials() {
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
-              name={'Jane Cooper'}
-              title={'CEO at ABC Corporation'}
+              name={'Brian Stephenson'}
+              title={'Passion of hope International'}
             />
           </Testimonial>
           <Testimonial>
@@ -91,7 +82,7 @@ export default function Testimonials() {
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
-              name={'Jane Cooper'}
+              name={'Karen Ali Esq.'}
               title={'CEO at ABC Corporation'}
             />
           </Testimonial>
@@ -104,7 +95,7 @@ export default function Testimonials() {
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
-              name={'Jane Cooper'}
+              name={'Lynn Keyys'}
               title={'CEO at ABC Corporation'}
             />
           </Testimonial>

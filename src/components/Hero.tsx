@@ -1,13 +1,4 @@
-import {
-  Flex,
-  Container,
-  Heading,
-  Stack,
-  Text,
-  Button,
-  Icon,
-  IconProps,
-} from '@chakra-ui/react';
+import { IconProps } from '@chakra-ui/react';
 // import Image from 'next/image';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -28,10 +19,10 @@ export default function Hero() {
           A community for farmers developed by farmers.
         </span>
         <div className='flex flex-row space-x-6'>
-        <Link href="/auth/signup" className="bg-blue-400 hover:bg-blue-500 text-white rounded-full px-6 py-2 font-semibold transition duration-300 ease-in-out">
+          <Link href="/auth/signup" className="bg-blue-400 hover:bg-blue-500 text-white rounded-full px-6 py-2 font-semibold transition duration-300 ease-in-out">
             Get started
           </Link>
-          <Link  href={'/contact'} className='rounded-full px-6 hover:bg-gray-200 py-2 text-black bg-gray-100 font-semibold duration-300 ease-in-out'>
+          <Link href={'/contact'} className='rounded-full px-6 hover:bg-gray-200 py-2 text-black bg-gray-100 font-semibold duration-300 ease-in-out'>
             Learn more
           </Link>
         </div>
@@ -50,11 +41,11 @@ export default function Hero() {
 
 export const Illustration = (props: IconProps) => {
   return (
-   <Image 
-   src={'/hero.png'}
-   alt='Hero Illustration Image'
-   width={3000}
-   height={3000}
-   />
+    <Image
+      src={'/hero.png'}
+      alt='Hero Illustration Image'
+      width={3000}
+      height={3000}
+    />
   );
 };

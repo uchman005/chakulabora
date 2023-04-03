@@ -1,12 +1,9 @@
 import {useState} from 'react';
 import {
-  Link,
-  Stack,
   Collapse,
   Icon,
   Popover,
   PopoverTrigger,
-  PopoverContent,
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
@@ -172,6 +169,14 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'About',
     href: '/about'
+  },
+  {
+    label: 'Questions',
+    href: '/dashboard'
+  },
+  {
+    label: 'Articles',
+    href: '#'
   },
   // {
   //   label: 'Learn Design',
