@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { MdClose } from 'react-icons/md';
 import {
     Box,
@@ -25,10 +25,7 @@ import { ReactText } from 'react';
 import { signOut } from 'next-auth/react';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
-import { useDispatch } from 'react-redux';
-import { setUser } from '../../store/user';
 import { IUser } from '../../interface';
-import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
@@ -59,29 +56,8 @@ export default function Sidebar({
 }) {
     const user = useSelector((state: any) => state.user);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { data: session, status } = useSession();
-    const dispatch = useDispatch();
-    useEffect(() => {
-        if (user.role == '') {
-            const getUser = async () => {
-                if (session) {
-                    const response = await axios.get(`/api/${session?.user?.email}/user`, {
-                        responseType: 'json',
-                        headers: {
-                            "Content-Type": "application/json",
-                            Accept: "application/json"
-                        }
-                    });
-                    const user = await response.data;
-                    user.id = user._id as string;
-                    dispatch(setUser(user));
-                }
-            }
-            getUser();
-        } else {
-            dispatch(setUser(user));
-        }
-    }, [session, dispatch, user]);
+    const { status } = useSession();
+  
     return (
         <div className='min-h-[100vh] bg-gray-100 '>
             <SidebarContent
