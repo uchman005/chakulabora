@@ -45,7 +45,7 @@ const authLinkItems: Array<LinkItemProps> = [
     { name: 'Home', icon: FiHome, link: '/dashboard' },
     { name: 'Questions', icon: FiTrendingUp, link: '/dashboard/questions' },
     // { name: 'Explore', icon: FiCompass, link: '' },
-    // { name: 'Favourites', icon: FiStar, link: '' },
+    { name: 'Approve posts', icon: FiStar, link: '/dashboard/approve' },
     { name: 'Settings', icon: FiSettings, link: '/dashboard/setting' },
 ];
 
