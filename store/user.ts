@@ -4,6 +4,8 @@ import { IUser } from './../interface/index';
 const userSlice = createSlice({
     name: 'user',
     initialState: {
+        id: '',
+        password: '',
         fname: '',
         lname: '',
         email: '',
@@ -19,6 +21,8 @@ const userSlice = createSlice({
     } as IUser,
     reducers: {
         setUser: (state, action: PayloadAction<IUser>) => {
+            state.id = action.payload.id;
+            state.password = '';
             state.fname = action.payload.fname;
             state.lname = action.payload.lname;
             state.email = action.payload.email;

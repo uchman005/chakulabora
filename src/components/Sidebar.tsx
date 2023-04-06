@@ -73,6 +73,7 @@ export default function Sidebar({
                         }
                     });
                     const user = await response.data;
+                    user.id = user._id as string;
                     dispatch(setUser(user));
                 }
             }
@@ -106,7 +107,7 @@ export default function Sidebar({
             </Drawer>
             {/* mobilenav */}
             <MobileNav onOpen={onOpen} user={user} />
-            <div className='ml-0 md:ml-60 p-4'>
+            <div style={{ zIndex: "-10" }} className='ml-0 md:ml-60 px-2 py-4 '>
                 {children}
             </div>
         </div>

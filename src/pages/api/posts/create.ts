@@ -9,6 +9,7 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
             const blob: string = data.title.replaceAll(" ", "-").toLowerCase()
             const { Post } = await dbCon();
             let post;
+            let message: string;
             try {
 
                 post = new Post({
@@ -21,10 +22,12 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
                     blob: blob,
                 });
                 await post.save();
-            } catch (err) {
+                message = 'Post created successfully';
+            } catch (err:any) {
                 post = null;
+                message= err.message;
             }
-            res.status(200).json({ post });
+            res.status(200).json({ post, message });
         }
 
     }

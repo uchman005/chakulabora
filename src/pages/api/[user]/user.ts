@@ -12,9 +12,9 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
                     email: req.query.user
                 });
             } catch (err: any) {
-                return res.status(400).json({ error: "Did not find user because: " + err.message })
+                 res.status(400).json({ error: "Did not find user because: " + err.message })
             }
-            return res.status(200).json(user);
+             res.status(200).json(user);
         }
     }
     const response = handle[method];
