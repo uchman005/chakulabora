@@ -53,7 +53,7 @@ export default function Index() {
                         <Table progressPending={isLoading || !data? true: false} pagination striped={true} responsive={true} columns={columns} data={data} />
                     </div>
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-5 bg-gray-200 min-h-[100vh]">
-                        <Table pagination striped progressPending={isLoading|| !data ? false : true} responsive={true} columns={columns} data={data} />
+                        <Table pagination striped progressPending={!isLoading || data ? false : true} responsive={true} columns={columns} data={data} />
                     </div>
                 </div>
             </Sidebar>
