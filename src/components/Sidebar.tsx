@@ -190,7 +190,7 @@ interface MobileProps extends FlexProps {
     user: IUser | null;
 }
 const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
-    const toast = useToast();
+    const { status } = useSession();
     const [dropdown, setDropdown] = useState(false);
     return (
         <div className='flex md:ml-2 ml-0 px-1 py-3 align-center justify-between md:justify-end bg-white h-20 border-b-1 border-b-gray-200'
@@ -203,7 +203,7 @@ const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
             </h1>
 
 
-            {user?.role != '' ? <div className='flex flex-col items-center '>
+            {status=== 'authenticated' ? <div className='flex flex-col items-center '>
                 <div>
                     <div className='py-2 transition duration-300 focus:outline-none focus:shadow-none'>
                         <div className='flex md:items-center md:justify-center'>

@@ -69,7 +69,7 @@ const Post = () => {
   if (status === 'unauthenticated') return <h1>You have to be signed in to see this page</h1>;
   return <div className='px-3 text-gray-700'>
     {
-      data.approved === false ?
+      data.approved === false && (user.role !== '' || user.role !== "Community Member") ?
         <div>
           <h2 className='mb-4'>Read the post below and approve</h2>
           <p>The question must pass these criteria</p>
