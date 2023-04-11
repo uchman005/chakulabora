@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 import { MdClose } from 'react-icons/md';
 import {
     Box,
@@ -21,7 +21,6 @@ import {
     FiChevronDown,
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
-import { ReactText } from 'react';
 import { signOut } from 'next-auth/react';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
@@ -41,13 +40,7 @@ const LinkItems: Array<LinkItemProps> = [
     // { name: 'Favourites', icon: FiStar, link: '' },
     // { name: 'Settings', icon: FiSettings, link: '/dashboard/setting' },
 ];
-const authLinkItems: Array<LinkItemProps> = [
-    { name: 'Home', icon: FiHome, link: '/dashboard' },
-    { name: 'Questions', icon: FiTrendingUp, link: '/dashboard/questions' },
-    // { name: 'Explore', icon: FiCompass, link: '' },
-    { name: 'Approve posts', icon: FiStar, link: '/dashboard/approve' },
-    { name: 'Settings', icon: FiSettings, link: '/dashboard/setting' },
-];
+
 
 export default function Sidebar({
     children
@@ -57,7 +50,7 @@ export default function Sidebar({
     const user = useSelector((state: any) => state.user);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { status } = useSession();
-  
+
     return (
         <div className='min-h-[100vh] bg-gray-100 '>
             <SidebarContent
@@ -97,6 +90,22 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ user, status, onClose, ...rest }: SidebarProps) => {
+    const toast = useToast();
+    const [authLinkItems, setLinkitems] = useState<Array<LinkItemProps>>([
+        { name: 'Home', icon: FiHome, link: '/dashboard' },
+        { name: 'Questions', icon: FiTrendingUp, link: '/dashboard/questions' },
+        { name: 'Settings', icon: FiSettings, link: '/dashboard/setting' }
+    ])
+    useEffect(() => {
+        if (user?.role !== '' && user?.role !== 'Community Member') {
+            setLinkitems([
+                { name: 'Home', icon: FiHome, link: '/dashboard' },
+                { name: 'Questions', icon: FiTrendingUp, link: '/dashboard/questions' },
+                { name: 'Settings', icon: FiSettings, link: '/dashboard/setting' },
+                // { name: 'Explore', icon: FiCompass, link: '' },
+                { name: 'Approve posts', icon: FiStar, link: '/dashboard/approve' },])
+        }
+    }, [user]);
     return (
         <Box
             transition="3s ease"
@@ -121,10 +130,31 @@ const SidebarContent = ({ user, status, onClose, ...rest }: SidebarProps) => {
                 </NavItem>
             ))}
             {status === 'authenticated' && authLinkItems.map((link) => (
+
                 <NavItem key={link.name} link={link.link} icon={link.icon}>
                     {link.name}
                 </NavItem>
+
+
             ))}
+            {status === 'authenticated' && <NavItem icon={FaSignOutAlt} link={"#"}>
+                <div onClick={
+                    () => signOut()
+                .then(() => {
+                toast({
+                    title: 'SignOut Success',
+                    description: "You have been signed out successfully",
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                    position: "top",
+                    size: { width: '300', height: '200' },
+                    variant: 'top-accent'
+                })
+            })} >
+                SignOut
+                </div>
+            </NavItem>}
             {status === 'loading' && <NavItem icon={FiCompass} link='#'>Loading...</NavItem>}
         </Box>
     );
@@ -133,7 +163,7 @@ const SidebarContent = ({ user, status, onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
     icon: IconType;
     link: string;
-    children: ReactText;
+    children: any;
 }
 const NavItem = ({ link, icon, children, ...rest }: NavItemProps) => {
     return (
@@ -210,9 +240,9 @@ const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
                 </div>
                 {dropdown && <ul className={'z-100 ease-in-out duration-500 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 px-3'}>
                     <li className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'><Link href='/dashboard/profile'>Profile</Link></li>
-                    <li className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'><Link href='/dashboard/setting'>Settings</Link></li>
-                    <hr className='border-gray-200 my-1' />
-                    <li className='flex items-center cursor-pointer px-4 py-2 mb-2 text-sm text-gray-700 hover:bg-gray-100'
+                    {/* <li className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'><Link href='/dashboard/setting'>Settings</Link></li> */}
+                    {/* <hr className='border-gray-200 my-1' /> */}
+                    {/* <li className='flex items-center cursor-pointer px-4 py-2 mb-2 text-sm text-gray-700 hover:bg-gray-100'
                         onClick={() => signOut().then(() => {
                             toast({
                                 title: 'SignOut Success',
@@ -226,7 +256,7 @@ const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
                             })
                         })}>
                         <FaSignOutAlt style={{ color: 'red' }} /> Sign Out
-                    </li>
+                    </li> */}
                 </ul>}
             </div> : <button className="btn btn-success btn-xs"><Link href="/auth/signin" className='nounderline text-white hover:text-gray-200 duration-300'>Login</Link></button>}
         </div>

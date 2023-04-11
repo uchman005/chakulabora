@@ -17,6 +17,7 @@ export interface IUser {
 }
 export interface IPost {
     title?: string;
+    _id?: string;
     approved: boolean;
     body: string;
     author: IUser;

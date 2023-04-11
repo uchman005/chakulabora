@@ -57,6 +57,7 @@ const scrollingContainer = "auto-grow"
 
 export default function Index() {
   const { status } = useSession();
+  
   const user = useSelector((state: any) => state.user);
   const [postData, setPostData] = useState({
     title: '',
@@ -109,6 +110,7 @@ export default function Index() {
       category: '',
     })
   }
+  
   return (
     <Sidebar>
       {status === "authenticated" &&
@@ -121,15 +123,16 @@ export default function Index() {
               </div>
               <div className='form-group'>
                 <label htmlFor='category'>Category</label>
-                <select name='category' id='category' value={postData.category} onChange={handleChange} className='form-control mb-3' >
-                  <option>Sample</option>
-                  <option>Sample1</option>
-                  <option>Sample2</option>
-                  <option>Sample3</option>
-                  <option>Sample4</option>
-                </select>
-              </div>
 
+                <input list="brow" placeholder='Select a category' className='form-control' name='category' value={postData.category} onChange={handleChange} />
+                <datalist id="brow">
+                  <option value="Internet Explorer" />
+                  <option value="Firefox" />
+                  <option value="Chrome" />
+                  <option value="Opera" />
+                  <option value="Safari" />
+                </datalist>
+              </div>
             </div>
             <div className='form-group'>
               <label htmlFor='post'>Post</label>
