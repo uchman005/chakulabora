@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import { useSelector } from 'react-redux';
 import { useToast } from '@chakra-ui/react';
 import Router from 'next/router';
+import {AiFillDislike, AiFillLike,AiOutlineDislike,AiOutlineLike} from 'react-icons/ai'
 const fetcher = async (url: string) => {
   const res = await axios.post(url);
   const data: IPost | null = res.data;
@@ -98,15 +99,21 @@ const Post = () => {
         :
         <div> 
           <div className='text-center'>
-          <h1 className='underline mb-4'>{data.title}</h1>
+          <h1 className='mb-4'>{data.title}</h1>
           <div>
             {parse(data.body)}
           </div>
           </div>
-          <div className='flex gap-3 justify-between px-4'>
-            <div>data</div>
-            <div>data</div>
-            <div>data</div>
+          <div className='flex gap-5 justify-between px-3'>
+            <div><p>Asked by</p> <span className='text-xl'>{`${data.author.fname} ${data.author.lname}`}</span></div>
+            <div><p>Date</p> <span className='text-wrap'>{data.time}</span></div>
+            <div><p>Category</p><span className='text-wrap'>{data.category}</span></div>
+          </div>
+          <div className='flex gap-5 justify-evenly m-4 px-3'>
+            <div className='flex items-center'>{true ? <AiOutlineLike className='hover:bg-gray-300 text-2xl' /> : <AiFillLike className='hover:bg-gray-300 text-2xl'/>} {data?.upvotes.length}</div>
+            <div className='flex items-center '>{true ? <AiOutlineDislike className='hover:bg-gray-300 text-2xl' /> : <AiFillDislike className='hover:bg-gray-300 text-2xl'/>} {data?.downvotes.length}</div>
+      
+     
           </div>
         </div>
     }

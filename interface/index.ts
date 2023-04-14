@@ -21,7 +21,7 @@ export interface IPost {
     approved: boolean;
     body: string;
     author: IUser;
-    date?: number;
+    time?: string;
     upvotes?: Array<string>;
     downvotes?: Array<string>;
     category?: string;
