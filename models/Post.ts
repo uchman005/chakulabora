@@ -10,19 +10,19 @@ const PostSchema: Schema = new Schema({
     author: {
         type: {
             id: { type: String, required: true },
-            password: { type: String },
+            password: String,
             fname: { type: String, required: true },
             lname: { type: String, required: true },
             email: { type: String, required: true },
             role: { type: String, required: true },
-            bio: { type: String, required: true },
-            country: { type: String, required: true },
-            phone: { type: String, required: true },
-            postal_code: { type: String, required: true },
-            street_address: { type: String, required: true },
-            city: { type: String },
-            state: { type: String },
-            website: { type: String }
+            bio: String,
+            country: String,
+            phone: String,
+            postal_code: String,
+            street_address: String,
+            city: String,
+            state: String,
+            website: String
         }
         , required: true
     },
