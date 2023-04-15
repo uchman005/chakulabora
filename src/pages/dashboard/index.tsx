@@ -39,9 +39,7 @@ const fetcher = async (url: string) => {
 }
 
 export default function Index() {
-
-    const { data, error, isLoading } = useSWR('/api/posts/find', fetcher);
-
+    const { data, isLoading } = useSWR('/api/posts/find', fetcher);
     return (
         <>
             <Sidebar>

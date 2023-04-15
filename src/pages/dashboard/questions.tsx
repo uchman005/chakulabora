@@ -157,6 +157,7 @@ export default function Index() {
               </div>
             </div>
             <button className='btn btn-block btn-outline-info '>Submit</button>
+            {JSON.stringify(user)}
           </div>
         </form>
       }
