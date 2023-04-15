@@ -117,12 +117,12 @@ export default function Index() {
             <div>
               <div className='form-group'>
                 <label htmlFor='title'>Title</label>
-                <input type='text' name='title' id='title' value={postData.title} onChange={handleChange} className='form-control' />
+                <input type='text' required name='title' id='title' value={postData.title} onChange={handleChange} className='form-control' />
               </div>
               <div className='form-group'>
                 <label htmlFor='category'>Category</label>
 
-                <input list="category" placeholder='Select a category' className='form-control' name='category' value={postData.category} onChange={handleChange} />
+                <input list="category" required placeholder='Select a category' className='form-control' name='category' value={postData.category} onChange={handleChange} />
                 <datalist id="category">
                   <option value="Aqua culture" />
                   <option value="Animal Husbandry" />
