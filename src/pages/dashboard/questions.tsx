@@ -70,12 +70,12 @@ export default function Index() {
     setPostData((prev) => ({
       ...prev,
       [name]: value,
-      author: user,
     })
     )
   }
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    setPostData((prev)=>({...prev, author: user}));
     const response = await axios.post("/api/posts/create", postData);
     const post = response.data.post;
     const message = response.data.message
