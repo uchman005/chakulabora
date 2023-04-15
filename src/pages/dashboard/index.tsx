@@ -6,9 +6,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import useSWR from 'swr'
 import axios from 'axios';
-import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../../store/user';
 const Table = dynamic(() => import("react-data-table-component"), {
     ssr: false,
 });
@@ -41,30 +39,7 @@ const fetcher = async (url: string) => {
 }
 
 export default function Index() {
-    const user = useSelector((state: any) => state.user);
-    const { data: session, status } = useSession();
-    const dispatch = useDispatch();
-    useEffect(() => {
-        if (user.role == '') {
-            const getUser = async () => {
-                if (session) {
-                    const response = await axios.get(`/api/${session?.user?.email}/user`, {
-                        responseType: 'json',
-                        headers: {
-                            "Content-Type": "application/json",
-                            Accept: "application/json"
-                        }
-                    });
-                    const user = await response.data;
-                    user.id = user._id as string;
-                    dispatch(setUser(user));
-                }
-            }
-            getUser();
-        } else {
-            dispatch(setUser(user));
-        }
-    }, [session, user, dispatch]);
+
     const { data, error, isLoading } = useSWR('/api/posts/find', fetcher);
 
     return (

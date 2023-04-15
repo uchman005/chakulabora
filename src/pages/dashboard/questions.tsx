@@ -1,12 +1,10 @@
 import { useSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 import { useSelector } from 'react-redux';
-import dynamic from 'next/dynamic'
-import parse from 'html-react-parser'
 import { useState, useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
 import axios from 'axios';
-import 'quill/dist/quill.snow.css';
+import dynamic from 'next/dynamic'
 
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,

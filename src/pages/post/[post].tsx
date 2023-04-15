@@ -110,8 +110,8 @@ const Post = () => {
             <div><p>Category</p><span className='text-wrap'>{data.category}</span></div>
           </div>
           <div className='flex gap-5 justify-evenly m-4 px-3'>
-            <div className='flex items-center'>{true ? <AiOutlineLike className='hover:bg-gray-300 text-2xl' /> : <AiFillLike className='hover:bg-gray-300 text-2xl'/>} {data?.upvotes.length}</div>
-            <div className='flex items-center '>{true ? <AiOutlineDislike className='hover:bg-gray-300 text-2xl' /> : <AiFillDislike className='hover:bg-gray-300 text-2xl'/>} {data?.downvotes.length}</div>
+            <div className='flex items-center'>{true ? <AiOutlineLike className='hover:bg-gray-300 text-2xl' /> : <AiFillLike className='hover:bg-gray-300 text-2xl'/>} {data?.upvotes?.length}</div>
+            <div className='flex items-center '>{true ? <AiOutlineDislike className='hover:bg-gray-300 text-2xl' /> : <AiFillDislike className='hover:bg-gray-300 text-2xl'/>} {data?.downvotes?.length}</div>
       
      
           </div>

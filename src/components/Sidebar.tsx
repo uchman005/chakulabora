@@ -28,6 +28,9 @@ import { IUser } from '../../interface';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../store/user';
+import axios from 'axios';
 interface LinkItemProps {
     name: string;
     icon: IconType;
@@ -49,8 +52,29 @@ export default function Sidebar({
 }) {
     const user = useSelector((state: any) => state.user);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { status } = useSession();
-
+    const { status,data: session } = useSession();
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (user.role == '') {
+            const getUser = async () => {
+                if (session) {
+                    const response = await axios.get(`/api/${session?.user?.email}/user`, {
+                        responseType: 'json',
+                        headers: {
+                            "Content-Type": "application/json",
+                            Accept: "application/json"
+                        }
+                    });
+                    const user = await response.data;
+                    user.id = user._id as string;
+                    dispatch(setUser(user));
+                }
+            }
+            getUser();
+        } else {
+            dispatch(setUser(user));
+        }
+    }, [session, user, dispatch]);
     return (
         <div className='min-h-[100vh] bg-gray-100 '>
             <SidebarContent
