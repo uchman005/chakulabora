@@ -60,7 +60,7 @@ export default function Index() {
   const [postData, setPostData] = useState({
     title: '',
     body: '',
-    author: user,
+    author: {},
     category: '',
   });
 
