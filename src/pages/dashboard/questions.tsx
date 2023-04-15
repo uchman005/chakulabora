@@ -70,6 +70,7 @@ export default function Index() {
     setPostData((prev) => ({
       ...prev,
       [name]: value,
+      author: user,
     })
     )
   }
