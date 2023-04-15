@@ -6,7 +6,7 @@ let now = moment().format("LLL");
 mongoose.Promise = global.Promise;
 
 const PostSchema: Schema = new Schema({
-    title: { type: String, required: true, unique: true },
+    title: { type: String, required: true},
     author: {
         type: {
             id: { type: String, required: true },
