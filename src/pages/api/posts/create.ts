@@ -19,6 +19,7 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
                 downvotes: [],
                 blob: blob,
             });
+            
             await post.save();
             message = 'Post created successfully';
         } catch (err: any) {
