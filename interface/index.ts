@@ -32,3 +32,19 @@ export interface ResponseFunctions {
     GET?: Function;
     POST?: Function;
 }
+
+export interface IAnswer {
+    body: string;
+    author: IUser;
+    post: string;
+    isSolution: boolean;
+    time?: string;
+    _id?: string;
+    upvotes?: Array<string>;
+    downvotes?: Array<string>;
+}
+export interface IComment {
+    body: string;
+    author: IUser;
+    time?: string;
+}
