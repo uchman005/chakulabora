@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useToast } from '@chakra-ui/react'
 import axios from 'axios';
 import dynamic from 'next/dynamic'

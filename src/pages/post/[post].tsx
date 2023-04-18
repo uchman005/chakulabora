@@ -31,14 +31,10 @@ const modules = {
     ['clean'],
   ],
   clipboard: {
-    // toggle to add extra line breaks when pasting HTML:
     matchVisual: false,
   },
 }
-/*
- * Quill editor formats
- * See https://quilljs.com/docs/formats/
- */
+
 const formats = [
   'font',
   'header',
@@ -85,7 +81,7 @@ const Answer = ({ data }: any) => {
   </div>
 }
 const Answers = ({ data }: any) => {
-  const { data: answers, isLoading: isloading1 } = useSWR(`/api/answers/${data?._id}`, answerFetcher);
+  const { data: answers } = useSWR(`/api/answers/${data?._id}`, answerFetcher);
   if (answers === null) return <h1>Answers not found</h1>;
   if (answers === undefined) return <h1>Answers is not defined</h1>;
   if (answers.length == 0) return <h1>No answers Yet</h1>;
@@ -140,6 +136,7 @@ const Post = () => {
   const { post } = router.query;
   const { data, isLoading } = useSWR(`/api/posts/${post}`, postFetcher);
   const { status } = useSession();
+  const [stateData, setData] = useState(false)
   if (isLoading || status === "loading") return <h1>Loading...</h1>;
   if (data === null) return <h1>Post not found</h1>;
   if (data === undefined) return <h1>Post is not defined</h1>;
@@ -195,7 +192,7 @@ const Post = () => {
             </div>
 
             <div className='p-1 m-2 '>
-              <Answers data={data} />
+              <Answers data={data} key={stateData}/>
             </div>
             {status === 'authenticated' ?
               <div>
@@ -225,6 +222,7 @@ const Post = () => {
                       variant: 'top-accent'
                     });
                     setValue('');
+                    setData(!stateData);// This is purely to trigger a rerender in the Answers component
                     return;
                   } else {
                     toast({
