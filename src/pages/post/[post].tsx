@@ -66,7 +66,7 @@ const answerFetcher = async (url: string) => {
   const data: Array<IAnswer> | null = res.data;
   return data;
 }
-const Answer= ({data}: any)  =>{
+const Answer = ({ data }: any) => {
   return <div className='flex border-b-1 items-center justify-start my-5'>
     <div className='flex flex-col'>
       <AiOutlineLike />
@@ -78,19 +78,19 @@ const Answer= ({data}: any)  =>{
       <div className='flex gap-5'>
         <div>{`${data.author.fname} ${data.author.lname}`}</div>
         <div>{data.time}</div>
-        </div>
-      
       </div>
-    
+
     </div>
+
+  </div>
 }
-const Answers =({data}:any)=>{
+const Answers = ({ data }: any) => {
   const { data: answers, isLoading: isloading1 } = useSWR(`/api/answers/${data?._id}`, answerFetcher);
   if (answers === null) return <h1>Answers not found</h1>;
   if (answers === undefined) return <h1>Answers is not defined</h1>;
-if(answers.length == 0) return <h1>No answers Yet</h1>;
-  return <div><p>{answers.length} answer{answers.length ==1 ?'':"s"} for this post</p>
-    <div>{answers.map((item, index)=> <Answer key={index} data={item}/>)}</div></div>
+  if (answers.length == 0) return <h1>No answers Yet</h1>;
+  return <div><p>{answers.length} answer{answers.length == 1 ? '' : "s"} for this post</p>
+    <div>{answers.map((item, index) => <Answer key={index} data={item} />)}</div></div>
 }
 const Post = () => {
   const handleReject = () => {
@@ -195,7 +195,7 @@ const Post = () => {
             </div>
 
             <div className='p-1 m-2 '>
-          <Answers data={data} />
+              <Answers data={data} />
             </div>
             {status === 'authenticated' ?
               <div>
@@ -211,7 +211,7 @@ const Post = () => {
                   className='mb-3'
                 />
                 <button className='btn rounded btn-outline-success' onClick={async () => {
-                   const response = await axios.post("/api/answers/create", { body: value, author: user, post:data._id });
+                  const response = await axios.post("/api/answers/create", { body: value, author: user, post: data._id });
                   const { answer, message } = response.data;
                   if (answer !== null) {
                     toast({
@@ -226,7 +226,7 @@ const Post = () => {
                     });
                     setValue('');
                     return;
-                  }else{
+                  } else {
                     toast({
                       title: 'Answer posting failed',
                       description: message,

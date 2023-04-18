@@ -5,7 +5,7 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
     const method: keyof ResponseFunctions = req.method as keyof ResponseFunctions;
     if (method === 'POST') {
         const data = req.body;
-        const blob: string = data.title.replaceAll(" ", "-").toLowerCase()
+        const blob: string = data.title.replaceAll(" ", "-").toLowerCase().replace(/[^\w-]+/g, "")
         const { Post } = await dbCon();
         let post;
         let message: string;
