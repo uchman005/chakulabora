@@ -28,7 +28,7 @@ export default function Navbar() {
         </div>
         <div className="flex flex-1 justify-center md:justify-start">
           <h1 className={`text-2xl font-bold ${useBreakpointValue({ base: 'text-center', md: 'text-left' })} ${useColorModeValue('text-gray-800', 'text-white')}`}>
-            Chakulabora
+            Chakula-bora
           </h1>
 
           <div className="hidden md:flex md:ml-10">
@@ -56,7 +56,7 @@ export default function Navbar() {
 const DesktopNav = () => {
   const linkColor = useColorModeValue('text-gray-600', 'text-gray-200');
   const linkHoverColor = useColorModeValue('text-gray-800', 'white');
-  const [sublink, setSublink] = useState(true);
+  // const [sublink, setSublink] = useState(true);
   return (
     <div className='flex flex-row p-1'>
       {NAV_ITEMS.map((navItem) => (

@@ -37,8 +37,9 @@ interface LinkItemProps {
     link: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-    { name: 'Home', icon: FiHome, link: '/dashboard' },
-    { name: 'Questions', icon: FiTrendingUp, link: '/dashboard/questions' },
+    { name: 'Home', icon: FiHome, link: '/' },
+    { name: 'Questions', icon: FiTrendingUp, link: '/dashboard' },
+    { name: 'Ask', icon: FiTrendingUp, link: '/dashboard/questions' },
     // { name: 'Explore', icon: FiCompass, link: '' },
     // { name: 'Favourites', icon: FiStar, link: '' },
     // { name: 'Settings', icon: FiSettings, link: '/dashboard/setting' },
@@ -116,15 +117,17 @@ interface SidebarProps extends BoxProps {
 const SidebarContent = ({ user, status, onClose, ...rest }: SidebarProps) => {
     const toast = useToast();
     const [authLinkItems, setLinkitems] = useState<Array<LinkItemProps>>([
-        { name: 'Home', icon: FiHome, link: '/dashboard' },
-        { name: 'Questions', icon: FiTrendingUp, link: '/dashboard/questions' },
+        { name: 'Home', icon: FiHome, link: '/' },
+        { name: 'Questions', icon: FiTrendingUp, link: '/dashboard' },
+        { name: 'Ask', icon: FiTrendingUp, link: '/dashboard/questions' },
         { name: 'Settings', icon: FiSettings, link: '/dashboard/setting' }
     ])
     useEffect(() => {
         if (user?.role !== '' && user?.role !== 'Community Member') {
             setLinkitems([
-                { name: 'Home', icon: FiHome, link: '/dashboard' },
-                { name: 'Questions', icon: FiTrendingUp, link: '/dashboard/questions' },
+                { name: 'Home', icon: FiHome, link: '/' },
+                { name: 'Questions', icon: FiTrendingUp, link: '/dashboard' },
+                { name: 'Ask', icon: FiTrendingUp, link: '/dashboard/questions' },
                 { name: 'Settings', icon: FiSettings, link: '/dashboard/setting' },
                 // { name: 'Explore', icon: FiCompass, link: '' },
                 { name: 'Approve posts', icon: FiStar, link: '/dashboard/approve' },])
@@ -142,7 +145,7 @@ const SidebarContent = ({ user, status, onClose, ...rest }: SidebarProps) => {
             {...rest}>
             <div className='h-20 flex justify-between mx-8 items-center'>
                 <h1 className="flex text-2xl font-mono font-bold">
-                    Chakulabora
+                    Chakula-bora
                 </h1>
                 <button className="block md:hidden" onClick={onClose}>
                     <MdClose className="h-6 w-6" aria-hidden="true" />
@@ -223,7 +226,7 @@ const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
                 <FiMenu className='text-2xl' />
             </button>
             <h1 className="flex text-2xl font-mono py-1 font-bold md:hidden">
-                Chakulabora
+                Chakula-bora
             </h1>
 
 

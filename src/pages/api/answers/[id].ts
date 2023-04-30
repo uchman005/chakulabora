@@ -9,7 +9,6 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
         let answer: Array<IAnswer> | null;
         try {
             answer = await Answer.find({ post: id });
-            console.log(answer)
         } catch (err) {
             answer = null;
         }
