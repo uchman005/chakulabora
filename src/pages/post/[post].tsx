@@ -67,49 +67,94 @@ const answerFetcher = async (url: string) => {
   const data: Array<IAnswer> | null = res.data;
   return data;
 };
-const Answer = ({ data }: any) => {
+const Answer = ({ data, mutate }: any) => {
   const toast = useToast();
   const { status } = useSession();
-
+  const user = useSelector((state: any) => state.user);
+  const like_answer = async () => {
+    const api = data.upvotes?.includes(user.id)
+      ? "/api/answers/dislike"
+      : "/api/answers/like";
+    const title = data.upvotes?.includes(user.id)
+      ? "Like Removed"
+      : "Answer Liked";
+    const desc = data.upvotes?.includes(user.id)
+      ? "Your like for this Answer was removed, thanks for your feedback"
+      : "You liked the answer, thanks for your feedback";
+    const response = await axios.post(api, {
+      like: true,
+      answer_id: data._id,
+      author_id: data.author.id,
+      user_id: user.id,
+    });
+    const liked = response.data;
+    if (liked) {
+      mutate();
+      toast({
+        title: title,
+        description: desc,
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+        size: { width: "300", height: "200" },
+        variant: "top-accent",
+      });
+      return;
+    }
+    return;
+  };
+  const dislike_answer = async () => {
+    const api = data.downvotes?.includes(user.id)
+      ? "/api/answers/dislike"
+      : "/api/answers/like";
+    const title = data.downvotes?.includes(user.id)
+      ? "Dislike Removed"
+      : "Answer Disliked";
+    const desc = data.downvotes?.includes(user.id)
+      ? "Your dislike for this answer was removed, thanks for your feedback"
+      : "You disliked the answer, thanks for your feedback";
+    const response = await axios.post(api, {
+      like: false,
+      answer_id: data._id,
+      author_id: data.author.id,
+      user_id: user.id,
+    });
+    const liked = response.data;
+    if (liked) {
+      mutate();
+      toast({
+        title: title,
+        description: desc,
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+        size: { width: "300", height: "200" },
+        variant: "top-accent",
+      });
+    }
+    return;
+  };
   return (
     <div className="flex border-b-1 items-center justify-start my-5">
       {status === "authenticated" ? (
         <div className="flex flex-col">
-          <button
-            onClick={() => {
-              const body = parse(data.body);
-              toast({
-                title: "Answer Liked",
-                description: body,
-                status: "success",
-                duration: 5000,
-                isClosable: true,
-                position: "top",
-                size: { width: "300", height: "200" },
-                variant: "top-accent",
-              });
-            }}
-          >
-            <AiOutlineLike />
-          </button>
+          {!data.downvotes?.includes(user.id) && (
+            <button onClick={like_answer}>
+              {data.upvotes.includes(user.id) ? (
+                <AiFillLike className="text-green-400" />
+              ) : (
+                <AiOutlineLike />
+              )}
+            </button>
+          )}
           {data.upvotes?.length - data.downvotes.length}
-          <button
-            onClick={() => {
-              const body = parse(data.body);
-              toast({
-                title: "Answer Disliked",
-                description: body,
-                status: "success",
-                duration: 5000,
-                isClosable: true,
-                position: "top",
-                size: { width: "300", height: "200" },
-                variant: "top-accent",
-              });
-            }}
-          >
-            <AiOutlineDislike />
-          </button>
+          {!data.upvotes?.includes(user.id) && (
+            <button onClick={dislike_answer}>
+              {data.downvotes.includes(user.id)?<AiFillDislike className="text-red-400"/> : <AiOutlineDislike />}
+            </button>
+          )}
         </div>
       ) : (
         <div className="flex flex-col">
@@ -159,7 +204,10 @@ const Answer = ({ data }: any) => {
   );
 };
 const Answers = ({ data }: any) => {
-  const { data: answers } = useSWR(`/api/answers/${data?._id}`, answerFetcher);
+  const { data: answers, mutate } = useSWR(
+    `/api/answers/${data?._id}`,
+    answerFetcher
+  );
   if (answers === null) return <h1>Answers not found</h1>;
   if (answers === undefined) return <h1>Answers is not defined</h1>;
   if (answers.length == 0) return <h1>No answers Yet</h1>;
@@ -170,7 +218,7 @@ const Answers = ({ data }: any) => {
       </p>
       <div>
         {answers.map((item, index) => (
-          <Answer key={index} data={item} />
+          <Answer key={index} data={item} mutate={mutate} />
         ))}
       </div>
     </div>
@@ -230,9 +278,15 @@ const Post = () => {
   if (data === null) return <h1>Post not found</h1>;
   if (data === undefined) return <h1>Post is not defined</h1>;
   const like_post = async () => {
-    const api = data.upvotes?.includes(user.id) ? "/api/posts/dislike": "/api/posts/like";
-    const title = data.upvotes?.includes(user.id) ? "Like Removed": "Post Liked";
-    const desc = data.upvotes?.includes(user.id) ? "Your like for this post was removed, thanks for your feedback": "You liked the post, thanks for your feedback";
+    const api = data.upvotes?.includes(user.id)
+      ? "/api/posts/dislike"
+      : "/api/posts/like";
+    const title = data.upvotes?.includes(user.id)
+      ? "Like Removed"
+      : "Post Liked";
+    const desc = data.upvotes?.includes(user.id)
+      ? "Your like for this post was removed, thanks for your feedback"
+      : "You liked the post, thanks for your feedback";
     const response = await axios.post(api, {
       like: true,
       post_id: data._id,
@@ -244,7 +298,7 @@ const Post = () => {
       mutate();
       toast({
         title: title,
-        description:desc,
+        description: desc,
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -254,11 +308,17 @@ const Post = () => {
       });
     }
     return;
-  }
+  };
   const dislike_post = async () => {
-    const api = data.downvotes?.includes(user.id) ? "/api/posts/dislike": "/api/posts/like";
-    const title = data.downvotes?.includes(user.id) ? "Dislike Removed": "Post Disliked";
-    const desc = data.downvotes?.includes(user.id) ? "Your dislike for this post was removed, thanks for your feedback": "You disliked the post, thanks for your feedback";
+    const api = data.downvotes?.includes(user.id)
+      ? "/api/posts/dislike"
+      : "/api/posts/like";
+    const title = data.downvotes?.includes(user.id)
+      ? "Dislike Removed"
+      : "Post Disliked";
+    const desc = data.downvotes?.includes(user.id)
+      ? "Your dislike for this post was removed, thanks for your feedback"
+      : "You disliked the post, thanks for your feedback";
     const response = await axios.post(api, {
       like: false,
       post_id: data._id,
@@ -270,7 +330,7 @@ const Post = () => {
       mutate();
       toast({
         title: title,
-        description:desc,
+        description: desc,
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -280,7 +340,7 @@ const Post = () => {
       });
     }
     return;
-  }
+  };
   return (
     <div className="px-3 text-gray-700">
       {status === "authenticated" &&
@@ -343,27 +403,21 @@ const Post = () => {
           {status === "authenticated" ? (
             <div className="flex gap-5 justify-evenly m-4 px-3">
               {!data.downvotes?.includes(user.id) && (
-                <button
-                  onClick={like_post}
-                  className="flex items-center"
-                >
+                <button onClick={like_post} className="flex items-center">
                   {!data.upvotes?.includes(user.id) ? (
                     <AiOutlineLike className="hover:bg-gray-300 text-2xl" />
                   ) : (
-                    <AiFillLike className="text-red-600 hover:bg-gray-300 text-2xl" />
+                    <AiFillLike className="text-green-600 hover:bg-gray-300 text-2xl" />
                   )}{" "}
                   {data?.upvotes?.length}
                 </button>
               )}
               {!data.upvotes?.includes(user.id) && (
-                <button
-                  onClick={dislike_post}
-                  className="flex items-center "
-                >
+                <button onClick={dislike_post} className="flex items-center ">
                   {!data.downvotes?.includes(user.id) ? (
                     <AiOutlineDislike className="hover:bg-gray-300 text-2xl" />
                   ) : (
-                    <AiFillDislike className="hover:bg-gray-300 text-2xl" />
+                    <AiFillDislike className="text-red-400 text-2xl" />
                   )}{" "}
                   {data?.downvotes?.length}
                 </button>

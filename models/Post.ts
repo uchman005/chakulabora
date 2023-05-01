@@ -33,6 +33,7 @@ const PostSchema: Schema = new Schema({
     blob: { type: String, required: true, unique: true },
     time: { type: String, default: now },
     approved: { type: Boolean, default: false },
+    solved: {type: Boolean, default: false},
     body: { type: String, required: true },
 });
 try {

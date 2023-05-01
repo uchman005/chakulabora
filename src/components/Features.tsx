@@ -7,23 +7,23 @@ import { CheckIcon } from '@chakra-ui/icons';
 const features = [
   {
   id: 1,
-  title: 'Bet Practices',
+  title: 'Best Practices',
   text: 'We celebrate best practices around farming. Bringing a conciousness about our planet to the fore.',
 },
   {
   id: 2,
-  title: 'Lorem ipsum dolor sit amet',
-  text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam.',
+  title: 'Team Work',
+  text: 'Sharing ideas makes us all come out better, we are building with this conciousness.',
 },
   {
   id: 3,
-  title: 'Lorem ipsum dolor sit amet',
-  text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam.',
+  title: 'Collaboration',
+  text: 'We aim to bring together people of like minds, for effective collaboration.',
 },
   {
   id: 4,
-  title: 'Lorem ipsum dolor sit amet',
-  text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam.',
+  title: 'Knowedge Base',
+  text: 'We want to seive the best ideas and put it out, so it is freely available to farmers for years to come.',
 },
 ]
 

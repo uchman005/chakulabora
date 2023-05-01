@@ -19,6 +19,7 @@ export interface IPost {
     title?: string;
     _id?: string;
     approved: boolean;
+    solved: boolean;
     body: string;
     author: IUser;
     time?: string;
