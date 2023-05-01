@@ -17,7 +17,7 @@ const UserSchema: Schema = new Schema({
   phone: { type: String },
   website: { type: String },
   role: { type: String, required: true },
-  pv: { type: Number },
+  pv: { type: Number, default: 0 },
 });
 try {
   delete models.User;

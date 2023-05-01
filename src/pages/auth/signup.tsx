@@ -1,24 +1,17 @@
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import {
-  Progress,
-  Box,
-  ButtonGroup,
-  Button,
-  Flex,
-  useToast
-} from '@chakra-ui/react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import axios from 'axios';
-import { useRouter } from 'next/router'
-
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useToast } from "@chakra-ui/react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import axios from "axios";
+import { useRouter } from "next/router";
+import countriesList from "../../../utils/countries";
 const Form1 = (props: any) => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   return (
     <>
-      <h1 className='flex justify-center w-full font-xl mb-[2%]'>
+      <h1 className="flex justify-center w-full font-xl mb-[2%]">
         User Registration
       </h1>
       <div className="flex flex-col">
@@ -87,7 +80,9 @@ const Form1 = (props: any) => {
       </div>
 
       <div className="mt-4">
-        <label htmlFor="password" className="block font-medium text-gray-700">Password</label>
+        <label htmlFor="password" className="block font-medium text-gray-700">
+          Password
+        </label>
         <div>
           <input
             type={show ? "text" : "password"}
@@ -96,12 +91,11 @@ const Form1 = (props: any) => {
             value={props.Data.password}
             onChange={props.setFormData}
           />
-          <button type='button' onClick={handleClick}>{show ? "Hide" : "Show"}</button>
+          <button type="button" onClick={handleClick}>
+            {show ? "Hide" : "Show"}
+          </button>
         </div>
       </div>
-
-
-
     </>
   );
 };
@@ -109,31 +103,33 @@ const Form1 = (props: any) => {
 const Form2 = (props: any) => {
   return (
     <>
-      <h1 className='flex justify-center w-full font-xl mb-[2%]'>
+      <h1 className="flex justify-center w-full font-xl mb-[2%]">
         User Details
       </h1>
-      <div className="flex flex-col gap-4">
-        <label htmlFor="country" className="block text-sm font-medium text-gray-700col-span-6">
-          Country / Region
-        </label>
-        <div className="col-span-6 sm:col-span-3 w-full">
-          <select
-            id="country"
-            name="country"
-            autoComplete="country"
-            className="form-control block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-brand-400 focus:border-brand-400 sm:text-sm rounded-md"
-            value={props.Data.country}
-            onChange={props.setFormData}
-          >
-            <option>United States</option>
-            <option>Canada</option>
-            <option>Mexico</option>
-          </select>
-        </div>
+      <div className="form-group">
+        <label htmlFor="category">Country / Region </label>
+
+        <input
+          list="country"
+          required
+          placeholder="Select Your country"
+          className="form-control"
+          name="country"
+          value={props.Data.country}
+          onChange={props.setFormData}
+        />
+        <datalist id="country">
+          {countriesList.map((item) => (
+            <option value={item.name} key={item.code} />
+          ))}
+        </datalist>
       </div>
 
       <div className="col-span-6">
-        <label htmlFor="street_address" className="block text-sm text-base font-medium  mt-2">
+        <label
+          htmlFor="street_address"
+          className="block text-sm text-base font-medium  mt-2"
+        >
           Street address
         </label>
         <input
@@ -147,9 +143,11 @@ const Form2 = (props: any) => {
         />
       </div>
 
-
       <div className="flex flex-col">
-        <label htmlFor="city" className="block text-sm font-medium text-gray-700 mt-2 col-span-2">
+        <label
+          htmlFor="city"
+          className="block text-sm font-medium text-gray-700 mt-2 col-span-2"
+        >
           City
         </label>
         <input
@@ -181,7 +179,6 @@ const Form2 = (props: any) => {
         />
       </div>
 
-
       <div className="col-span-6 sm:col-span-3 lg:col-span-2">
         <label
           htmlFor="postal_code"
@@ -199,7 +196,6 @@ const Form2 = (props: any) => {
           onChange={props.setFormData}
         />
       </div>
-
     </>
   );
 };
@@ -207,12 +203,15 @@ const Form2 = (props: any) => {
 const Form3 = (props: any) => {
   return (
     <>
-      <h1 className='flex justify-center w-full font-xl mb-[2%]'>
+      <h1 className="flex justify-center w-full font-xl mb-[2%]">
         Social Handles
       </h1>
-      <div className='flex flex-col space-6'>
+      <div className="flex flex-col space-6">
         <div className="col-span-3 sm:col-span-2">
-          <label htmlFor="website" className="block text-sm font-medium text-gray-700 dark:text-gray-50">
+          <label
+            htmlFor="website"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-50"
+          >
             Website
           </label>
           <div className="mt-1 flex rounded-md shadow-sm">
@@ -232,7 +231,10 @@ const Form3 = (props: any) => {
         </div>
 
         <div className="mt-2">
-          <label htmlFor="about" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="about"
+            className="block text-sm font-medium text-gray-700"
+          >
             About
           </label>
           <div className="mt-2">
@@ -250,7 +252,6 @@ const Form3 = (props: any) => {
             Brief description for your profile. URLs are hyperlinked.
           </p>
         </div>
-
       </div>
     </>
   );
@@ -262,18 +263,18 @@ export default function Form() {
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33.33);
   const [formData, setFormData] = useState({
-    fname: '',
-    lname: '',
-    email: '',
-    phone: '',
-    country: '',
-    bio: '',
-    password: '',
-    street_address: '',
-    city: '',
-    state: '',
-    postal_code: '',
-    website: '',
+    fname: "",
+    lname: "",
+    email: "",
+    phone: "",
+    country: "",
+    bio: "",
+    password: "",
+    street_address: "",
+    city: "",
+    state: "",
+    postal_code: "",
+    website: "",
   });
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -281,66 +282,67 @@ export default function Form() {
     const user = response.data.user;
     if (user === null) {
       toast({
-        title: 'Account creation failed.',
-        description: "Account creation wasn't successful, if you've created an account before, login instead",
-        status: 'warning',
+        title: "Account creation failed.",
+        description:
+          "Account creation wasn't successful, if you've created an account before, login instead",
+        status: "warning",
         duration: 7000,
         isClosable: true,
         position: "top",
-        size: { width: '300', height: '200' },
-        variant: 'top-accent'
+        size: { width: "300", height: "200" },
+        variant: "top-accent",
       });
       Router.push("/auth/signin");
       return;
     }
 
     toast({
-      title: 'Account created.',
+      title: "Account created.",
       description: "We've created your account for you.",
-      status: 'success',
+      status: "success",
       duration: 5000,
       isClosable: true,
       position: "top",
-      size: { width: '300', height: '200' },
-      variant: 'top-accent'
+      size: { width: "300", height: "200" },
+      variant: "top-accent",
     });
     const res = await signIn("credentials", {
       email: user.email,
       password: user.password,
-      redirect: false
-    })
+      redirect: false,
+    });
     if (res != undefined) {
       if (res.ok === true && res.status === 200) {
         toast({
-          title: 'Sign in Success',
+          title: "Sign in Success",
           description: "You have been signed in successfully",
-          status: 'success',
+          status: "success",
           duration: 5000,
           isClosable: true,
           position: "top",
-          size: { width: '300', height: '200' },
-          variant: 'top-accent'
+          size: { width: "300", height: "200" },
+          variant: "top-accent",
         });
         Router.push("/dashboard");
       } else if (res.ok === false && res.status === 401) {
         toast({
-          title: 'Sign in Error',
+          title: "Sign in Error",
           description: res.error,
-          status: 'warning',
+          status: "warning",
           duration: 5000,
           isClosable: true,
           position: "top",
-          size: { width: '300', height: '200' },
-          variant: 'top-accent'
+          size: { width: "300", height: "200" },
+          variant: "top-accent",
         });
       }
     }
     return;
-  }
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { value, name } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
   return (
     <>
       <Navbar />
@@ -351,19 +353,30 @@ export default function Form() {
             style={{ width: `${progress}%` }}
           ></div>
         </div>
-        {step === 1 ? <Form1 Data={formData} setFormData={handleChange} /> : step === 2 ? <Form2 Data={formData} setFormData={handleChange} /> : <Form3 Data={formData} setFormData={handleChange} />}
-        <div className='w-full mt-[5%]'>
-          <div className='flex w-full justify-between'>
-            <div className='flex'>
+        {step === 1 ? (
+          <Form1 Data={formData} setFormData={handleChange} />
+        ) : step === 2 ? (
+          <Form2 Data={formData} setFormData={handleChange} />
+        ) : (
+          <Form3 Data={formData} setFormData={handleChange} />
+        )}
+        <div className="w-full mt-[5%]">
+          <div className="flex w-full justify-between">
+            <div className="flex">
               <button
-              type='button'
+                type="button"
                 onClick={() => {
                   setStep(step - 1);
                   setProgress(progress - 33.33);
                 }}
                 className={`'hover:bg-teal-300 disabled:opacity-30'`}
                 disabled={step === 1}
-                style={{ backgroundColor: "teal", color: "white", width: "7rem", marginRight: "5%" }}
+                style={{
+                  backgroundColor: "teal",
+                  color: "white",
+                  width: "7rem",
+                  marginRight: "5%",
+                }}
               >
                 Back
               </button>
@@ -371,7 +384,7 @@ export default function Form() {
               <button
                 className="w-28 disabled:opacity-10 border-2 border-teal-500 text-teal-500 rounded-md py-2 px-4 font-semibold hover:text-white hover:bg-teal-500 hover:border-teal-500 transition-colors duration-300"
                 disabled={step === 3}
-                type='button'
+                type="button"
                 onClick={() => {
                   setStep(step + 1);
                   if (step === 3) {
@@ -383,16 +396,14 @@ export default function Form() {
               >
                 Next
               </button>
-
             </div>
             {step === 3 && (
               <button
-              className="w-28 px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-              onClick={handleSubmit}
-            >
-              Submit
-            </button>
-            
+                className="w-28 px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                onClick={handleSubmit}
+              >
+                Submit
+              </button>
             )}
           </div>
         </div>

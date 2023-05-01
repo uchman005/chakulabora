@@ -248,3 +248,4 @@ interface ICountries {
   { name: "Zambia", code: "ZM" },
   { name: "Zimbabwe", code: "ZW" },
 ];
+export default countriesList;

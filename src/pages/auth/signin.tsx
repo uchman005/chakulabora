@@ -63,11 +63,9 @@ export default function SignIn() {
       <div className={`flex items-center justify-center min-h-screen bg-${bgColor}`}>
         <div className="mx-auto max-w-lg py-12 px-6 space-y-8">
           <div className='items-center'>
-            <h1 className='text-4xl'>Sign in to your account</h1>
-            <span className='text-lg text-gray-600'>
-              to enjoy all of our cool <span className='text-blue-400'>features</span> ✌️
-            </span>
+            <h1 className='text-4xl lg:text-6xl'>Welcome back </h1>
           </div>
+          <form>
           <div className={`rounded-lg bg-${bgColor1} shadow-lg p-8`}>
             <div className='space-4'>
               <div className="form-froup mb-4">
@@ -92,7 +90,7 @@ export default function SignIn() {
                   className="form-control shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="password"
                   type="password"
-                  placeholder="* * * *"
+                  placeholder="* * * * *"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
@@ -119,9 +117,14 @@ export default function SignIn() {
                   onClick={handleClick}>
                   Sign in
                 </button>
+                <div className='flex justify-between mt-2'>
+                  <p>{"Don't have an account"}</p>
+                  <Link className='text-blue-400' href="/auth/signup">Signup</Link>
+                </div>
               </div>
             </div>
           </div>
+          </form>
         </div>
       </div>
       <Footer />
