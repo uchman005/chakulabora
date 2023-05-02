@@ -5,12 +5,16 @@ import { useState } from 'react'
 import { useToast } from '@chakra-ui/react'
 import axios from 'axios';
 import dynamic from 'next/dynamic'
-
+import agricultureCategories from '../../../utils/category';
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
   loading: () => <p>Loading ...</p>,
 })
-
+const config = {
+  headers: { 'Content-Type': 'multipart/form-data' },
+  maxContentLength: Infinity,
+  maxBodyLength: Infinity
+};
 // getContents(index: Number = 0, length: Number = remaining): Delta
 const modules = {
   toolbar: [
@@ -125,11 +129,7 @@ export default function Index() {
 
                 <input list="category" required placeholder='Select a category' className='form-control' name='category' value={postData.category} onChange={handleChange} />
                 <datalist id="category">
-                  <option value="Aqua culture" />
-                  <option value="Animal Husbandry" />
-                  <option value="Apery" />
-                  <option value="Poultry" />
-                  <option value="Crop Production" />
+            {agricultureCategories.map((item:string)=> <option value={item} key={item} /> )}
                 </datalist>
               </div>
             </div>

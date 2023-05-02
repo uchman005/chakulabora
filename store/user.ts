@@ -5,7 +5,6 @@ const userSlice = createSlice({
     name: 'user',
     initialState: {
         id: '',
-        password: '',
         fname: '',
         lname: '',
         email: '',
@@ -17,12 +16,12 @@ const userSlice = createSlice({
         street_address: '',
         city: '',
         state: '',
-        website: ''
+        website: '',
+        pv: 0,
     } as IUser,
     reducers: {
         setUser: (state, action: PayloadAction<IUser>) => {
             state.id = action.payload.id;
-            state.password = '';
             state.fname = action.payload.fname;
             state.lname = action.payload.lname;
             state.email = action.payload.email;
@@ -35,6 +34,7 @@ const userSlice = createSlice({
             state.phone = action.payload?.phone;
             state.website = action.payload?.website;
             state.state = action.payload?.state;
+            state.pv = action.payload?.pv;
         },
     },
 });

@@ -63,10 +63,10 @@ export default function SignIn() {
       <div className={`flex items-center justify-center min-h-screen bg-${bgColor}`}>
         <div className="mx-auto max-w-lg py-12 px-6 space-y-8">
           <div className='items-center'>
-            <h1 className='text-4xl lg:text-6xl'>Welcome back </h1>
+            <h1 className='text-center text-4xl md:text-5xl lg:text-6xl'>Welcome back </h1>
           </div>
           <form>
-          <div className={`rounded-lg bg-${bgColor1} shadow-lg p-8`}>
+          <div className={`rounded-lg bg-${bgColor1} shadow-lg p-8 md:min-w-[50vw] lg:min-w-[50vw]`}>
             <div className='space-4'>
               <div className="form-froup mb-4">
                 <label className="block text-gray-700 font-bold mb-2" htmlFor="email">

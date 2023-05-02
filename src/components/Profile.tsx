@@ -1,6 +1,15 @@
-import Link from 'next/link'
-import Image from 'next/image'
+import Link from 'next/link';
+import Image from 'next/image';
+import useSWR from 'swr';
+import axios from 'axios';
+const fetcher = async (url: string) => {
+    const res = await axios.get(url);
+    const data = res.data;
+    return data;
+}
 export default function Profile({ user }: any) {
+    const { data } = useSWR(`/api/${user.id}/count`, fetcher);
+
     return (
         <div className='flex py-6 w-[70%]'>
             <div className="max-w-270 w-full bg-white shadow-2xl rounded-md overflow-hidden">
@@ -27,24 +36,29 @@ export default function Profile({ user }: any) {
 
                     <div className='flex justify-center space-6 gap-4'>
                         <div className='flex flex-col space-0 items-center'>
-                            <span className='font-semibold'>{120}</span>
+                            <span className='font-semibold'>{data?.posts}</span>
                             <p className='font-sm text-gray-500'>
                                 Questions
                             </p>
                         </div>
                         <div className='flex flex-col space-0 items-center justify-center'>
-                            <span className='font-semibold'>{12}</span>
+                            <span className='font-semibold'>{data?.answers}</span>
                             <p className='font-sm text-gray-500'>
                                 Answers
                             </p>
                         </div>
+                        <div className='flex flex-col space-0 items-center justify-center'>
+                            <span className='font-semibold'>{user?.pv}</span>
+                            <p className='font-sm text-gray-500'>
+                                Points
+                            </p>
+                        </div>
 
                     </div>
-
                     <button
                         className="w-full mt-8 bg-blue-800 text-white rounded-md py-2 px-4 hover:bg-blue-700 transition-all duration-200"
                     >
-                        <Link href='/dashboard/settings'>Settings</Link>
+                        <Link href='/dashboard/setting'>Settings</Link>
                     </button>
 
                 </div>

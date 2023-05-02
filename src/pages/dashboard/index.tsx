@@ -43,13 +43,9 @@ export default function Index() {
     return (
         <>
             <Sidebar>
-                <div className='row bg-gray-300 min-h-[100vh]'>
-                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-7 bg-gray-200 mb-md-1">
-
+                <div className='row bg-gray-300 '>
+                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-10 bg-gray-200 mb-md-1">
                         <Table progressPending={isLoading || !data ? true : false} pagination striped={true} responsive={true} columns={columns} data={data} />
-                    </div>
-                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-5 bg-gray-200">
-                        <Table pagination striped progressPending={!isLoading || data ? false : true} responsive={true} columns={columns} data={data} />
                     </div>
                 </div>
             </Sidebar>

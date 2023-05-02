@@ -107,7 +107,7 @@ const Form2 = (props: any) => {
         User Details
       </h1>
       <div className="form-group">
-        <label htmlFor="category">Country / Region </label>
+        <label htmlFor="country">Country / Region </label>
 
         <input
           list="country"
