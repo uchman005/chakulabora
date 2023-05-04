@@ -1,6 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { dbCon } from '../../../../models';
 import { IPost, ResponseFunctions } from '../../../../interface';
+export const config = {
+    api: {
+      bodyParser: {
+        responseLimit: '10mb',
+      },
+    },
+  };
 const create = async (req: NextApiRequest, res: NextApiResponse) => {
     const blob = req.query.post;
     const method: keyof ResponseFunctions = req.method as keyof ResponseFunctions;

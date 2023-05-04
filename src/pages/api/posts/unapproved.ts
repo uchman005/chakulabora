@@ -1,6 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { dbCon } from '../../../../models';
 import { ResponseFunctions } from '../../../../interface';
+export const config = {
+    api: {
+      bodyParser: {
+        responseLimit: false,
+      },
+    },
+  };
 const create = async (req: NextApiRequest, res: NextApiResponse) => {
     const method: keyof ResponseFunctions = req.method as keyof ResponseFunctions;
     if(method === 'POST'){

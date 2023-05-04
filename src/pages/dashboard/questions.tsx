@@ -10,11 +10,7 @@ const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
   loading: () => <p>Loading ...</p>,
 })
-const config = {
-  headers: { 'Content-Type': 'multipart/form-data' },
-  maxContentLength: Infinity,
-  maxBodyLength: Infinity
-};
+
 // getContents(index: Number = 0, length: Number = remaining): Delta
 const modules = {
   toolbar: [
@@ -59,15 +55,15 @@ const scrollingContainer = "auto-grow"
 
 export default function Index() {
   const { status } = useSession();
-  
+  const [okay, setOkay] = useState(true)
   const user = useSelector((state: any) => state.user);
   const [postData, setPostData] = useState({
     title: '',
     body: '',
     author: {},
     category: '',
+    hasImage: false,
   });
-
   const toast = useToast();
   const handleChange = (event: any) => {
     const { name, value } = event.target;
@@ -78,8 +74,71 @@ export default function Index() {
     })
     )
   }
+  const handlequillchange = (value: string) => {
+    const imageCount = (value.match(/<img/g) || []).length;
+    if (imageCount === 1) {
+      setPostData((prev) => {
+        return {
+          ...prev,
+          hasImage: true
+        }
+      })
+    } else {
+      setPostData((prev) => {
+        return {
+          ...prev,
+          hasImage: false
+        }
+      })
+    }
+    if (imageCount > 1) {
+      toast({
+        title: 'Too many images',
+        description: "You cannot add more than one(1) image, if it doesn't delete automatically, delete one to proceed",
+        status: 'warning',
+        duration: 10000,
+        isClosable: true,
+        position: "top",
+        size: { width: '300', height: '200' },
+        variant: 'top-accent'
+      })
+      setOkay(false);
+      setTimeout(() => {
+        setOkay(true)
+      }, 2000)
+      return;
+    }
+    setOkay(true);
+    setPostData((prev) => {
+      return {
+        ...prev,
+        body: value
+      }
+    })
+  }
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    if (postData.hasImage) {
+      const url = '/api/posts/create';
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+      };
+
+      try {
+        const response = await fetch(url, options);
+        console.log(response);
+
+        const result = await response.json();
+        console.log(result);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    return;
     const response = await axios.post("/api/posts/create", postData);
     const post = response.data.post;
     const message = response.data.message
@@ -111,9 +170,10 @@ export default function Index() {
       body: '',
       author: user,
       category: '',
+      hasImage: false,
     })
   }
-  
+
   return (
     <Sidebar>
       {status === "authenticated" &&
@@ -129,7 +189,7 @@ export default function Index() {
 
                 <input list="category" required placeholder='Select a category' className='form-control' name='category' value={postData.category} onChange={handleChange} />
                 <datalist id="category">
-            {agricultureCategories.map((item:string)=> <option value={item} key={item} /> )}
+                  {agricultureCategories.map((item: string) => <option value={item} key={item} />)}
                 </datalist>
               </div>
             </div>
@@ -140,14 +200,7 @@ export default function Index() {
                 <QuillNoSSRWrapper
                   modules={modules}
                   value={postData.body}
-                  onChange={(value) => {
-                    setPostData((prev) => {
-                      return {
-                        ...prev,
-                        body: value
-                      }
-                    })
-                  }}
+                  onChange={handlequillchange}
                   placeholder={placeholder}
                   formats={formats}
                   theme="snow"
@@ -157,7 +210,7 @@ export default function Index() {
 
               </div>
             </div>
-            <button className='btn btn-block btn-outline-info '>Submit</button>
+            {okay && <button className='btn btn-block btn-info text-white'>Submit</button>}
           </div>
         </form>
       }
