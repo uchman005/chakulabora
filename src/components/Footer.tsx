@@ -2,12 +2,10 @@ import {
     Box,
     chakra,
     VisuallyHidden,
-    Input,
-    IconButton,
     useColorModeValue,
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
-import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
+import { FaInstagram, FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { BiMailSend } from 'react-icons/bi';
 import Link from 'next/link'
 const Logo = (props: any) => {
@@ -79,6 +77,9 @@ export default function Footer() {
                             <SocialButton label={'Instagram'} href={'#'}>
                                 <FaInstagram />
                             </SocialButton>
+                            <SocialButton label={'Instagram'} href={'#'}>
+                                <FaLinkedin />
+                            </SocialButton>
                         </div>
                     </div>
                     <div className='flex flex-col gap-2'>
@@ -86,11 +87,11 @@ export default function Footer() {
                         <Link href={'/about'}>About us</Link>
                         {/* <Link href={'#'}>Blog</Link> */}
                         <Link href={'/contact'}>Contact us</Link>
-                        {/* <Link href={'#'}>Testimonials</Link> */}
+                        <Link href={'https://www.sandbox.paypal.com/donate/?hosted_button_id=ZECEL77GT3QHL'}>Buy Us a Coffe</Link>
                     </div>
                     <div className='flex flex-col gap-2'>
                         <ListHeader>Support</ListHeader>
-                        <Link href={'/conatct'}>Help Center</Link>
+                        <Link href={'/contact'}>Help Center</Link>
                         <Link href={'/coc'}>Terms of Service</Link>
                         <Link href={'/legal'}>Legal</Link>
                         <Link href={'/privacy'}>Privacy Policy</Link>

@@ -225,8 +225,11 @@ const Answers = ({ data }: any) => {
   );
 };
 const Post = () => {
-  const handleReject = () => {
-    toast({
+
+  const handleReject = async (id: any) => {
+const res = await axios.post("/api/posts/reject", {blob: id});
+if (res.data.acknowledged){
+  toast({
       title: "Post rejected",
       description:
         "You have rejected this post, A mail will be sent to the user",
@@ -237,6 +240,20 @@ const Post = () => {
       size: { width: "300", height: "200" },
       variant: "top-accent",
     });
+}else{
+  toast({
+    title: "Post rejecting failed",
+    description:
+      "You have rejected this post, but the process failed unexpectedly",
+    status: "warning",
+    duration: 2000,
+    isClosable: true,
+    position: "top",
+    size: { width: "300", height: "200" },
+    variant: "top-accent",
+  });
+}
+    
   };
   const handleAccept = async () => {
     const response = await axios.post("/api/posts/approve", { _id: data?._id });
@@ -371,7 +388,7 @@ const Post = () => {
             </button>
             <button
               className="btn btn-danger btn-block text-white text-2xl"
-              onClick={handleReject}
+              onClick={()=>handleReject(data.blob)}
             >
               Reject
             </button>
