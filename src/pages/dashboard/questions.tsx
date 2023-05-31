@@ -130,7 +130,7 @@ export default function Index() {
 
       try {
         const response = await fetch(url, options);
-        console.log(response);
+        console.log({response: response});
 
         const result = await response.json();
         console.log(result);
