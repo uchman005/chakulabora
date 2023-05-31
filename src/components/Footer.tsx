@@ -92,8 +92,8 @@ export default function Footer() {
                         <ListHeader>Support</ListHeader>
                         <Link href={'/conatct'}>Help Center</Link>
                         <Link href={'/coc'}>Terms of Service</Link>
-                        <Link href={'#'}>Legal</Link>
-                        <Link href={'#'}>Privacy Policy</Link>
+                        <Link href={'/legal'}>Legal</Link>
+                        <Link href={'/privacy'}>Privacy Policy</Link>
                     </div>
                     <div className='flex flex-col gap-2'>
                         <ListHeader>Stay up to date</ListHeader>
