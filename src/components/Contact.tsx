@@ -1,10 +1,10 @@
 export default function Contact(){
     return (
-        <div className='flex items-center justify-center my-[7%] mx-[7%]' >
+        <div className='flex flex-col md:flex-row gap-3 items-center justify-center my-[7%] mx-[7%] px-[3%]' >
         <div className='flex-1 md:text-2xl lg:text-4xl'>
             Get in touch with us
         </div>
-        <div className='flex-1 border rounded-md p-3 bg-gray-900 text-white'>
+        <div className='flex-1 border rounded-md px-3 py-7 bg-gray-900 text-white'>
             <form className='flex flex-col gap-4'>
                 <div className='form-group'>
                     <label>Your Name</label>

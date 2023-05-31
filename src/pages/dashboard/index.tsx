@@ -1,12 +1,8 @@
-import { useSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
-// import Script from 'next/script';
-import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import useSWR from 'swr'
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
 const Table = dynamic(() => import("react-data-table-component"), {
     ssr: false,
 });

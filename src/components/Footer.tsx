@@ -84,14 +84,14 @@ export default function Footer() {
                     <div className='flex flex-col gap-2'>
                         <ListHeader>Company</ListHeader>
                         <Link href={'/about'}>About us</Link>
-                        <Link href={'#'}>Blog</Link>
+                        {/* <Link href={'#'}>Blog</Link> */}
                         <Link href={'/contact'}>Contact us</Link>
-                        <Link href={'#'}>Testimonials</Link>
+                        {/* <Link href={'#'}>Testimonials</Link> */}
                     </div>
                     <div className='flex flex-col gap-2'>
                         <ListHeader>Support</ListHeader>
-                        <Link href={'#'}>Help Center</Link>
-                        <Link href={'#'}>Terms of Service</Link>
+                        <Link href={'/conatct'}>Help Center</Link>
+                        <Link href={'/coc'}>Terms of Service</Link>
                         <Link href={'#'}>Legal</Link>
                         <Link href={'#'}>Privacy Policy</Link>
                     </div>

@@ -1,10 +1,13 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import Hero from '@/components/Hero'
+import Abouts from '@/components/About'
 export default function About(){
-    return<> 
+    return(
+        <> 
     <Navbar/>
-    <Hero />
+    <Abouts />
     <Footer />
     </>
+    )
+    
 }

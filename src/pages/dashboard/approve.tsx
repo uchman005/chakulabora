@@ -17,9 +17,9 @@ const columns = [
     },
     {
         name: 'Category',
-        selector: (row: any) => row.body,
+        selector: (row: any) => row.category,
         wrap: true,
-        cell: (row: any) => <Link href={`/post/${row.blob}`}>{parse(row.body)}</Link>
+        cell: (row: any) => <Link href={`/post/${row.blob}`}>{parse(row.category)}</Link>
     },
     {
         name: 'Date',

@@ -8,7 +8,7 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
         let user;
         try {
             user = await User.findOne({
-                email: req.query.user
+                _id: req.query.user
             });
         } catch (err: any) {
             res.status(400).json({ error: "Did not find user because: " + err.message })
