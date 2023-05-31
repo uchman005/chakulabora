@@ -129,79 +129,49 @@ export default function Index() {
       };
 
       try {
-        const response = await axios.post(url, options);
-        const result = await response.data.post;
-        const message = response.data.message
-        if (post === null) {
-          toast({
-            title: 'Post creation Failed',
-            description: message,
-            status: 'warning',
-            duration: 5000,
-            isClosable: true,
-            position: "top",
-            size: { width: '300', height: '200' },
-            variant: 'top-accent'
-          })
-          return;
-        }
-        toast({
-          title: 'Post created successfully',
-          description: message,
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-          position: "top",
-          size: { width: '300', height: '200' },
-          variant: 'top-accent'
-        })
-        setPostData({
-          title: '',
-          body: '',
-          author: user,
-          category: '',
-          hasImage: false,
-        })
+        const response = await fetch(url, options);
+        console.log(response);
+
+        const result = await response.json();
+        console.log(result);
       } catch (error) {
         console.error(error);
       }
-    } else {
-      const response = await axios.post("/api/posts/create", postData);
-      const post = response.data.post;
-      const message = response.data.message
-      if (post === null) {
-        toast({
-          title: 'Post creation Failed',
-          description: message,
-          status: 'warning',
-          duration: 5000,
-          isClosable: true,
-          position: "top",
-          size: { width: '300', height: '200' },
-          variant: 'top-accent'
-        })
-        return;
-      }
+    }
+    return;
+    const response = await axios.post("/api/posts/create", postData);
+    const post = response.data.post;
+    const message = response.data.message
+    if (post === null) {
       toast({
-        title: 'Post created successfully',
+        title: 'Post creation Failed',
         description: message,
-        status: 'success',
+        status: 'warning',
         duration: 5000,
         isClosable: true,
         position: "top",
         size: { width: '300', height: '200' },
         variant: 'top-accent'
       })
-      setPostData({
-        title: '',
-        body: '',
-        author: user,
-        category: '',
-        hasImage: false,
-      })
+      return;
     }
-
-
+    toast({
+      title: 'Post created successfully',
+      description: message,
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+      position: "top",
+      size: { width: '300', height: '200' },
+      variant: 'top-accent'
+    })
+    setPostData({
+      title: '',
+      body: '',
+      author: user,
+      category: '',
+      hasImage: false,
+    })
   }
 
   return (
