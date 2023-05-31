@@ -87,7 +87,7 @@ export default function Footer() {
                         <Link href={'/about'}>About us</Link>
                         {/* <Link href={'#'}>Blog</Link> */}
                         <Link href={'/contact'}>Contact us</Link>
-                        <Link href={'https://www.sandbox.paypal.com/donate/?hosted_button_id=ZECEL77GT3QHL'}>Buy Us a Coffe</Link>
+                        <Link href={'https://www.sandbox.paypal.com/donate/?hosted_button_id=ZECEL77GT3QHL'}>Buy Us a Coffee</Link>
                     </div>
                     <div className='flex flex-col gap-2'>
                         <ListHeader>Support</ListHeader>
