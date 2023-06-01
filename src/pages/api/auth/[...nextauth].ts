@@ -1,5 +1,4 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
 import NextAuth from "next-auth/next";
 import { dbCon } from "../../../../models";
 import { NextAuthOptions } from "next-auth";
@@ -23,13 +22,14 @@ const authOptions: NextAuthOptions = {
       credentials: {},
 
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
+        // Add logic here to look up the user from the credentials supplied      
         const { User } = await dbCon();
         let user;
         if (req.body !== undefined) {
+          const {email, password}= req.body;
           user = await User.findOne({
-            email: req.body.email,
-            password: req.body.password,
+            email: email,
+            password: password,
           });
         }
 
@@ -40,7 +40,6 @@ const authOptions: NextAuthOptions = {
           return {
             id: `${user._id}`,
             email: `${user._id}`,
-            name: user.fname,
           };
         } else {
           throw new Error(`Invalid credentials`);
