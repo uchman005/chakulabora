@@ -121,10 +121,38 @@ export default function Index() {
     if (postData.hasImage) {
       try {
         const response = await axios.post('/api/posts/create', postData);
-       
-
-        const result = await response.data;
-        console.log(result);
+        const post = await response.data.post;
+        const message = response.data.message;
+        if (post === null) {
+          toast({
+            title: 'Post creation Failed',
+            description: message,
+            status: 'warning',
+            duration: 5000,
+            isClosable: true,
+            position: "top",
+            size: { width: '300', height: '200' },
+            variant: 'top-accent'
+          })
+          return;
+        }
+        toast({
+          title: 'Post created successfully',
+          description: message,
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+          size: { width: '300', height: '200' },
+          variant: 'top-accent'
+        })
+        setPostData({
+          title: '',
+          body: '',
+          author: user,
+          category: '',
+          hasImage: false,
+        })
       } catch (error) {
         console.error(error);
       }
