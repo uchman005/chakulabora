@@ -119,26 +119,17 @@ export default function Index() {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     if (postData.hasImage) {
-      const url = '/api/posts/create';
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-      };
-
       try {
-        const response = await fetch(url, options);
-        console.log({response: response});
+        const response = await axios.post('/api/posts/create', postData);
+       
 
-        const result = await response.json();
+        const result = await response.data;
         console.log(result);
       } catch (error) {
         console.error(error);
       }
+      return;
     }
-    return;
     const response = await axios.post("/api/posts/create", postData);
     const post = response.data.post;
     const message = response.data.message

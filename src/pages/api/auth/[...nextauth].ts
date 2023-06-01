@@ -26,23 +26,26 @@ const authOptions: NextAuthOptions = {
         const { User } = await dbCon();
         let user;
         if (req.body !== undefined) {
-          const {email, password}= req.body;
+          const {email}= req.body;
           user = await User.findOne({
             email: email,
-            password: password,
           });
         }
 
         // Any object returned will be saved in `user` property of the JWT
         if (user !== null && user !== undefined) {
           // This function will be called anytime to send mails
+          if(user.password === req.body?.password){
+            return {
+              id: `${user._id}`,
+              email: `${user._id}`,
+            };
+          }else{
+            throw new Error('Password did not Match user Password')
+          }
           //   await SendMail(user.email);
-          return {
-            id: `${user._id}`,
-            email: `${user._id}`,
-          };
         } else {
-          throw new Error(`Invalid credentials`);
+          throw new Error(`User not found, Check the email to ensure there are no typos`);
         }
       },
     }),
