@@ -58,7 +58,7 @@ export default function SignIn() {
   }
   const bgColor = useColorModeValue("gray.50", "gray.800");
   const bgColor1 = useColorModeValue("white", "gray.700");
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const type = show ? 'text' : 'password';
   return (
     <>
