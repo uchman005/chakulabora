@@ -3,11 +3,11 @@ export interface IUser {
     fname: string;
     lname: string;
     email: string;
-    bio: string;
+    bio?: string;
     phone?: string;
-    role: string;
+    role?: string;
     password: string;
-    postal_code: string;
+    postal_code?: string;
     country?: string;
     street_address?: string;
     city?: string;

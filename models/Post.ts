@@ -1,7 +1,6 @@
 import mongoose, { Schema, model, models } from 'mongoose';
 import { IPost } from '../interface';
 import moment from 'moment';
-let time = Date.now();
 let now = moment().format("LLL");
 mongoose.Promise = global.Promise;
 

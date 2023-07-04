@@ -27,7 +27,7 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
         } catch (err) {
             user = null;
         }
-        res.status(200).json({ user });
+        res.status(200).json(user);
     } else res.status(400).json({ error: `No Response for This ${req.method} Request` });
 };
 export default create;
