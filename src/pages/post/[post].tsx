@@ -152,7 +152,7 @@ const Answer = ({ data, mutate }: any) => {
           {data.upvotes?.length - data.downvotes.length}
           {!data.upvotes?.includes(user.id) && (
             <button onClick={dislike_answer}>
-              {data.downvotes.includes(user.id)?<AiFillDislike className="text-red-400"/> : <AiOutlineDislike />}
+              {data.downvotes.includes(user.id) ? <AiFillDislike className="text-red-400" /> : <AiOutlineDislike />}
             </button>
           )}
         </div>
@@ -225,35 +225,34 @@ const Answers = ({ data }: any) => {
   );
 };
 const Post = () => {
-
   const handleReject = async (id: any) => {
-const res = await axios.post("/api/posts/reject", {blob: id});
-if (res.data.acknowledged){
-  toast({
-      title: "Post rejected",
-      description:
-        "You have rejected this post, A mail will be sent to the user",
-      status: "success",
-      duration: 2000,
-      isClosable: true,
-      position: "top",
-      size: { width: "300", height: "200" },
-      variant: "top-accent",
-    });
-}else{
-  toast({
-    title: "Post rejecting failed",
-    description:
-      "You have rejected this post, but the process failed unexpectedly",
-    status: "warning",
-    duration: 2000,
-    isClosable: true,
-    position: "top",
-    size: { width: "300", height: "200" },
-    variant: "top-accent",
-  });
-}
-    
+    const res = await axios.post("/api/posts/reject", { blob: id });
+    if (res.data.acknowledged) {
+      toast({
+        title: "Post rejected",
+        description:
+          "You have rejected this post, A mail will be sent to the user",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+        position: "top",
+        size: { width: "300", height: "200" },
+        variant: "top-accent",
+      });
+    } else {
+      toast({
+        title: "Post rejecting failed",
+        description:
+          "You have rejected this post, but the process failed unexpectedly",
+        status: "warning",
+        duration: 2000,
+        isClosable: true,
+        position: "top",
+        size: { width: "300", height: "200" },
+        variant: "top-accent",
+      });
+    }
+
   };
   const handleAccept = async () => {
     const response = await axios.post("/api/posts/approve", { _id: data?._id });
@@ -361,8 +360,8 @@ if (res.data.acknowledged){
   return (
     <div className="px-3 text-gray-700">
       {status === "authenticated" &&
-      data.approved === false &&
-      (user.role !== "" || user.role !== "Community Member") ? (
+        data.approved === false &&
+        (user.role !== "" || user.role !== "Community Member") ? (
         <div>
           <h2 className="mb-4">Read the post below and approve</h2>
           <p>The question must pass these criteria</p>
@@ -388,7 +387,7 @@ if (res.data.acknowledged){
             </button>
             <button
               className="btn btn-danger btn-block text-white text-2xl"
-              onClick={()=>handleReject(data.blob)}
+              onClick={() => handleReject(data.blob)}
             >
               Reject
             </button>

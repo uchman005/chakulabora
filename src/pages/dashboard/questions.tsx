@@ -1,10 +1,11 @@
 import { useSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 import { useSelector } from 'react-redux';
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useToast } from '@chakra-ui/react'
 import axios from 'axios';
 import dynamic from 'next/dynamic'
+import { FaSpinner } from 'react-icons/fa';
 import agricultureCategories from '../../../utils/category';
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
@@ -64,8 +65,9 @@ export default function Index() {
     category: '',
     hasImage: false,
   });
+  const [busy, setBusy] = useState<boolean>(false);
   const toast = useToast();
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setPostData((prev) => ({
       ...prev,
@@ -116,8 +118,9 @@ export default function Index() {
       }
     })
   }
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setBusy(true);
     if (postData.hasImage) {
       try {
         const response = await axios.post('/api/posts/create', postData);
@@ -133,7 +136,8 @@ export default function Index() {
             position: "top",
             size: { width: '300', height: '200' },
             variant: 'top-accent'
-          })
+          });
+          setBusy(false);
           return;
         }
         toast({
@@ -156,6 +160,7 @@ export default function Index() {
       } catch (error) {
         console.error(error);
       }
+      setBusy(false)
       return;
     }
     const response = await axios.post("/api/posts/create", postData);
@@ -171,7 +176,8 @@ export default function Index() {
         position: "top",
         size: { width: '300', height: '200' },
         variant: 'top-accent'
-      })
+      });
+      setBusy(false);
       return;
     }
     toast({
@@ -190,7 +196,8 @@ export default function Index() {
       author: user,
       category: '',
       hasImage: false,
-    })
+    });
+    setBusy(false);
   }
 
   return (
@@ -229,7 +236,17 @@ export default function Index() {
 
               </div>
             </div>
-            {okay && <button className='btn btn-block btn-info text-white'>Submit</button>}
+            {okay &&  
+              busy ? 
+              <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px] text-center">
+                <FaSpinner className="animate-spin text-3xl"/>
+              </button>
+              :
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px]">
+                CREATE POST
+              </button>
+              
+            }
           </div>
         </form>
       }
