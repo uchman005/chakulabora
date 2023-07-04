@@ -13,7 +13,7 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
   const method: keyof ResponseFunctions = req.method as keyof ResponseFunctions;
   if (method === "POST") {
     const data = req.body;
-    const random: string = Math.ceil(Math.random() * 1000 + 1).toString();
+    const random: string = Math.ceil(Math.random() * 10000 + 1).toString();
     const blob: string =
       data.title
         .replaceAll(" ", "-")

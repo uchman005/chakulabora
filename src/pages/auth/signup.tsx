@@ -115,7 +115,7 @@ export default function Form() {
   return (
     <>
       <Navbar />
-      <form onSubmit={handleSubmit} className="lg:m-8 shadow rounded-lg p-8 ">
+      <form onSubmit={handleSubmit} className="lg:m-8 shadow rounded-lg p-8">
         <h1 className='text-center text-3xl mb-6'>User Registration</h1>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
