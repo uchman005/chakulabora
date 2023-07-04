@@ -54,18 +54,18 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 };
 
 export default function Footer() {
+    const bg = useColorModeValue('gray-50', 'gray-900');
+    const text = useColorModeValue('gray-700', 'gray-200')
     return (
-        <Box
-            bg={useColorModeValue('gray.50', 'gray.900')}
-            color={useColorModeValue('gray.700', 'gray.200')}>
-            <div className='container flex max-w-6xl py-10' >
-                <div className='grid sm:grid-cols-12 md:grid-cols-5 gap-8'>
+        <div className={`bg-${bg} text-${text}`}>
+            <div className='flex py-10 px-10' >
+                <div className='grid sm:grid-cols-12 md:grid-cols-4 gap-8'>
                     <div className='space-y-6'>
-                        <Box>
+                        <div>
                             <Logo color={useColorModeValue('gray.700', 'white')} />
-                        </Box>
+                        </div>
                         <span className='text-sm'>
-                            © 2022 - {new Date().getFullYear()} Chakula-bora. All rights reserved
+                            © 2021 - {new Date().getFullYear()} Chakula-bora. All rights reserved
                         </span>
                         <div className='flex gap-4'>
                             <SocialButton label={'Twitter'} href={'#'}>
@@ -85,7 +85,6 @@ export default function Footer() {
                     <div className='flex flex-col gap-2'>
                         <ListHeader>Company</ListHeader>
                         <Link href={'/about'}>About us</Link>
-                        {/* <Link href={'#'}>Blog</Link> */}
                         <Link href={'/contact'}>Contact us</Link>
                         <Link href={'https://www.sandbox.paypal.com/donate/?hosted_button_id=ZECEL77GT3QHL'}>Buy Us a Coffee</Link>
                     </div>
@@ -112,6 +111,6 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-        </Box>
+        </div>
     );
 }
