@@ -59,7 +59,7 @@ export default function Footer() {
     return (
         <div className={`bg-${bg} text-${text}`}>
             <div className='flex py-10 px-10' >
-                <div className='grid sm:grid-cols-12 md:grid-cols-4 gap-8'>
+                <div className='grid md:grid-cols-4 gap-8'>
                     <div className='space-y-6'>
                         <div>
                             <Logo color={useColorModeValue('gray.700', 'white')} />
