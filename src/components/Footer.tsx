@@ -5,7 +5,7 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
-import { FaInstagram, FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa';
+import { FaFacebook,  FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { BiMailSend } from 'react-icons/bi';
 import Link from 'next/link'
 const Logo = (props: any) => {
@@ -74,10 +74,10 @@ export default function Footer() {
                             <SocialButton label={'YouTube'} href={'#'}>
                                 <FaYoutube />
                             </SocialButton>
-                            <SocialButton label={'Instagram'} href={'#'}>
-                                <FaInstagram />
+                            <SocialButton label={'Instagram'} href={'https://web.facebook.com/groups/675166221332788'}>
+                                <FaFacebook />
                             </SocialButton>
-                            <SocialButton label={'Instagram'} href={'#'}>
+                            <SocialButton label={'Instagram'} href={'https://www.linkedin.com/company/passionofhopeinternational/'}>
                                 <FaLinkedin />
                             </SocialButton>
                         </div>
