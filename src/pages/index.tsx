@@ -14,7 +14,7 @@ export default function Index() {
 
 
         <meta name="title" content="Chakulabora - Digital Platform" />
-        <meta property="og:url" content="https://chakulabora.vercel.app" />
+        <meta property="og:url" content="https://chakulabora.net" />
         <meta property="og:type" content="website" />
         <meta name="og:locale" content={'{"locale": "en_us"}'} />
         <meta name="og:description" content="Chakulabora is a community that celebrates best practices around Agriculture, with emphasis on people generated contents." />
@@ -28,7 +28,7 @@ export default function Index() {
 
 
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://chakulabora.vercel.app" />
+        <meta property="twitter:url" content="https://chakulabora.net" />
         <meta property="twitter:title" content="Chakulabora - Digital Platform" />
         <meta property="twitter:description" content="Chakulabora is the digital community of farmers celebrating the best practices around Agriculture and the Environment" />
         <meta property="twitter:image" content="/hero.png" />
