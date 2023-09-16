@@ -13,15 +13,15 @@ export default function About() {
           </span>
         </h1>
         <span className='text-gray-500 max-w-3xl'>
-        Our mission is to create a digital platform
-         for stakeholders in the agriculture space to
-          network, engage and share ideas, knowledge 
-          and information on regenerative agriculture. 
+          Our mission is to create a digital platform
+          for stakeholders in the agriculture space to
+          network, engage and share ideas, knowledge
+          and information on regenerative agriculture.
           While we encourage a lively exchange of ideas
-           and opinions, we ask that you read and respect
-            the <Link href={'/coc'} className='underline font-bold'>code of conduct</Link>. We reserve the
-             right to suspend membership to anyone who 
-             violates this code of conduct.
+          and opinions, we ask that you read and respect
+          the <Link href={'/coc'} className='underline font-bold'>code of conduct</Link>. We reserve the
+          right to suspend membership to anyone who
+          violates this code of conduct.
         </span>
         <div className='flex flex-row space-x-6'>
           <Link href="/auth/signup" className="bg-blue-400 hover:bg-blue-500 text-white rounded-full px-6 py-2 font-semibold transition duration-300 ease-in-out">
@@ -31,7 +31,7 @@ export default function About() {
             Learn more
           </Link>
         </div>
-       
+
       </div>
     </div>
   );

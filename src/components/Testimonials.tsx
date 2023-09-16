@@ -42,7 +42,7 @@ const TestimonialAvatar = ({
     <div className="flex items-center mt-8 flex-col">
       <Image src='/placeholder.png' alt={name} width={40} height={40} className="rounded-full mb-2" />
       <div className='flex flex-col space-x-1 items-center'>
-      <p className="font-semibold">{name}</p>
+        <p className="font-semibold">{name}</p>
         <p className="text-sm text-gray-600 dark:gray-400">
           {title}
         </p>

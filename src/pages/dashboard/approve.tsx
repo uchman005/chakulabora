@@ -33,14 +33,14 @@ const fetcher = async (url: string) => {
     const data = res.data;
     return data;
 }
-export default function Approve(){
+export default function Approve() {
     const { data, error, isLoading } = useSWR('/api/posts/unapproved', fetcher);
 
     return (
-    <Sidebar>
-        <div className=''>
-        <Table progressPending={isLoading || !data ? true : false} pagination striped={true} responsive={true} columns={columns} data={data} />
-        </div>
-    </Sidebar>    
-        );
+        <Sidebar>
+            <div className=''>
+                <Table progressPending={isLoading || !data ? true : false} pagination striped={true} responsive={true} columns={columns} data={data} />
+            </div>
+        </Sidebar>
+    );
 }

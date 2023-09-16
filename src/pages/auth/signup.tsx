@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import axios from "axios";
 import { useRouter } from "next/router";
 import countriesList from "../../../utils/countries";
-import { FaEye, FaEyeSlash,  FaSpinner } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
 
 export default function Form() {
   const Router = useRouter();
@@ -243,14 +243,14 @@ export default function Form() {
         </div>
         <div className="flex items-center justify-center mt-3">
           {
-          busy ? 
-          <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px] text-center">
-            <FaSpinner className="animate-spin text-3xl"/>
-          </button>
-          :
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px]">
-            CREATE ACCOUNT
-          </button>
+            busy ?
+              <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px] text-center">
+                <FaSpinner className="animate-spin text-3xl" />
+              </button>
+              :
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px]">
+                CREATE ACCOUNT
+              </button>
           }
         </div>
       </form>

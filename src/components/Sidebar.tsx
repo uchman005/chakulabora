@@ -53,7 +53,7 @@ export default function Sidebar({
 }) {
     const user = useSelector((state: any) => state.user);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { status,data: session } = useSession();
+    const { status, data: session } = useSession();
     const dispatch = useDispatch();
     useEffect(() => {
         if (user.role == '') {
@@ -167,19 +167,19 @@ const SidebarContent = ({ user, status, onClose, ...rest }: SidebarProps) => {
             {status === 'authenticated' && <NavItem icon={FaSignOutAlt} link={"#"}>
                 <div onClick={
                     () => signOut()
-                .then(() => {
-                toast({
-                    title: 'SignOut Success',
-                    description: "You have been signed out successfully",
-                    status: 'success',
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top",
-                    size: { width: '300', height: '200' },
-                    variant: 'top-accent'
-                })
-            })} >
-                SignOut
+                        .then(() => {
+                            toast({
+                                title: 'SignOut Success',
+                                description: "You have been signed out successfully",
+                                status: 'success',
+                                duration: 5000,
+                                isClosable: true,
+                                position: "top",
+                                size: { width: '300', height: '200' },
+                                variant: 'top-accent'
+                            })
+                        })} >
+                    SignOut
                 </div>
             </NavItem>}
             {status === 'loading' && <NavItem icon={FiCompass} link='#'>Loading...</NavItem>}
@@ -230,7 +230,7 @@ const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
             </h1>
 
 
-            {status=== 'authenticated' ? <div className='flex flex-col items-center '>
+            {status === 'authenticated' ? <div className='flex flex-col items-center '>
                 <div>
                     <div className='py-2 transition duration-300 focus:outline-none focus:shadow-none'>
                         <div className='flex md:items-center md:justify-center'>

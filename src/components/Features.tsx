@@ -6,25 +6,25 @@ import { CheckIcon } from '@chakra-ui/icons';
 // Replace test data with your own
 const features = [
   {
-  id: 1,
-  title: 'Best Practices',
-  text: 'We celebrate best practices around farming. Bringing a conciousness about our planet to the fore.',
-},
+    id: 1,
+    title: 'Best Practices',
+    text: 'We celebrate best practices around farming. Bringing a conciousness about our planet to the fore.',
+  },
   {
-  id: 2,
-  title: 'Team Work',
-  text: 'Sharing ideas makes us all come out better, we are building with this conciousness.',
-},
+    id: 2,
+    title: 'Team Work',
+    text: 'Sharing ideas makes us all come out better, we are building with this conciousness.',
+  },
   {
-  id: 3,
-  title: 'Collaboration',
-  text: 'We aim to bring together people of like minds, for effective collaboration.',
-},
+    id: 3,
+    title: 'Collaboration',
+    text: 'We aim to bring together people of like minds, for effective collaboration.',
+  },
   {
-  id: 4,
-  title: 'Knowedge Base',
-  text: 'We want to seive the best ideas and put it out, so it is freely available to farmers for years to come.',
-},
+    id: 4,
+    title: 'Knowedge Base',
+    text: 'We want to seive the best ideas and put it out, so it is freely available to farmers for years to come.',
+  },
 ]
 
 export default function Features() {

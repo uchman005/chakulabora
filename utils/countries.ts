@@ -2,7 +2,7 @@ interface ICountries {
   name: string;
   code: string;
 }
- const countriesList: ICountries[] = [
+const countriesList: ICountries[] = [
   { name: "Afghanistan", code: "AF" },
   { name: "land Islands", code: "AX" },
   { name: "Albania", code: "AL" },

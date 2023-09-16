@@ -2,12 +2,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { dbCon } from "../../../../models";
 import { ResponseFunctions } from "../../../../interface";
 export const config = {
-    api: {
-      bodyParser: {
-        responseLimit: false,
-      },
+  api: {
+    bodyParser: {
+      responseLimit: false,
     },
-  };
+  },
+};
 const approve = async (req: NextApiRequest, res: NextApiResponse) => {
   const method: keyof ResponseFunctions = req.method as keyof ResponseFunctions;
   if (method === "POST") {
@@ -16,12 +16,11 @@ const approve = async (req: NextApiRequest, res: NextApiResponse) => {
     let post;
     try {
       post = await Post.deleteOne({ blob: blob });
-     
     } catch (err) {
       post = false;
     }
     console.log(post);
-    
+
     res.status(200).json(post);
   } else {
     res

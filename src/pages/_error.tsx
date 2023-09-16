@@ -4,10 +4,10 @@ function Error({ statusCode }: any) {
         <div className='flex flex-col items-center justify-center gap-4 min-h-[100vh] p-4'>
             <p className='text-center text-2xl text-gray-600'>
                 {statusCode
-                    ? 
-                    statusCode === 404 ? 
-                    `An error occurred on server because the resource you are looking for does not exist on this server` 
-                    :`An error ${statusCode} occurred on server`
+                    ?
+                    statusCode === 404 ?
+                        `An error occurred on server because the resource you are looking for does not exist on this server`
+                        : `An error ${statusCode} occurred on server`
                     : 'An error occurred on your browser, check your connection'}
             </p>
             <Link href={"/"} className='text-center text-3xl text-success'>Go back to home</Link>
@@ -16,7 +16,7 @@ function Error({ statusCode }: any) {
 }
 
 Error.getInitialProps = ({ res, err }: any) => {
-    const statusCode = res ? res.statusCode : err ? err.statusCode : 404
+    const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
     return { statusCode }
 }
 

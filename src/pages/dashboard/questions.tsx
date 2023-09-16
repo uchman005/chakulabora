@@ -236,16 +236,16 @@ export default function Index() {
 
               </div>
             </div>
-            {okay &&  
-              busy ? 
+            {okay &&
+              busy ?
               <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px] text-center">
-                <FaSpinner className="animate-spin text-3xl"/>
+                <FaSpinner className="animate-spin text-3xl" />
               </button>
               :
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px]">
                 CREATE POST
               </button>
-              
+
             }
           </div>
         </form>

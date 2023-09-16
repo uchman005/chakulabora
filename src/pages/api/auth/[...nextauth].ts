@@ -22,11 +22,11 @@ const authOptions: NextAuthOptions = {
       credentials: {},
 
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied      
+        // Add logic here to look up the user from the credentials supplied
         const { User } = await dbCon();
         let user;
         if (req.body !== undefined) {
-          const {email}= req.body;
+          const { email } = req.body;
           user = await User.findOne({
             email: email,
           });
@@ -35,17 +35,19 @@ const authOptions: NextAuthOptions = {
         // Any object returned will be saved in `user` property of the JWT
         if (user !== null && user !== undefined) {
           // This function will be called anytime to send mails
-          if(user.password === req.body?.password){
+          if (user.password === req.body?.password) {
             return {
               id: `${user._id}`,
               email: `${user._id}`,
             };
-          }else{
-            throw new Error('Password did not Match user Password')
+          } else {
+            throw new Error("Password did not Match user Password");
           }
           //   await SendMail(user.email);
         } else {
-          throw new Error(`User not found, Check the email to ensure there are no typos`);
+          throw new Error(
+            `User not found, Check the email to ensure there are no typos`
+          );
         }
       },
     }),
