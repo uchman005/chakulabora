@@ -7,6 +7,7 @@ import axios from 'axios';
 import dynamic from 'next/dynamic'
 import { FaSpinner } from 'react-icons/fa';
 import agricultureCategories from '../../../utils/category';
+import Head from 'next/head';
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
   loading: () => <p>Loading ...</p>,
@@ -202,6 +203,28 @@ export default function Index() {
 
   return (
     <Sidebar>
+      <Head>
+        <title>Chakula-bora | Ask Question</title>
+        <meta name="description" content="Ask a question" />
+        <meta name="keywords" content="Chakulabora, Chakula-bora, Healthy food, Organic Agriculture, Agricultural Best practices" />
+        <meta name="title" content="Chakulabora - Digital Platform" />
+        <meta property="og:url" content="https://chakulabora.net/ask" />
+        <meta property="og:type" content="website" />
+        <meta name="og:locale" content={'{"locale": "en_us"}'} />
+        <meta name="og:description" content="Ask a question" />
+        <meta name="description" content="Chakulabora is the digital community of farmers celebrating the best practices around Agriculture and the Environment" />
+        <meta property="og:title" content="Chakulabora - Digital Platform" />
+        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+        <meta property="og:description" content="Ask a question" />
+        <meta property="og:image" content="https://res.cloudinary.com/chakula-bora/image/upload/v1628582783/ChakulaBora/og-image.png" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://chakulabora.net/ask" />
+        <meta property="twitter:title" content="Chakulabora - Digital Platform" />
+        <meta property="twitter:description" content="Ask a question" />
+        <meta property="twitter:image" content="https://res.cloudinary.com/chakula-bora/image/upload/v1628582783/ChakulaBora/og-image.png" />
+        <meta name="msapplication-TileColor" content="#ffffff" />
+        
+      </Head>
       {status === "authenticated" &&
         <form onSubmit={handleSubmit}>
           <div>

@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { useSelector } from "react-redux";
 import { useToast } from "@chakra-ui/react";
 import Router from "next/router";
+import Head from "next/head";
 import {
   AiFillDislike,
   AiFillLike,
@@ -363,6 +364,9 @@ const Post = () => {
         data.approved === false &&
         (user.role !== "" || user.role !== "Community Member") ? (
         <div>
+          <Head>
+            <title>Chakula-Bora | Approve {data.title}</title>
+            </Head>
           <h2 className="mb-4">Read the post below and approve</h2>
           <p>The question must pass these criteria</p>
           <ol>
@@ -395,10 +399,16 @@ const Post = () => {
         </div>
       ) : data.approved === false ? (
         <div className="text-center text-3xl underline">
+          <Head>
+            <title>Awaiting approval</title>
+          </Head>
           This post is not yet approved
         </div>
       ) : (
         <div>
+          <Head>
+            <title>Chakulabora | {data.title}</title>
+          </Head>
           <div className="text-center">
             <h1 className="mb-4">{data.title}</h1>
             <div>{parse(data.body)}</div>

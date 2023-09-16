@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 const { EMAIL, EMAIL_PASSWORD } = process.env;
 export const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -12,5 +12,5 @@ export const mailOptions = {
   to: "marcel.uchenna.g20@gmail.com",
   subject: "Test mail",
   text: "Test mail",
-  html: "<div style='margin: 40px 50px; padding: 15%; background-color: red'><h1>Test mail</h1><p>Test mail</p></div>"
-}
+  html: "<div style='margin: 40px 50px; padding: 15%; background-color: red'><h1>Test mail</h1><p>Test mail</p></div>",
+};

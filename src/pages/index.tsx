@@ -8,7 +8,7 @@ export default function Index() {
   return (
     <>
       <Head>
-        <title>Chakulabora</title>
+        <title>Chakulabora | Home</title>
         <meta name="keywords" content="Chakulabora, Chakula-bora, Healthy food, Organic Agriculture, Agricultural Best practices" />
         <meta name="description" content="Chakulabora is a community that celebrates best practices around Agriculture, with emphasis on people generated contents." />
 

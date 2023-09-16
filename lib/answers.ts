@@ -60,8 +60,6 @@ export const like_answer = async (
   }
 };
 
-
-
 export const dislike_answer = async (
   like: boolean,
   answer_id: string,

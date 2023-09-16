@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import countriesList from '../../../utils/countries'
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react';
+import Head from 'next/head';
 export default function Index() {
     const user = useSelector((state: any) => state.user);
     const { status } = useSession();
@@ -54,7 +55,10 @@ export default function Index() {
     if (status === "loading") return <Sidebar><h1>Loading...</h1></Sidebar>
     return (
         <Sidebar>
-
+            <Head>
+                <title>Chakula-bora | Settings</title>
+                <meta name="description" content="Chakula-bora | Settings" />
+            </Head>
             <form onSubmit={handleSubmit} className="lg:ml-8 shadow rounded-lg p-8 w-full max-w-lg">
                 <p className='text-center text-3xl mb-6'>Edit Profile</p>
                 <div className="flex flex-wrap -mx-3 mb-6">

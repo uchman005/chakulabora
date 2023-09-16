@@ -1,5 +1,3 @@
-import { IconProps } from '@chakra-ui/react';
-// import Image from 'next/image';
 import Link from 'next/link';
 export default function About() {
   return (
@@ -31,7 +29,6 @@ export default function About() {
             Learn more
           </Link>
         </div>
-
       </div>
     </div>
   );

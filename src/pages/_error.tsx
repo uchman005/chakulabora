@@ -1,7 +1,11 @@
 import Link from 'next/link';
+import Head from 'next/head';
 function Error({ statusCode }: any) {
     return (
         <div className='flex flex-col items-center justify-center gap-4 min-h-[100vh] p-4'>
+            <Head>
+                <title>Chakula-bora | Error</title>
+            </Head>
             <p className='text-center text-2xl text-gray-600'>
                 {statusCode
                     ?

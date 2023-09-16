@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import useSWR from 'swr';
 import axios from 'axios';
 import parse from 'html-react-parser'
+import Head from 'next/head';
 const Table = dynamic(() => import("react-data-table-component"), {
     ssr: false,
 });
@@ -38,6 +39,9 @@ export default function Approve() {
 
     return (
         <Sidebar>
+            <Head>
+                <title>Chakula-bora | Approve</title>
+            </Head>
             <div className=''>
                 <Table progressPending={isLoading || !data ? true : false} pagination striped={true} responsive={true} columns={columns} data={data} />
             </div>
