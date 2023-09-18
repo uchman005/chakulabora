@@ -2,6 +2,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth/next";
 import { dbCon } from "../../../../models";
 import { NextAuthOptions } from "next-auth";
+import bcrypt from "bcrypt";
 // import SendMail from './../../../lib/send-mail';
 const authOptions: NextAuthOptions = {
   session: {
@@ -35,7 +36,7 @@ const authOptions: NextAuthOptions = {
         // Any object returned will be saved in `user` property of the JWT
         if (user !== null && user !== undefined) {
           // This function will be called anytime to send mails
-          if (user.password === req.body?.password) {
+          if (await bcrypt.compare(req.body?.password, user.password)) {
             return {
               id: `${user._id}`,
               email: `${user._id}`,
