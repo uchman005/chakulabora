@@ -69,18 +69,19 @@ export default function Footer() {
                             © 2021 - {new Date().getFullYear()} Chakula-bora. All rights reserved
                         </span>
                         <div className='flex gap-4'>
-                            <SocialButton label={'Twitter'} href={'#'}>
-                                <FaTwitter />
-                            </SocialButton>
-                            <SocialButton label={'YouTube'} href={'#'}>
-                                <FaYoutube />
-                            </SocialButton>
+
                             <SocialButton label={'Instagram'} href={'https://web.facebook.com/groups/675166221332788'}>
                                 <FaFacebook />
                             </SocialButton>
                             <SocialButton label={'Instagram'} href={'https://www.linkedin.com/company/passionofhopeinternational/'}>
                                 <FaLinkedin />
                             </SocialButton>
+                            {/* <SocialButton label={'Twitter'} href={'#'}>
+                                <FaTwitter />
+                            </SocialButton>
+                            <SocialButton label={'YouTube'} href={'#'}>
+                                <FaYoutube />
+                            </SocialButton> */}
                         </div>
                     </div>
                     <div className='flex flex-col gap-2'>
