@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { signIn } from "next-auth/react";
 import { useToast } from "@chakra-ui/react";
 import Navbar from "@/components/Navbar";
@@ -29,7 +29,7 @@ export default function Form() {
     postal_code: "",
     website: "",
   });
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setBusy(true);
     if (formData.password != formData.repassword) {
@@ -63,7 +63,6 @@ export default function Form() {
       setBusy(false);
       return;
     }
-
     toast({
       title: "Account created.",
       description: "We've created your account for you.",
@@ -79,6 +78,8 @@ export default function Form() {
       password: user.password,
       redirect: false,
     });
+    console.log(res);
+    
     if (res != undefined) {
       if (res.ok === true && res.status === 200) {
         toast({
@@ -245,7 +246,7 @@ export default function Form() {
           {
             busy ?
               <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px] text-center">
-                <FaSpinner className="animate-spin text-3xl" />
+                <FaSpinner className="animate-spin text-3xl" />.
               </button>
               :
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px]">

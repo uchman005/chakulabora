@@ -8,7 +8,6 @@ const TestimonialContent = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <div className="bg-white dark:bg-gray-800 shadow-lg p-8 rounded-xl flex flex-col items-center relative">
-        <div className="w-0 h-0 border-left border-left-solid border-transparent border-right border-right-solid border-transparent border-top border-solid border-transparent border-top-color-white dark:border-top-color-gray-800 absolute bottom-0 left-1/2 transform -translate-x-1/2" />
         {children}
       </div>
     </>

@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 import { useSelector } from 'react-redux';
-import React, { useState } from 'react'
+import { useState, FormEvent, ChangeEvent } from 'react'
 import { useToast } from '@chakra-ui/react'
 import axios from 'axios';
 import dynamic from 'next/dynamic'
@@ -68,7 +68,7 @@ export default function Index() {
   });
   const [busy, setBusy] = useState<boolean>(false);
   const toast = useToast();
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setPostData((prev) => ({
       ...prev,
@@ -119,7 +119,7 @@ export default function Index() {
       }
     })
   }
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setBusy(true);
     if (postData.hasImage) {
@@ -223,7 +223,7 @@ export default function Index() {
         <meta property="twitter:description" content="Ask a question" />
         <meta property="twitter:image" content="https://res.cloudinary.com/chakula-bora/image/upload/v1628582783/ChakulaBora/og-image.png" />
         <meta name="msapplication-TileColor" content="#ffffff" />
-        
+
       </Head>
       {status === "authenticated" &&
         <form onSubmit={handleSubmit}>
@@ -262,10 +262,10 @@ export default function Index() {
             {okay &&
               busy ?
               <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px] text-center">
-                <FaSpinner className="animate-spin text-3xl" />
+                <FaSpinner className="animate-spin text-3xl" />.
               </button>
               :
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px]">
+              <button type='submit' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px]">
                 CREATE POST
               </button>
 

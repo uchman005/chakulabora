@@ -1,16 +1,16 @@
 import {
-    Box,
     chakra,
     VisuallyHidden,
     useColorModeValue,
+    useToast,
 } from '@chakra-ui/react';
-import { ReactNode } from 'react';
+import { ReactNode, useState, ChangeEvent, FormEvent } from 'react';
 import { FaFacebook, FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { BiMailSend } from 'react-icons/bi';
 import Link from 'next/link'
 const Logo = (props: any) => {
     return (
-        <h1 className='bold text-3xl'>Chakula-bora</h1>
+        <h1 className='bold text-3xl'>ChakulaBora Network</h1>
     );
 };
 
@@ -55,8 +55,59 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 };
 
 export default function Footer() {
-    const bg = useColorModeValue('gray-50', 'gray-900');
+    const bg = useColorModeValue('gray-100', 'gray-900');
     const text = useColorModeValue('gray-700', 'gray-200')
+    const [email, setEmail] = useState('');
+    const toast = useToast();
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        fetch('/api/users/subscribe-email', {
+            method: 'POST',
+            body: JSON.stringify({ email })
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data === null) {
+                    toast({
+                        title: 'Subscription Failed',
+                        description: 'Email subscription failed, you\'ve subscribed before',
+                        status: 'warning',
+                        duration: 5000,
+                        isClosable: true,
+                        position: "top",
+                        size: { width: '300', height: '200' },
+                        variant: 'top-accent'
+                    });
+                    setEmail('');
+                    return;
+                }
+                const { message } = data;
+                toast({
+                    title: 'Subscribed successfully',
+                    description: 'Thanks for subscribing, we\'ll keep in touch',
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                    position: "top",
+                    size: { width: '300', height: '200' },
+                    variant: 'top-accent'
+                })
+                setEmail('');
+            })
+            .catch((error) => {
+                toast({
+                    title: 'Subscription Failed',
+                    description: 'Email subscription failed, check network connectivity' + error.message,
+                    status: 'warning',
+                    duration: 5000,
+                    isClosable: true,
+                    position: "top",
+                    size: { width: '300', height: '200' },
+                    variant: 'top-accent'
+                });
+                setEmail('');
+            })
+    }
     return (
         <div className={`bg-${bg} text-${text}`}>
             <div className='flex py-10 px-10' >
@@ -76,19 +127,13 @@ export default function Footer() {
                             <SocialButton label={'Instagram'} href={'https://www.linkedin.com/company/passionofhopeinternational/'}>
                                 <FaLinkedin />
                             </SocialButton>
-                            {/* <SocialButton label={'Twitter'} href={'#'}>
-                                <FaTwitter />
-                            </SocialButton>
-                            <SocialButton label={'YouTube'} href={'#'}>
-                                <FaYoutube />
-                            </SocialButton> */}
                         </div>
                     </div>
                     <div className='flex flex-col gap-2'>
                         <ListHeader>Company</ListHeader>
                         <Link href={'/about'}>About us</Link>
                         <Link href={'/contact'}>Contact us</Link>
-                        <Link href={'https://www.sandbox.paypal.com/donate/?hosted_button_id=ZECEL77GT3QHL'}>Buy Us a Coffee</Link>
+                        <Link href={'https://www.sandbox.paypal.com/donate/?hosted_button_id=ZECEL77GT3QHL'}>Donate</Link>
                     </div>
                     <div className='flex flex-col gap-2'>
                         <ListHeader>Support</ListHeader>
@@ -99,17 +144,23 @@ export default function Footer() {
                     </div>
                     <div className='flex flex-col gap-2'>
                         <ListHeader>Stay up to date</ListHeader>
-                        <div className='flex flex-row '>
+                        <form className='flex flex-row' onSubmit={handleSubmit}>
                             <input
                                 type="email"
+                                name='email'
                                 placeholder="Your email address"
                                 className="bg-black-100 form-control text-black focus:bg-white-300"
+                                value={email}
+                                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                    setEmail(e.target.value)
+                                }}
                             />
                             <button
+                                type='submit'
                                 className="bg-blue-400 hover:bg-blue-600 text-white hover:text-white py-2 px-4 rounded"
                                 aria-label="Subscribe"
                             ><BiMailSend /></button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

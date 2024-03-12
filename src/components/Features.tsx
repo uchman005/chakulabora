@@ -13,7 +13,7 @@ const features = [
   {
     id: 2,
     title: 'Team Work',
-    text: 'Sharing ideas makes us all come out better, we are building with this conciousness.',
+    text: 'Sharing ideas makes us all come out better. We are building with this conciousness.',
   },
   {
     id: 3,
@@ -23,7 +23,7 @@ const features = [
   {
     id: 4,
     title: 'Knowedge Base',
-    text: 'We want to seive the best ideas and put it out, so it is freely available to farmers for years to come.',
+    text: 'We want to save the best ideas and publish them, so it is freely available to farmers for years to come.',
   },
 ]
 

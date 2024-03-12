@@ -49,3 +49,9 @@ export interface IComment {
   author: IUser;
   time?: string;
 }
+
+export interface ISubscriber {
+  email: string;
+  time?: string;
+  _id?: string;
+}

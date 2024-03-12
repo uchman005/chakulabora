@@ -34,7 +34,7 @@ export default function Coc() {
 
           <h1>Chakula Bora Network Engagement & Community{' '}
             <span className='text-blue-400'>
-              Rules
+              Code of Conduct
             </span>
           </h1>
           <ul>

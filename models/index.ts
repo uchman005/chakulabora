@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import User from "./User";
 import Post from "./Post";
 import Answer from "./Answer";
+import Subscriber from "./Subscribe";
 const { MONGODB_URL_LOCAL } = process.env;
 
 export const dbCon = async () => {
@@ -24,5 +25,6 @@ export const dbCon = async () => {
     User,
     Post,
     Answer,
+    Subscriber,
   };
 };

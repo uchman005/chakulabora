@@ -41,9 +41,9 @@ export default function Legal() {
                         </span> </h1>
                     <span className='text-gray-500 max-w-3xl'>
                         To the extent allowed under law, Chakula Bora Network
-                        (a) disclaim all implied warranties and representations (e.g. warranties of merchantability, fitness for a particular purpose, accuracy of data, and noninfringement);
+                        (a) disclaims all implied warranties and representations (e.g. warranties of merchantability, fitness for a particular purpose, accuracy of data, and noninfringement);
                         (b) does not guarantee that the communications tools will function without interruption or errors, and
-                        (c) provide the communication tools (including content and information) on an “as is” and “as available” basis.
+                        (c) provides the communication tools (including content and information) on an “as is” and “as available” basis.
                         To the extent permitted under law
                         (and unless Chakula Bora Network has entered into a separate written agreement that overrides this contract),
                         Chakula Bora Network shall not be liable to you or others for any indirect, incidental, special, consequential,
@@ -51,7 +51,7 @@ export default function Legal() {
                         tools (e.g., offensive or defamatory statements, downtime or loss, use of, or changes to, your information or content).
                     </span>
                     <span className='text-gray-500 max-w-3xl'>
-                        In no event shall the liability of the Chakula Bora Network exceed,
+                        In no event shall the liability of Chakula Bora Network exceed,
                         in the aggregate for all claims, $1,000. This limitation of liability
                         is part of the basis of the bargain between you and Chakula Bora Network
                         and shall apply to all claims of liability (e.g., warranty, tort, negligence,
