@@ -40,10 +40,11 @@ export default function Hero() {
 const Illustration = (props: IconProps) => {
   return (
     <Image
-      src={'/hero.png'}
+      src={'/hero.webp'}
       alt='Hero Illustration Image'
       width={3000}
       height={3000}
+      loading='lazy'
     />
   );
 };
