@@ -7,11 +7,19 @@ import 'react-quill/dist/quill.snow.css'
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '../../store/user';
-import { SpeedInsights } from "@vercel/speed-insights/next"
+// import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { ChakraProvider } from '@chakra-ui/react'
 import { SessionProvider } from 'next-auth/react'
 import Head from 'next/head'
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import { useRouter } from 'next/router';
+ 
+ function Layout() {
+  const router = useRouter();
+ 
+  return <SpeedInsights route={router.pathname} />;
+}
 const store = configureStore({
   reducer: {
     user: userReducer,
@@ -30,9 +38,9 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       <Provider store={store}>
         <ChakraProvider>
           <Component {...pageProps} />
+          <Layout />
         </ChakraProvider>
       </Provider>
-      <SpeedInsights />
     </SessionProvider>
   )
 }
