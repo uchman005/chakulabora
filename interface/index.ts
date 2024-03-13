@@ -55,3 +55,10 @@ export interface ISubscriber {
   time?: string;
   _id?: string;
 }
+
+export interface IContact {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}

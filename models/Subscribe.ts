@@ -4,8 +4,6 @@ import moment from "moment";
 let now = moment().format("LLL");
 mongoose.Promise = global.Promise;
 
-mongoose.Promise = global.Promise;
-
 const SubscriberSchema: Schema = new Schema({
   email: { type: String, required: true, unique: true },
   time: { type: String, default: now },

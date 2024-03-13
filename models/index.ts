@@ -3,6 +3,7 @@ import User from "./User";
 import Post from "./Post";
 import Answer from "./Answer";
 import Subscriber from "./Subscribe";
+import Contact from "./Contact";
 const { MONGODB_URL_LOCAL } = process.env;
 
 export const dbCon = async () => {
@@ -26,5 +27,6 @@ export const dbCon = async () => {
     Post,
     Answer,
     Subscriber,
+    Contact
   };
 };
