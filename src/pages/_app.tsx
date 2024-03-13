@@ -7,6 +7,7 @@ import 'react-quill/dist/quill.snow.css'
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '../../store/user';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { ChakraProvider } from '@chakra-ui/react'
 import { SessionProvider } from 'next-auth/react'
@@ -31,6 +32,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
           <Component {...pageProps} />
         </ChakraProvider>
       </Provider>
+      <SpeedInsights />
     </SessionProvider>
   )
 }
