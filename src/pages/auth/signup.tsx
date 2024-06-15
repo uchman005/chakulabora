@@ -75,10 +75,9 @@ export default function Form() {
     });
     const res = await signIn("credentials", {
       email: user.email,
-      password: user.password,
+      password: formData.password,
       redirect: false,
     });
-    console.log(res);
     
     if (res != undefined) {
       if (res.ok === true && res.status === 200) {
