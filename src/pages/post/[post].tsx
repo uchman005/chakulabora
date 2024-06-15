@@ -160,6 +160,7 @@ const Answer = ({ data, mutate }: any) => {
       ) : (
         <div className="flex flex-col">
           <button
+            type="button"
             onClick={() => {
               toast({
                 title: "You are logged out",
@@ -173,10 +174,11 @@ const Answer = ({ data, mutate }: any) => {
               });
             }}
           >
-            <AiOutlineLike />
+            <AiOutlineLike />{''}
           </button>
           {data.upvotes?.length + data.downvotes.length}
           <button
+            type="button"
             onClick={() => {
               toast({
                 title: "You are logged out",
@@ -190,7 +192,7 @@ const Answer = ({ data, mutate }: any) => {
               });
             }}
           >
-            <AiOutlineDislike />
+            <AiOutlineDislike />{''}
           </button>
         </div>
       )}
@@ -366,7 +368,7 @@ const Post = () => {
         <div>
           <Head>
             <title>Chakula-Bora | Approve {data.title}</title>
-            </Head>
+          </Head>
           <h2 className="mb-4">Read the post below and approve</h2>
           <p>The question must pass these criteria</p>
           <ol>
