@@ -14,6 +14,9 @@ export interface IUser {
   state?: string;
   website?: string;
   pv?: number;
+  resetPasswordToken?: string;
+  resetPasswordExpires ?:number
+
 }
 export interface IPost {
   title?: string;

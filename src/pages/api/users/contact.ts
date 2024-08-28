@@ -20,15 +20,15 @@ const subscribe = async (req: NextApiRequest, res: NextApiResponse) => {
       });
       subject += " From Chakulabora Network";
       message += "\n ";
-      message += "fjrom ";
+      message += "from ";
       message += email;
       let html = `<div>
       <h1>${subject}</h1>
       <p>${message}</p>
       </div>`;
       await user.save();
-      SendMail("marcel.uchenna.g20@gmail.com", subject, message, html);
-      SendMail("trish@passionofhope.org", subject, message, html);
+      SendMail("uchenna@passionofhope.org", subject, message, html);
+      SendMail("admin@passionofhope.org", subject, message, html);
       res.status(200).json({ message: "Successfully Sent" });
     } catch (err) {
       res.status(200).json(null);

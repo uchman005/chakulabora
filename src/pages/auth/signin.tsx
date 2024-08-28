@@ -63,11 +63,8 @@ export default function SignIn() {
   return (
     <>
       <Navbar />
-      <div className={`flex items-center justify-center min-h-screen bg-${bgColor}`}>
-        <div className="mx-auto max-w-lg py-12 px-6 space-y-8">
-          <div className='items-center'>
-            <h1 className='text-center text-4xl md:text-5xl lg:text-6xl'>Welcome back </h1>
-          </div>
+      <div className={`flex flex-col items-center justify-center min-h-screen bg-${bgColor}`}>
+            <h1 className='text-center text-4xl md:text-5xl lg:text-6xl mb-3'>Welcome back </h1>
           <form onSubmit={handleClick}>
             <div className={`rounded-lg bg-${bgColor1} shadow-lg p-8 md:min-w-[50vw] lg:min-w-[50vw]`}>
               <div className='space-4'>
@@ -117,7 +114,7 @@ export default function SignIn() {
                       </label>
                     </div>
 
-                    <Link className='text-blue-400' href={'#'}>Forgot password?</Link>
+                    <Link className='text-blue-400' href={'/auth/forgotpassword'}>Forgot password?</Link>
                   </div>
                   <button
                     className='text-white bg-blue-400 rounded p-2 hover:bg-blue-500'>
@@ -131,7 +128,7 @@ export default function SignIn() {
               </div>
             </div>
           </form>
-        </div>
+        
       </div>
       <Footer />
     </>

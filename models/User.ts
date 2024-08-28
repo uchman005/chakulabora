@@ -18,6 +18,8 @@ const UserSchema: Schema = new Schema({
   website: String,
   role: { type: String, required: true },
   pv: { type: Number, default: 0 },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
 });
 try {
   delete models.User;
