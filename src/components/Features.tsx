@@ -31,7 +31,7 @@ export default function Features() {
   return (
     <div className='p-4'>
       <div className='text-center container my-4 max-w-3xl'>
-        <h1 className='underline text-3xl bold'>What we offer</h1>
+        <h1 className='underline text-3xl bold' id='services'>What we offer</h1>
         <p className='gray.600 text-xl text-center'>
           We are looking to bring farmers together to discuss thier issues regarding best practices
           around farming. As farmers, the challenges we face are finite and universal.
