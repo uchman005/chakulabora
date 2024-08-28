@@ -28,7 +28,7 @@ export default function Page() {
         title: 'Error',
         description: 'Something went wrong',
         status: 'error',
-    });
+      });
       return
     }
     const data = await res.json()
@@ -37,7 +37,8 @@ export default function Page() {
         title: 'Success',
         description: data.message,
         status: 'success',
-    })
+      })
+    }
   }
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     let { value } = e.target;
@@ -49,39 +50,39 @@ export default function Page() {
     <>
       <Navbar />
       <div className={`flex flex-col items-center justify-center min-h-screen bg-${bgColor}`}>
-            <h1 className='text-center text-4xl md:text-5xl lg:text-6xl mb-3'>Forgot your password?</h1>
-          <form onSubmit={handleSubmit}>
-            <div className={`rounded-lg bg-${bgColor1} shadow-lg p-8 md:min-w-[50vw] lg:min-w-[50vw]`}>
-              <div className='space-4'>
-                <div className="form-froup mb-4">
-                  <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
-                    Email address
-                  </label>
-                  <input
-                    className="form-control shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="email"
-                    type="email"
-                    placeholder="Enter Your email"
-                    name="email"
-                    value={email}
-                    onChange={handleChange}
-                  />
-                </div>
-               
-                <div className=''>
-                  <button
-                    className='text-white bg-blue-400 rounded p-2 hover:bg-blue-500'>
-                    Reset
-                  </button>
-                  <div className='flex justify-between mt-2'>
-                    <p>{"Don't have an account"}</p>
-                    <Link className='text-blue-700' href="/auth/signup">Signup</Link>
-                  </div>
+        <h1 className='text-center text-4xl md:text-5xl lg:text-6xl mb-3'>Forgot your password?</h1>
+        <form onSubmit={handleSubmit}>
+          <div className={`rounded-lg bg-${bgColor1} shadow-lg p-8 md:min-w-[50vw] lg:min-w-[50vw]`}>
+            <div className='space-4'>
+              <div className="form-froup mb-4">
+                <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
+                  Email address
+                </label>
+                <input
+                  className="form-control shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="email"
+                  type="email"
+                  placeholder="Enter Your email"
+                  name="email"
+                  value={email}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className=''>
+                <button
+                  className='text-white bg-blue-400 rounded p-2 hover:bg-blue-500'>
+                  Reset
+                </button>
+                <div className='flex justify-between mt-2'>
+                  <p>{"Don't have an account"}</p>
+                  <Link className='text-blue-700' href="/auth/signup">Signup</Link>
                 </div>
               </div>
             </div>
-          </form>
-        
+          </div>
+        </form>
+
       </div>
       <Footer />
     </>
