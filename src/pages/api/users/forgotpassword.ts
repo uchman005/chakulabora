@@ -30,7 +30,7 @@ const forgotPassword = async (req: NextApiRequest, res: NextApiResponse) => {
       <p>${message}</p>
       <p>The Chakulabora support team</p>
       </div>`;
-      SendMail("uchenna@passionofhope.org", subject, message, html);
+      // SendMail("uchenna@passionofhope.org", subject, message, html);
       SendMail(email, subject, message, html);
       res
         .status(200)
