@@ -82,7 +82,7 @@ const DesktopNav = () => {
           </Popover>
         </div>
       ))}
-        <NextLink target='_blank' href="https://www.sandbox.paypal.com/donate/?hosted_button_id=ZECEL77GT3QHL" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">
+        <NextLink target='_blank' href="https://www.paypal.com/donate?token=nCzThYEzHoPVdQpHvM9Dz3VEesaM_qhby7W9IPa00ufqymf27x6j55pRGZG073X7K7YfrA3s8nNKZmlv" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">
             Donate
           </NextLink> 
     </div>
@@ -116,7 +116,7 @@ const MobileNav = () => {
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
-        <NextLink href="https://www.sandbox.paypal.com/donate/?hosted_button_id=ZECEL77GT3QHL" className="text-lg items-center justify-center lg:px-7 py-2 px-4 my-2 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">
+        <NextLink href="https://www.paypal.com/donate?token=nCzThYEzHoPVdQpHvM9Dz3VEesaM_qhby7W9IPa00ufqymf27x6j55pRGZG073X7K7YfrA3s8nNKZmlv" className="text-lg items-center justify-center lg:px-7 py-2 px-4 my-2 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">
             Donate
           </NextLink> 
     </div>
