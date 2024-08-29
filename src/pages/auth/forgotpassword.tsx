@@ -13,9 +13,11 @@ export default function Page() {
     }
   }, [status]);
   const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
   const toast = useToast();
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setLoading(true)
     const res = await fetch('/api/users/forgotpassword', {
       method: 'POST',
       headers: {
@@ -29,6 +31,7 @@ export default function Page() {
         description: 'Something went wrong',
         status: 'error',
       });
+      setLoading(false)
       return
     }
     const data = await res.json()
@@ -39,6 +42,7 @@ export default function Page() {
         status: 'success',
       })
     }
+    setLoading(false)
   }
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     let { value } = e.target;
@@ -71,8 +75,9 @@ export default function Page() {
 
               <div className=''>
                 <button
-                  className='text-white bg-blue-400 rounded p-2 hover:bg-blue-500'>
-                  Reset
+                  className='text-white bg-blue-400 rounded p-2 hover:bg-blue-500'
+                  disabled={loading}>
+                  {loading ? "Loading..." :"Reset"}
                 </button>
                 <div className='flex justify-between mt-2'>
                   <p>{"Don't have an account"}</p>
