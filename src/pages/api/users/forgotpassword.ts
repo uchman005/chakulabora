@@ -23,7 +23,7 @@ const forgotPassword = async (req: NextApiRequest, res: NextApiResponse) => {
 
       await user.save();
       let subject = "Password Reset From Chakulabora Network";
-      let message = `Please click the link below to reset your password \n https://chakulabora.net/reset-password/${token} \n  If you did not request this, please ignore this email and your password will remain unchanged.`;
+      let message = `Please click the link below to reset your password \n\n <a href="https://chakulabora.net/reset-password/${token}">Reset Password</a> \n  If you did not request this, please ignore this email and your password will remain unchanged.`;
 
       let html = `<div>
       <h1>${subject}</h1>

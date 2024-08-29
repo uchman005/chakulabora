@@ -29,13 +29,16 @@ export default function Navbar() {
           <h1 className={`text-2xl font-bold ${useBreakpointValue({ base: 'text-center', md: 'text-left' })} ${useColorModeValue('text-gray-800', 'text-white')}`}>
             ChakulaBora Network
           </h1>
-
+          {/* <form action="https://www.paypal.com/donate" method="post" target="_blank">
+            <input type="hidden" name="hosted_button_id" value="4G2SPL43LBE5E" />
+            <button type="submit" className="pay-button">Donate</button>
+          </form> */}
           <div className="hidden md:flex md:ml-10">
             <DesktopNav />
           </div>
         </div>
 
-        <div className="flex flex-1 justify-end md:flex-none md:justify-end"> 
+        <div className="flex flex-1 justify-end md:flex-none md:justify-end">
           <NextLink href="/auth/signin" className="font-medium text-sm mt-1 text-gray-500 hover:text-gray-900">
             Sign in
           </NextLink>
@@ -82,9 +85,9 @@ const DesktopNav = () => {
           </Popover>
         </div>
       ))}
-        <NextLink target='_blank' href="https://www.paypal.com/donate?token=nCzThYEzHoPVdQpHvM9Dz3VEesaM_qhby7W9IPa00ufqymf27x6j55pRGZG073X7K7YfrA3s8nNKZmlv" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">
-            Donate
-          </NextLink> 
+      <NextLink target='_blank' href="https://www.paypal.com/donate?token=nCzThYEzHoPVdQpHvM9Dz3VEesaM_qhby7W9IPa00ufqymf27x6j55pRGZG073X7K7YfrA3s8nNKZmlv" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">
+        Donate
+      </NextLink>
     </div>
   );
 };
@@ -116,9 +119,9 @@ const MobileNav = () => {
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
-        <NextLink href="https://www.paypal.com/donate?token=nCzThYEzHoPVdQpHvM9Dz3VEesaM_qhby7W9IPa00ufqymf27x6j55pRGZG073X7K7YfrA3s8nNKZmlv" className="text-lg items-center justify-center lg:px-7 py-2 px-4 my-2 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">
-            Donate
-          </NextLink> 
+      <NextLink href="https://www.paypal.com/donate?token=nCzThYEzHoPVdQpHvM9Dz3VEesaM_qhby7W9IPa00ufqymf27x6j55pRGZG073X7K7YfrA3s8nNKZmlv" className="text-lg items-center justify-center lg:px-7 py-2 px-4 my-2 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">
+        Donate
+      </NextLink>
     </div>
   );
 };
