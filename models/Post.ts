@@ -29,11 +29,24 @@ const PostSchema: Schema = new Schema({
   image: String,
   upvotes: Array<String>,
   downvotes: Array<String>,
-  blob: { type: String, required: true, unique: true },
+  blob: { type: String, required: true },
   time: { type: String, default: now },
   approved: { type: Boolean, default: false },
   solved: { type: Boolean, default: false },
   body: { type: String, required: true },
+});
+PostSchema.pre("save", async function (next) {
+  const doc = this;
+  let isUnique = false;
+  while (!isUnique) {
+    const existingDoc = await models.Post.findOne({ blob: doc.blob });
+    if (!existingDoc) {
+      isUnique = true;
+    } else {
+      doc.blob = doc.blob + "-" + Math.floor(Math.random() * 1000);
+    }
+  }
+  next();
 });
 try {
   delete models.Post;

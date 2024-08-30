@@ -35,7 +35,7 @@ const fetcher = async (url: string) => {
     return data;
 }
 export default function Approve() {
-    const { data, error, isLoading } = useSWR('/api/posts/unapproved', fetcher);
+    const { data, isLoading } = useSWR('/api/posts/unapproved', fetcher);
 
     return (
         <Sidebar>

@@ -13,14 +13,11 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
   const method: keyof ResponseFunctions = req.method as keyof ResponseFunctions;
   if (method === "POST") {
     const data = req.body;
-    const random: string = Math.ceil(Math.random() * 10000 + 1).toString();
-    const blob: string =
-      data.title
-        .replaceAll(" ", "-")
-        .toLowerCase()
-        .replace(/[^\w-]+/g, "") +
-      "-" +
-      random;
+    const blob: string = data.title
+      .toLowerCase()
+      .replaceAll(" ", "-")
+      .replace(/[^\w-]+/g, "")
+      .replace(/-$/, "");
     const { Post } = await dbCon();
     let post;
     let message: string;
@@ -37,6 +34,7 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
 
       await post.save();
       message = "Post created successfully";
+      //Send message to moderators to approve post
     } catch (err: any) {
       post = null;
       if (err.name === "MongoError" && err.code === 11000) {
