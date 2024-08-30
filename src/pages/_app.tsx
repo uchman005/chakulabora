@@ -3,22 +3,25 @@ import '@/styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import type { AppProps } from 'next/app'
 import 'react-quill/dist/quill.snow.css'
-// 1. import `ChakraProvider` component
+
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '../../store/user';
-// import { SpeedInsights } from "@vercel/speed-insights/next"
-
 import { ChakraProvider } from '@chakra-ui/react'
 import { SessionProvider } from 'next-auth/react'
 import Head from 'next/head'
-import { SpeedInsights } from '@vercel/speed-insights/react';
 import { useRouter } from 'next/router';
- 
- function Layout() {
+//Analytics and Speed Insights
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
+
+function Layout() {
   const router = useRouter();
- 
-  return <SpeedInsights route={router.pathname} />;
+
+  return <>
+    <SpeedInsights route={router.pathname} />
+    <Analytics />
+  </>
 }
 const store = configureStore({
   reducer: {
