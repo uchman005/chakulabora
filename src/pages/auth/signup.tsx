@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { signIn } from "next-auth/react";
 import { useToast } from "@chakra-ui/react";
 import Navbar from "@/components/Navbar";
@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import countriesList from "../../../utils/countries";
 import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
+import Required from "@/components/Required";
 
 export default function Form() {
   const Router = useRouter();
@@ -108,7 +109,7 @@ export default function Form() {
     setBusy(false);
     return;
   };
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     let { value, name } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -120,13 +121,13 @@ export default function Form() {
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="first-name">
-              First Name: <span className='text-red-400 italics'>*</span>
+              First Name: <Required />
             </label>
             <input required className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="first-name" type="text" placeholder={formData.fname} name='fname' value={formData.fname} onChange={handleChange} />
           </div>
           <div className="w-full md:w-1/2 px-3">
             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="last-name">
-              Last Name: <span className='text-red-400 italics'>*</span>
+              Last Name: <Required />
             </label>
             <input required className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="last-name" type="text" placeholder={formData.lname} name='lname' value={formData.lname} onChange={handleChange} />
           </div>
@@ -135,21 +136,21 @@ export default function Form() {
 
           <div className="w-full md:w-1/2 px-3">
             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="email">
-              Email: <span className='text-red-400 italics'>*</span>
+              Email: <Required />
             </label>
             <input required className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="email" type="email" placeholder={formData.email} name='email' value={formData.email} onChange={handleChange} />
           </div>
 
           <div className="w-full md:w-1/2 px-3">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="website">
-              Phone: <span className='text-red-400 italics'>*</span>
+            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="phone">
+              Phone: <Required />
             </label>
             <input required className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="phone" type="text" placeholder={formData.phone} name='phone' value={formData.phone} onChange={handleChange} />
           </div>
         </div>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="email">
+            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="website">
               Website
             </label>
             <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="website" type="text" placeholder={formData.website} name='website' value={formData.website} onChange={handleChange} />
@@ -158,11 +159,11 @@ export default function Form() {
 
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="password">
+            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="bio">
               Bio
             </label>
 
-            <textarea className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name='bio' value={formData.bio} placeholder='Write a short bio' onChange={handleChange}>
+            <textarea className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="bio" name='bio' value={formData.bio} placeholder='Write a short bio' onChange={handleChange}>
 
             </textarea>
           </div>
@@ -177,12 +178,13 @@ export default function Form() {
           </div>
 
           <div className="w-full md:w-1/2 px-3">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="website">
-              Country / Region
+            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="country">
+              Country / Region <Required />
             </label>
 
             <input
               list="country"
+              id="country"
               required
               placeholder="Select Your country"
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -223,14 +225,14 @@ export default function Form() {
         <div className="flex flex-wrap -mx-3 mb-4 mt-4">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="password">
-              Password: <span className='text-red-400 italics'>*</span>
+              Password: <Required />
             </label>
             <input required className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="password" type={show ? "text" : "password"} placeholder="* * * * " name='password' value={formData.password} onChange={handleChange} />
           </div>
           <div className="flex gap-3 w-full md:w-1/2 px-3 mb-6 md:mb-0 items-center justify-center">
             <div className="w-full">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="Re-password">
-                Re-password: <span className='text-red-400 italics'>*</span>
+                Re-password: <Required />
               </label>
               <input required className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="re-password" type={show ? "text" : "password"} placeholder="* * * *" value={formData.repassword} name='repassword' onChange={handleChange} />
             </div>
@@ -242,16 +244,11 @@ export default function Form() {
           </div>
         </div>
         <div className="flex items-center justify-center mt-3">
-          {
-            busy ?
-              <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px] text-center">
-                <FaSpinner className="animate-spin text-3xl" />.
+         
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px]" disabled={busy}>
+                {busy? <FaSpinner className="animate-spin text-2xl" />: "CREATE ACCOUNT"}
               </button>
-              :
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px]">
-                CREATE ACCOUNT
-              </button>
-          }
+          
         </div>
       </form>
       <Footer />

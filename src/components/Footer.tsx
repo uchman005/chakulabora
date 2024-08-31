@@ -5,7 +5,7 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import { ReactNode, useState, ChangeEvent, FormEvent } from 'react';
-import { FaFacebook, FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa';
+import { FaFacebook, FaLinkedin } from 'react-icons/fa';
 import { BiMailSend } from 'react-icons/bi';
 import Link from 'next/link'
 const Logo = (props: any) => {
