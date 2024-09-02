@@ -12,7 +12,7 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
       posts = await Post.find();
       answers = await Answer.find();
       posts = posts.filter((item) => item.author.id == user_id);
-      answers = answers.filter((item) => item.author.id == user_id);
+      answers = answers.filter((item) => item.author?.id == user_id);
     } catch (err: any) {
       res
         .status(400)
