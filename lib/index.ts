@@ -85,9 +85,9 @@ export const dislike_post = async (
     let downvoted = post.downvotes.includes(user_id);
     if (upvoted || downvoted) {
       if (like) {
-        post.upvotes = post.upvotes.filter((item) => item !== user_id);
+        post.upvotes = post.upvotes.filter((item: string) => item !== user_id);
       } else {
-        post.downvotes = post.downvotes.filter((item) => item != user_id);
+        post.downvotes = post.downvotes.filter((item: string) => item != user_id);
       }
       post.save();
     }
