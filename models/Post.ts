@@ -60,11 +60,6 @@ PostSchema.pre("save", async function (next) {
   next();
 });
 
-try {
-  delete models.Post;
-} catch (err) {
-  console.log(err);
-}
-const Post = model<IPost>("Post", PostSchema);
+const Post = models.Post || model<IPost>("Post", PostSchema);
 
 export default Post;

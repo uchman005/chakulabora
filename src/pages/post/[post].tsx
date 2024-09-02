@@ -138,7 +138,7 @@ const Answer = ({ data, mutate }: any) => {
     return;
   };
   return (
-    <div className="flex border-b-1 items-center justify-start my-5">
+    <div className="flex border-b-1 items-center justify-start">
       {status === "authenticated" ? (
         <div className="flex flex-col">
           {!data.downvotes?.includes(user.id) && (
@@ -198,8 +198,8 @@ const Answer = ({ data, mutate }: any) => {
       )}
       <div className="">
         <div>{parse(data.body)}</div>
-        <div className="flex gap-5">
-          <div>{`${data.author.fname} ${data.author.lname}`}</div>
+        <div className="flex gap-4">
+          <div>{data.author.id ? `${data.author.fname} ${data.author.lname}` : "Anonymous"}</div>
           <div>{data.time}</div>
         </div>
       </div>
@@ -491,62 +491,58 @@ const Post = () => {
           <div className="p-1 m-2 ">
             <Answers data={data} key={stateData.toString()} />
           </div>
-          {status === "authenticated" ? (
-            <div>
-              <h5>Post your answer</h5>
-              <QuillNoSSRWrapper
-                modules={modules}
-                value={value}
-                onChange={setValue}
-                placeholder={placeholder}
-                formats={formats}
-                theme="snow"
-                scrollingContainer={scrollingContainer}
-                className="mb-3"
-              />
-              <button
-                className="btn rounded btn-outline-success"
-                onClick={async () => {
-                  const response = await axios.post("/api/answers/create", {
-                    body: value,
-                    author: user,
-                    post: data._id,
+          <div>
+            <h5>{status === "authenticated" ? "Post your answer" : "Post your answer Anonymously"}</h5>
+            <QuillNoSSRWrapper
+              modules={modules}
+              value={value}
+              onChange={setValue}
+              placeholder={placeholder}
+              formats={formats}
+              theme="snow"
+              scrollingContainer={scrollingContainer}
+              className="mb-3"
+            />
+            <button
+              className="btn rounded btn-outline-success"
+              onClick={async () => {
+                const response = await axios.post("/api/answers/create", {
+                  body: value,
+                  author: user,
+                  post: data._id,
+                });
+                const { answer, message } = response.data;
+                if (answer !== null) {
+                  toast({
+                    title: "Answer posted",
+                    description: message,
+                    status: "success",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "top",
+                    size: { width: "300", height: "200" },
+                    variant: "top-accent",
                   });
-                  const { answer, message } = response.data;
-                  if (answer !== null) {
-                    toast({
-                      title: "Answer posted",
-                      description: message,
-                      status: "success",
-                      duration: 5000,
-                      isClosable: true,
-                      position: "top",
-                      size: { width: "300", height: "200" },
-                      variant: "top-accent",
-                    });
-                    setValue("");
-                    setData(!stateData); // This is purely to trigger a rerender in the Answers component
-                    return;
-                  } else {
-                    toast({
-                      title: "Answer posting failed",
-                      description: message,
-                      status: "warning",
-                      duration: 5000,
-                      isClosable: true,
-                      position: "top",
-                      size: { width: "300", height: "200" },
-                      variant: "top-accent",
-                    });
-                  }
-                }}
-              >
-                Post
-              </button>
-            </div>
-          ) : (
-            <div>Login to post an answer</div>
-          )}
+                  setValue("");
+                  setData(!stateData); // This is purely to trigger a rerender in the Answers component
+                  return;
+                } else {
+                  toast({
+                    title: "Answer posting failed",
+                    description: message,
+                    status: "warning",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "top",
+                    size: { width: "300", height: "200" },
+                    variant: "top-accent",
+                  });
+                }
+              }}
+            >
+              Post
+            </button>
+          </div>
         </div>
       )}
     </div>

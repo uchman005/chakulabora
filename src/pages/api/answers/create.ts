@@ -5,10 +5,12 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
   const method: keyof ResponseFunctions = req.method as keyof ResponseFunctions;
   if (method === "POST") {
     const { author, body, post } = req.body;
-    const { Answer } = await dbCon();
     let answer;
     let message: string;
-    if (body !== "" && body !== " " && body !== "<p></p>") {
+    let stripedContent = body.replace(/<\/?[^>]+(>|$)/g, "").trim() === "";
+
+    if (body.trim() !== "" && !stripedContent) {
+      const { Answer } = await dbCon();
       try {
         answer = new Answer({
           body: body,

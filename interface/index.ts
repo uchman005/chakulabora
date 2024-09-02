@@ -39,7 +39,7 @@ export interface ResponseFunctions {
 
 export interface IAnswer {
   body: string;
-  author: IUser;
+  author: IUser | null;
   post: string;
   isSolution: boolean;
   time?: string;

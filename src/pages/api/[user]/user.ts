@@ -11,7 +11,7 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
         _id: req.query.user,
       });
     } catch (err: any) {
-      res
+      return res
         .status(400)
         .json({ error: "Did not find user because: " + err.message });
     }
