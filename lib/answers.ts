@@ -85,9 +85,9 @@ export const dislike_answer = async (
     let downvoted = answer.downvotes.includes(user_id);
     if (upvoted || downvoted) {
       if (like) {
-        answer.upvotes = answer.upvotes.filter((item) => item !== user_id);
+        answer.upvotes = answer.upvotes.filter((item: string) => item !== user_id);
       } else {
-        answer.downvotes = answer.downvotes.filter((item) => item != user_id);
+        answer.downvotes = answer.downvotes.filter((item: string) => item != user_id);
       }
       answer.save();
     }
