@@ -14,6 +14,7 @@ import {
   AiFillLike,
   AiOutlineDislike,
   AiOutlineLike,
+  AiFillDelete
 } from "react-icons/ai";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -70,6 +71,15 @@ const answerFetcher = async (url: string) => {
 };
 const Answer = ({ data, mutate }: any) => {
   const toast = useToast();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
   const { status } = useSession();
   const user = useSelector((state: any) => state.user);
   const like_answer = async () => {
@@ -163,9 +173,9 @@ const Answer = ({ data, mutate }: any) => {
             type="button"
             onClick={() => {
               toast({
-                title: "You are logged out",
+                title: "You are Not Signed in",
                 description: "You must be signed in to like",
-                status: "success",
+                status: "info",
                 duration: 5000,
                 isClosable: true,
                 position: "top",
@@ -181,9 +191,9 @@ const Answer = ({ data, mutate }: any) => {
             type="button"
             onClick={() => {
               toast({
-                title: "You are logged out",
+                title: "You are not signed in",
                 description: "You must be signed in to dislike",
-                status: "success",
+                status: "info",
                 duration: 5000,
                 isClosable: true,
                 position: "top",
@@ -201,6 +211,50 @@ const Answer = ({ data, mutate }: any) => {
         <div className="flex gap-4">
           <div>{data.author.id ? `${data.author.fname} ${data.author.lname}` : "Anonymous"}</div>
           <div>{data.time}</div>
+          <div>{user.role === "Moderator" && <button type="button" onClick={handleOpenModal}>
+            <AiFillDelete className="text-red-500 text-2xl" />
+          </button>}</div>
+          {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-4 rounded shadow-lg">
+            <h2 className="text-xl mb-4">Are you sure you want to delete this item?</h2>
+            <button
+              onClick={async ()=>{
+                const res = await fetch(`/api/answers/${data._id}`);
+                const dItem = await res.json();
+                if(dItem.success){
+                  toast({
+                    title: "Answer deleted",
+                    description: "The answer has been deleted.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  })
+                }else{
+                  toast({
+                    title: "Error",
+                    description: "There was an error deleting the answer.",
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true,
+                  })
+                }
+                mutate()
+                handleCloseModal()
+              }}
+              className="bg-red-500 text-white py-2 px-4 rounded"
+            >
+              Confirm
+            </button>
+            <button
+              onClick={handleCloseModal}
+              className="ml-2 bg-gray-500 text-white py-2 px-4 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
         </div>
       </div>
     </div>

@@ -40,7 +40,7 @@ const Illustration = (props: IconProps) => {
   return (
     <Image
       src={'/hero.webp'}
-      alt='Hero Illustration Image'
+      alt='A community instruction for rural farmers outreach'
       width={3000}
       height={3000}
       loading='lazy'

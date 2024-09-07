@@ -5,7 +5,7 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
   const method: keyof ResponseFunctions = req.method as keyof ResponseFunctions;
   if (method === "GET") {
     const user_id = req.query.user;
-    const { User, Post, Answer } = await dbCon();
+    const { Post, Answer } = await dbCon();
     let posts: Array<IPost> = [];
     let answers: Array<IAnswer> = [];
     try {
