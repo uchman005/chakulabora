@@ -47,7 +47,7 @@ export default function Index() {
         </p>
       </section>
       <div className="flex my-5 justify-center w-full">
-        <div className=" flex justify-center w-[85%] gap-4">
+        <div className="flex flex-col lg:flex-row justify-center w-[85%] gap-4">
           <section className="flex flex-col items-center justify-center gap-3 p-4">
             <Image src="/chak1.jpeg" className="w-full" width={420} height={250} alt="Young African man on his corn field" loading={"lazy"} title="Organic agriculture" />
             <h2>Chakula Bora</h2>
@@ -70,10 +70,11 @@ export default function Index() {
           </section>
         </div>
       </div>
-      {/* <section>
+      {/* <section className="text-center">
         <h2>
         Goals of the Network
         </h2>
+
       </section> */}
       <Footer />
     </>
