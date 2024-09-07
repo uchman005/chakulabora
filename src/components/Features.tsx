@@ -145,7 +145,7 @@ export default function Features() {
               <strong>Transparency.</strong> Whether {"we're"} developing software or solving a business problem, we all have access to the information and materials necessary for doing our best work. And when these materials are accessible, we can build upon each {"other's"} ideas and discoveries. We can make more effective decisions and understand how decisions affect us.
             </p>
             <p>
-              <strong>Collaboration.</strong> When {"we're"} free to participate, we can enhance each other's work in unanticipated ways. When we can modify what others have shared, we unlock new possibilities. By initiating new projects together, we can solve problems that no one can solve alone. And when we implement open standards, we enable others to contribute in the future.
+              <strong>Collaboration.</strong> When {"we're"} free to participate, we can enhance each {"other's"} work in unanticipated ways. When we can modify what others have shared, we unlock new possibilities. By initiating new projects together, we can solve problems that no one can solve alone. And when we implement open standards, we enable others to contribute in the future.
             </p>
             <p>
             <strong>Release early and often.</strong> Rapid prototypes can lead to rapid discoveries. An iterative approach leads to better solutions faster. When {"you're"} free to experiment, you can look at problems in new ways and seek answers in new places. You can learn by doing.
