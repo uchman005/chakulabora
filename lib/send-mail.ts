@@ -1,5 +1,12 @@
 import { transporter, mailOptions } from "./email";
-
+/**
+ * 
+ * @param to default: mailOptions.to - email to send to
+ * @param subject default: mailOptions.subject - subject of the email
+ * @param text default: mailOptions.text - text of the email
+ * @param html default: mailOptions.html - html of the email
+ * @description send an email
+ */
 const SendMail = async (
   to: string = mailOptions.to,
   subject: string = mailOptions.subject,

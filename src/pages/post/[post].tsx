@@ -564,6 +564,7 @@ const Post = () => {
                   body: value,
                   author: user,
                   post: data._id,
+                  blob: data.blob
                 });
                 const { answer, message } = response.data;
                 if (answer !== null) {

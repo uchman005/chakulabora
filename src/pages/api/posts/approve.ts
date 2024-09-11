@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { dbCon } from "../../../../models";
 import { ResponseFunctions } from "../../../../interface";
+import notifyAdmin from "../../../../utils/notifyAdmin";
 export const config = {
   api: {
     bodyParser: {
@@ -19,6 +20,7 @@ const approve = async (req: NextApiRequest, res: NextApiResponse) => {
       if (post !== null) {
         post.approved = true;
         await post.save();
+        notifyAdmin("New Post Approved", `Post ${post.title} is approved`);
       }
     } catch (err) {
       post = null;
