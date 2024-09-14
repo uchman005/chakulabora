@@ -145,7 +145,7 @@ const SidebarContent = ({ user, status, onClose, ...rest }: SidebarProps) => {
             {...rest}>
             <div className='h-20 flex justify-between mx-8 items-center'>
                 <h1 className="flex text-2xl font-mono font-bold">
-                    Chakula-bora
+                    Chakula Bora
                 </h1>
                 <button className="block md:hidden" onClick={onClose}>
                     <MdClose className="h-6 w-6" aria-hidden="true" />
@@ -226,7 +226,7 @@ const MobileNav = ({ user, onOpen, ...rest }: MobileProps) => {
                 <FiMenu className='text-2xl' />
             </button>
             <h1 className="flex text-2xl font-mono py-1 font-bold md:hidden">
-                Chakula-bora
+                Chakula Bora
             </h1>
 
 

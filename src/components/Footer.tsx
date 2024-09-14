@@ -10,7 +10,7 @@ import { BiMailSend } from 'react-icons/bi';
 import Link from 'next/link'
 const Logo = (props: any) => {
     return (
-        <h1 className='bold text-3xl'>ChakulaBora Network</h1>
+        <h1 className='bold text-3xl'>Chakula Bora Network</h1>
     );
 };
 
@@ -117,7 +117,7 @@ export default function Footer() {
                             <Logo color={useColorModeValue('gray.700', 'white')} />
                         </div>
                         <span className='text-sm'>
-                            © 2021 - {new Date().getFullYear()} Chakula-bora. All rights reserved
+                            © 2021 - {new Date().getFullYear()} Chakula Bora. All rights reserved
                         </span>
                         <div className='flex gap-4'>
 

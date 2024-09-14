@@ -40,7 +40,7 @@ export default function Approve() {
     return (
         <Sidebar>
             <Head>
-                <title>Chakula-bora | Approve</title>
+                <title>Chakula Bora | Approve</title>
             </Head>
             <div className=''>
                 <Table progressPending={isLoading || !data ? true : false} pagination striped={true} responsive={true} columns={columns} data={data} />

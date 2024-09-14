@@ -40,7 +40,7 @@ export default function Index() {
     return (
         <>
             <Head>
-                <title>Chakula-bora | Dashboard</title>
+                <title>Chakula Bora | Dashboard</title>
             </Head>
             <Sidebar>
                 <div className='row bg-gray-300 '>

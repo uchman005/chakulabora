@@ -421,7 +421,7 @@ const Post = () => {
         (user.role !== "" || user.role !== "Community Member") ? (
         <div>
           <Head>
-            <title>Chakula-Bora | Approve {data.title}</title>
+            <title>Chakula Bora | Approve {data.title}</title>
           </Head>
           <h2 className="mb-4">Read the post below and approve</h2>
           <p>The question must pass these criteria</p>
@@ -463,7 +463,7 @@ const Post = () => {
       ) : (
         <div>
           <Head>
-            <title>Chakulabora | {data.title}</title>
+            <title>Chakula Bora | {data.title}</title>
           </Head>
           <div className="text-center">
             <h1 className="mb-4">{data.title}</h1>

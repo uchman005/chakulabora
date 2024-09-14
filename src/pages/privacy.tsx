@@ -6,7 +6,7 @@ export default function Privacy() {
     return (
         <>
         <Head>
-        <title>Chakula-bora | Privacy Policy</title>
+        <title>Chakula Bora | Privacy Policy</title>
         <meta name="keywords" content="Chakulabora, Chakula-bora, Healthy food, Organic Agriculture, Agricultural Best practices" />
         <meta name="description" content="Chakulabora is a community that celebrates best practices around Agriculture, with emphasis on people generated contents." />
         <meta name="title" content="Chakulabora - Digital Platform" />

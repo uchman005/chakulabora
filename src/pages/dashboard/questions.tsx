@@ -204,7 +204,7 @@ export default function Index() {
   return (
     <Sidebar>
       <Head>
-        <title>Chakula-bora | Ask Question</title>
+        <title>Chakula Bora | Ask Question</title>
         <meta name="description" content="Ask a question" />
         <meta name="keywords" content="Chakulabora, Chakula-bora, Healthy food, Organic Agriculture, Agricultural Best practices" />
         <meta name="title" content="Chakulabora - Digital Platform" />

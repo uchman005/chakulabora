@@ -22,13 +22,13 @@ const forgotPassword = async (req: NextApiRequest, res: NextApiResponse) => {
       user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
       await user.save();
-      let subject = "Password Reset From Chakulabora Network";
+      let subject = "Password Reset From Chakula bora Network";
       let message = `Please click the link below to reset your password \n\n <a href="https://chakulabora.net/reset-password/${token}">Reset Password</a> \n  If you did not request this, please ignore this email and your password will remain unchanged.`;
 
       let html = `<div>
       <h1>${subject}</h1>
       <p>${message}</p>
-      <p>The Chakulabora support team</p>
+      <p>The Chakula bora support team</p>
       </div>`;
       // SendMail("uchenna@passionofhope.org", subject, message, html);
       SendMail(email, subject, message, html);

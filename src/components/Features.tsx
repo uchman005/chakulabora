@@ -7,21 +7,21 @@ const features = [
   {
     id: 1,
     title: 'Best Practices',
-    text: 'We celebrate best practices around farming. Bringing a conciousness about our planet to the fore.',
+    text: 'We celebrate best practices around farming bringing a consciousness about our planet to the forefront.',
   },
   {
     id: 2,
     title: 'Team Work',
-    text: 'Sharing ideas makes us all come out better. We are building with this conciousness.',
+    text: 'Sharing ideas makes us all come out better. We are building with this consciousness.',
   },
   {
     id: 3,
     title: 'Collaboration',
-    text: 'We aim to bring together people of like minds, for effective collaboration.',
+    text: 'We aim to bring together people of like minds for effective collaboration.',
   },
   {
     id: 4,
-    title: 'Knowedge Base',
+    title: 'Knowledge Base',
     text: 'We want to save the best ideas and publish them, so it is freely available to farmers for years to come.',
   },
 ]
@@ -32,7 +32,7 @@ export default function Features() {
       <div className='text-center container my-4 max-w-3xl'>
         <h2 className='text-3xl bold' id='services'>WHAT WE OFFER</h2>
         <p className='gray.600 text-xl text-center'>
-          We are looking to bring farmers together to discuss thier issues regarding best practices
+          We are looking to bring farmers together to discuss their issues regarding best practices
           around farming. As farmers, the challenges we face are finite and universal.
           You may have encountered my challenge and overcame and vice versa.
           {" Let's"} share knowledge and everbody wins.

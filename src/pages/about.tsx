@@ -6,7 +6,7 @@ export default function About() {
     return (
         <>
             <Head>
-                <title>Chakula-bora | About</title>
+                <title>Chakula Bora | About</title>
                 <meta name="keywords" content="Chakulabora, Chakula-bora, Healthy food, Organic Agriculture, Agricultural Best practices" />
                 <meta name="description" content="Chakulabora is a community that celebrates best practices around Agriculture, with emphasis on people generated contents." />
                 <meta name="title" content="Chakulabora - Digital Platform" />

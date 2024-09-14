@@ -7,7 +7,7 @@ export default function About() {
         <h1 className="font-semibold text-3xl sm:text-4xl md:text-6xl leading-110 font-bold">
           About{' '}
           <span className='text-blue-400'>
-            ChakulaBora Network
+            Chakula Bora Network
           </span>
         </h1>
         <span className='text-gray-500 max-w-3xl'>

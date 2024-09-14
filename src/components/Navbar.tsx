@@ -27,7 +27,7 @@ export default function Navbar() {
         </div>
         <div className="flex flex-1 justify-center md:justify-start">
           <h1 className={`text-2xl font-bold ${useBreakpointValue({ base: 'text-center', md: 'text-left' })} ${useColorModeValue('text-gray-800', 'text-white')}`}>
-            ChakulaBora Network
+            Chakula Bora Network
           </h1>
           <div className="hidden md:flex md:ml-10">
             <DesktopNav />

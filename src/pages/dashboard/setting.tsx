@@ -56,8 +56,8 @@ export default function Index() {
     return (
         <Sidebar>
             <Head>
-                <title>Chakula-bora | Settings</title>
-                <meta name="description" content="Chakula-bora | Settings" />
+                <title>Chakula Bora | Settings</title>
+                <meta name="description" content="Chakula Bora | Settings" />
             </Head>
             <form onSubmit={handleSubmit} className="lg:ml-8 shadow rounded-lg p-8 w-full max-w-lg">
                 <p className='text-center text-3xl mb-6'>Edit Profile</p>

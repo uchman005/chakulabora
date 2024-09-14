@@ -12,7 +12,7 @@ export default function Index() {
     return (
         <>
             <Head>
-                <title>Chakula-bora | Profile</title>
+                <title>Chakula Bora | Profile</title>
                 </Head>
             <Sidebar>
                 <div className='flex items-center lg:justify-center z-0'>

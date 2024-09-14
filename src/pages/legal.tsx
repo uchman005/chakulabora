@@ -5,7 +5,7 @@ export default function Legal() {
     return (
         <>
             <Head>
-                <title>Chakula-bora | Legal</title>
+                <title>Chakula bora | Legal</title>
             </Head>
             <Navbar />
             <div className='max-w-7xl'>
