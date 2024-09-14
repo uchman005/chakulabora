@@ -12,11 +12,11 @@ export default function Hero() {
             made easy
           </span>
         </h1>
-        <span className='text-gray-500 max-w-3xl'>
+        <p className='text-gray-500 max-w-3xl'>
           Stay up-to-date with best practices in Sustainable Agricuture and
           environmental care.
           Chakula Bora Network is a community for farmers developed by farmers.
-        </span>
+        </p>
         <div className='flex flex-row space-x-6'>
           <Link href="/auth/signup" className="bg-blue-400 hover:bg-blue-500 text-white rounded-full px-6 py-2 font-semibold transition duration-300 ease-in-out">
             Get started

@@ -1,6 +1,4 @@
-import {
-  Icon
-} from '@chakra-ui/react';
+import { Icon } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import Image from 'next/image'
 const features = [
@@ -127,11 +125,11 @@ export default function Features() {
               </li>
             </ul>
             <Image
-            src='/chak3.jpeg'
-            width={300}
-            height={300}
-            alt='Graphical repersentation of areasour network intend to cover'
-            className="w-[70%] text-center"
+              src='/chak3.jpeg'
+              width={300}
+              height={300}
+              alt='Graphical repersentation of areasour network intend to cover'
+              className="w-[70%] text-center"
             />
           </section>
           <section className="flex-1 p-4">
@@ -148,13 +146,13 @@ export default function Features() {
               <strong>Collaboration.</strong> When {"we're"} free to participate, we can enhance each {"other's"} work in unanticipated ways. When we can modify what others have shared, we unlock new possibilities. By initiating new projects together, we can solve problems that no one can solve alone. And when we implement open standards, we enable others to contribute in the future.
             </p>
             <p>
-            <strong>Release early and often.</strong> Rapid prototypes can lead to rapid discoveries. An iterative approach leads to better solutions faster. When {"you're"} free to experiment, you can look at problems in new ways and seek answers in new places. You can learn by doing.
+              <strong>Release early and often.</strong> Rapid prototypes can lead to rapid discoveries. An iterative approach leads to better solutions faster. When {"you're"} free to experiment, you can look at problems in new ways and seek answers in new places. You can learn by doing.
             </p>
             <p>
-            <strong>Inclusive meritocracy.</strong> Good ideas can come from anywhere, and the best ideas should win. Only by including diverse perspectives in our conversations can we be certain {"we've"} identified the best ideas, and decision-makers continually seek those perspectives. We may not operate by consensus, but successful work determines which projects gather support and effort from the community.
+              <strong>Inclusive meritocracy.</strong> Good ideas can come from anywhere, and the best ideas should win. Only by including diverse perspectives in our conversations can we be certain {"we've"} identified the best ideas, and decision-makers continually seek those perspectives. We may not operate by consensus, but successful work determines which projects gather support and effort from the community.
             </p>
             <p>
-            <strong>Community.</strong> Communities form when different people unite around a common purpose. Shared values guide decision making, and community goals supersede individual interests and agendas.
+              <strong>Community.</strong> Communities form when different people unite around a common purpose. Shared values guide decision making, and community goals supersede individual interests and agendas.
             </p>
           </section>
         </div>
