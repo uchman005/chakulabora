@@ -109,7 +109,7 @@ export default function Footer() {
             })
     }
     return (
-        <div className={`bg-${bg} text-${text}`}>
+        <footer className={`bg-${bg} text-${text} bottom-0 left-0 right-0`}>
             <div className='flex py-10 px-10' >
                 <div className='grid md:grid-cols-4 gap-8'>
                     <div className='space-y-6'>
@@ -133,7 +133,7 @@ export default function Footer() {
                         <ListHeader>Company</ListHeader>
                         <Link href={'/about'}>About us</Link>
                         <Link href={'/contact'}>Contact us</Link>
-                        <Link href={'https://www.sandbox.paypal.com/donate/?hosted_button_id=ZECEL77GT3QHL'}>Donate</Link>
+                        <Link href={'https://www.paypal.com/donate/?hosted_button_id=TRAK8ZMG52U6S'}>Donate</Link>
                     </div>
                     <div className='flex flex-col gap-2'>
                         <ListHeader>Support</ListHeader>
@@ -164,6 +164,6 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-        </div>
+        </footer>
     );
 }

@@ -82,10 +82,7 @@ const DesktopNav = () => {
         </div>
       ))}
 
-      <form action="https://www.paypal.com/donate" method="post" target="_blank">
-        <input type="hidden" name="hosted_button_id" value="4G2SPL43LBE5E" />
-        <button type="submit" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">Donate</button>
-      </form>
+      <NextLink href="https://www.paypal.com/donate/?hosted_button_id=TRAK8ZMG52U6S" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">Donate</NextLink>
     </div>
   );
 };
@@ -117,10 +114,7 @@ const MobileNav = () => {
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
-     <form action="https://www.paypal.com/donate" method="post" target="_blank">
-        <input type="hidden" name="hosted_button_id" value="4G2SPL43LBE5E" />
-        <button type="submit" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">Donate</button>
-      </form>
+      <NextLink href="https://www.paypal.com/donate/?hosted_button_id=TRAK8ZMG52U6S" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">Donate</NextLink>
     </div>
   );
 };
