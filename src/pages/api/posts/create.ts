@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { dbCon } from "../../../../models";
 import { ResponseFunctions } from "../../../../interface";
+import SendMail from "../../../../lib/send-mail";
 
 export const config = {
   api: {
@@ -25,8 +26,14 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
       post = new Post({
         title: data.title,
         body: data.body,
-        author: data.author,
+        author: {
+          id: data.author.id,
+          email: data.author.email,
+          fname: data.author.fname,
+          lname: data.author.lname,
+        },
         category: data.category,
+        image: data.image,
         upvotes: [],
         downvotes: [],
         blob: blob,
@@ -34,7 +41,8 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
 
       await post.save();
       message = "Post created successfully";
-      //Send message to moderators to approve post
+      let mailMessage = 'A new post has been created on the platform by ' + data.author.fname + ' ' + data.author.lname + '. Please, review the post and approve it.';
+      await SendMail('uchenna@passionofhope.org', 'New Post Created', mailMessage, mailMessage);
     } catch (err: any) {
       post = null;
       if (err.name === "MongoError" && err.code === 11000) {

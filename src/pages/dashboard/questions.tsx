@@ -1,13 +1,17 @@
 import { useSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 import { useSelector } from 'react-redux';
-import { useState, FormEvent, ChangeEvent } from 'react'
+import { useState, FormEvent, ChangeEvent, useRef } from 'react'
 import { useToast } from '@chakra-ui/react'
 import axios from 'axios';
 import dynamic from 'next/dynamic'
 import { FaSpinner } from 'react-icons/fa';
 import agricultureCategories from '../../../utils/category';
 import Head from 'next/head';
+import { IKImage, ImageKitProvider, IKUpload } from "imagekitio-next";
+import { AbortableFileInput, IKUploadResponse } from "imagekitio-next/dist/types/components/IKUpload/props";
+import { OverrideParameterType } from '../../../interface';
+
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
   loading: () => <p>Loading ...</p>,
@@ -25,7 +29,7 @@ const modules = {
       { indent: '-1' },
       { indent: '+1' },
     ],
-    ['link', 'image'],
+    ['link'],
     ['clean'],
   ],
   clipboard: {
@@ -50,7 +54,6 @@ const formats = [
   'bullet',
   'indent',
   'link',
-  'image',
 ]
 const placeholder = "Please be as detailed as possible. You can Use Images(Size less than 10mb) to further describe your point."
 const scrollingContainer = "auto-grow"
@@ -64,10 +67,63 @@ export default function Index() {
     body: '',
     author: {},
     category: '',
-    hasImage: false,
+    image: ''
   });
   const [busy, setBusy] = useState<boolean>(false);
   const toast = useToast();
+  const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY;
+  const urlEndpoint = process.env.NEXT_PUBLIC_URL_ENDPOINT;
+  const authenticationEndpoint = process.env.NEXT_PUBLIC_AUTHENTICATION_ENDPOINT;
+  let reftest = useRef<AbortableFileInput>(null);
+  const [isUploading, setIsUploading] = useState<boolean | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<ProgressEvent>();
+  const [uploadedImageSource, setUploadedImageSource] = useState<string>();
+
+  const [, setoverrideParametersValue] = useState<OverrideParameterType>();
+
+  const onSuccess = (res: IKUploadResponse) => {
+    setUploadedImageSource(res.url);
+    setPostData((prev) => ({ ...prev, image: res.url }));
+    setIsUploading(false);
+  };
+
+  const authenticator = async () => {
+    try {
+      if (authenticationEndpoint) {
+        // You can pass headers as well and later validate the request source in the backend, or you can use headers for any other use case.
+        const response = await fetch(authenticationEndpoint);
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Request failed with status ${response.status}: ${errorText}`);
+        }
+
+        const data = await response.json();
+        const { signature, expire, token } = data;
+        return { signature, expire, token };
+      } else throw new Error(`Authentication endpoint is required`);
+    } catch (error: any) {
+      throw new Error(`Authentication request failed: ${error.message}`);
+    }
+  };
+
+  const onUploadStart = (_: ChangeEvent<HTMLInputElement>): void => {
+    setIsUploading(true);
+  };
+
+  const onUploadProgress = (e: ProgressEvent) => {
+    setUploadProgress(e);
+  };
+
+  const onOverrideParameters = (file: File) => {
+    setoverrideParametersValue({
+      fileNameOnLocalSystem: file.name,
+    });
+    return {
+      fileName: "chakulabora-post.png",
+    };
+  };
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setPostData((prev) => ({
@@ -77,41 +133,7 @@ export default function Index() {
     })
     )
   }
-  const handlequillchange = (value: string) => {
-    const imageCount = (value.match(/<img/g) || []).length;
-    if (imageCount === 1) {
-      setPostData((prev) => {
-        return {
-          ...prev,
-          hasImage: true
-        }
-      })
-    } else {
-      setPostData((prev) => {
-        return {
-          ...prev,
-          hasImage: false
-        }
-      })
-    }
-    if (imageCount > 1) {
-      toast({
-        title: 'Too many images',
-        description: "You cannot add more than one(1) image, if it doesn't delete automatically, delete one to proceed",
-        status: 'warning',
-        duration: 10000,
-        isClosable: true,
-        position: "top",
-        size: { width: '300', height: '200' },
-        variant: 'top-accent'
-      })
-      setOkay(false);
-      setTimeout(() => {
-        setOkay(true)
-      }, 2000)
-      return;
-    }
-    setOkay(true);
+  const handlequillchange = (value: string): void => {
     setPostData((prev) => {
       return {
         ...prev,
@@ -119,51 +141,12 @@ export default function Index() {
       }
     })
   }
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log(postData);
+
     setBusy(true);
-    if (postData.hasImage) {
-      try {
-        const response = await axios.post('/api/posts/create', postData);
-        const post = await response.data.post;
-        const message = response.data.message;
-        if (post === null) {
-          toast({
-            title: 'Post creation Failed',
-            description: message,
-            status: 'warning',
-            duration: 5000,
-            isClosable: true,
-            position: "top",
-            size: { width: '300', height: '200' },
-            variant: 'top-accent'
-          });
-          setBusy(false);
-          return;
-        }
-        toast({
-          title: 'Post created successfully',
-          description: message,
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-          position: "top",
-          size: { width: '300', height: '200' },
-          variant: 'top-accent'
-        })
-        setPostData({
-          title: '',
-          body: '',
-          author: user,
-          category: '',
-          hasImage: false,
-        })
-      } catch (error) {
-        console.error(error);
-      }
-      setBusy(false)
-      return;
-    }
     const response = await axios.post("/api/posts/create", postData);
     const post = response.data.post;
     const message = response.data.message
@@ -196,8 +179,9 @@ export default function Index() {
       body: '',
       author: user,
       category: '',
-      hasImage: false,
+      image: ''
     });
+    setUploadedImageSource('');
     setBusy(false);
   }
 
@@ -241,6 +225,61 @@ export default function Index() {
                   {agricultureCategories.map((item: string) => <option value={item} key={item} />)}
                 </datalist>
               </div>
+            </div>
+            <div className="form-group">
+              <ImageKitProvider publicKey={publicKey} urlEndpoint={urlEndpoint} authenticator={authenticator}>
+                <label className="mr-4">Image: </label>
+                <IKUpload
+                  fileName="test.jpg"
+                  tags={["Chakulabora", "Regenerative Agriculture"]}
+                  customCoordinates={"10,10,10,10"}
+                  isPrivateFile={false}
+                  useUniqueFileName={true}
+                  responseFields={["tags"]}
+                  folder={"/chakulabora/posts"}
+                  onSuccess={onSuccess}
+                  ref={reftest}
+                  className="file-upload-ik"
+                  onUploadProgress={onUploadProgress}
+                  onUploadStart={onUploadStart}
+                  overrideParameters={onOverrideParameters}
+                  accept="image/*"
+                />
+                {isUploading !== null ? (
+                  <p>
+                    {isUploading
+                      ? `...Uploading (${uploadProgress ? (uploadProgress.type ? ((uploadProgress.loaded / uploadProgress.total) * 100).toFixed(2) + "%)" : "") : ""
+                      }`
+                      : null}
+                  </p>
+                ) : (
+                  <></>
+                )}
+                {isUploading && (
+                  <button className="btn btn-danger"
+                    onClick={() => {
+                      reftest.current?.abort();
+                      setIsUploading(null);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                )}
+
+                {uploadedImageSource && (
+                  <div className="relative dimension">
+                    <IKImage
+                      urlEndpoint={urlEndpoint}
+                      src={uploadedImageSource}
+                      className="w-[40%]"
+                      alt="test-image"
+                      width={400}
+                      height={400}
+                    />
+                  </div>
+                )}
+
+              </ImageKitProvider>
             </div>
             <div className='form-group'>
               <label htmlFor='post'>Post</label>

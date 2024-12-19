@@ -6,7 +6,7 @@ export interface IUser {
   bio?: string;
   phone?: string;
   role?: string;
-  password: string;
+  password?: string;
   postal_code?: string;
   country?: string;
   street_address?: string;
@@ -15,8 +15,7 @@ export interface IUser {
   website?: string;
   pv?: number;
   resetPasswordToken?: string;
-  resetPasswordExpires ?:number
-
+  resetPasswordExpires?: number;
 }
 export interface IPost {
   title?: string;
@@ -26,6 +25,7 @@ export interface IPost {
   body: string;
   author: IUser;
   time?: string;
+  image: string;
   upvotes?: Array<string>;
   downvotes?: Array<string>;
   category?: string;
@@ -64,4 +64,8 @@ export interface IContact {
   email: string;
   subject: string;
   message: string;
+}
+
+export interface OverrideParameterType {
+  fileNameOnLocalSystem: string;
 }

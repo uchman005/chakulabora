@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useToast } from "@chakra-ui/react";
 import Router from "next/router";
 import Head from "next/head";
+import Image from 'next/image'
 import {
   AiFillDislike,
   AiFillLike,
@@ -215,46 +216,46 @@ const Answer = ({ data, mutate }: any) => {
             <AiFillDelete className="text-red-500 text-2xl" />
           </button>}</div>
           {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded shadow-lg">
-            <h2 className="text-xl mb-4">Are you sure you want to delete this item?</h2>
-            <button
-              onClick={async ()=>{
-                const res = await fetch(`/api/answers/${data._id}`);
-                const dItem = await res.json();
-                if(dItem.success){
-                  toast({
-                    title: "Answer deleted",
-                    description: "The answer has been deleted.",
-                    status: "success",
-                    duration: 3000,
-                    isClosable: true,
-                  })
-                }else{
-                  toast({
-                    title: "Error",
-                    description: "There was an error deleting the answer.",
-                    status: "error",
-                    duration: 3000,
-                    isClosable: true,
-                  })
-                }
-                mutate()
-                handleCloseModal()
-              }}
-              className="bg-red-500 text-white py-2 px-4 rounded"
-            >
-              Confirm
-            </button>
-            <button
-              onClick={handleCloseModal}
-              className="ml-2 bg-gray-500 text-white py-2 px-4 rounded"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
+            <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+              <div className="bg-white p-4 rounded shadow-lg">
+                <h2 className="text-xl mb-4">Are you sure you want to delete this item?</h2>
+                <button
+                  onClick={async () => {
+                    const res = await fetch(`/api/answers/${data._id}`);
+                    const dItem = await res.json();
+                    if (dItem.success) {
+                      toast({
+                        title: "Answer deleted",
+                        description: "The answer has been deleted.",
+                        status: "success",
+                        duration: 3000,
+                        isClosable: true,
+                      })
+                    } else {
+                      toast({
+                        title: "Error",
+                        description: "There was an error deleting the answer.",
+                        status: "error",
+                        duration: 3000,
+                        isClosable: true,
+                      })
+                    }
+                    mutate()
+                    handleCloseModal()
+                  }}
+                  className="bg-red-500 text-white py-2 px-4 rounded"
+                >
+                  Confirm
+                </button>
+                <button
+                  onClick={handleCloseModal}
+                  className="ml-2 bg-gray-500 text-white py-2 px-4 rounded"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -436,6 +437,7 @@ const Post = () => {
             <p>Category: {data.category}</p>
             <p>Body: </p>
             <div className="text-center">{parse(data.body)}</div>
+            <Image src={data.image} alt={data.title as string} width={1000} height={1000} loading="lazy" />
           </div>
 
           <div className="flex justify-between m-3 p-4">
@@ -464,10 +466,12 @@ const Post = () => {
         <div>
           <Head>
             <title>Chakula Bora | {data.title}</title>
+            
           </Head>
           <div className="text-center">
             <h1 className="mb-4">{data.title}</h1>
             <div>{parse(data.body)}</div>
+            <Image src={data.image} alt={data.title as string} width={1000} height={1000} loading="lazy" />
           </div>
           <div className="flex gap-5 justify-between px-3">
             <div>
