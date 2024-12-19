@@ -466,7 +466,19 @@ const Post = () => {
         <div>
           <Head>
             <title>Chakula Bora | {data.title}</title>
-            
+            <meta name="description" content={data.body} />
+            <meta name="title" content={data.title} />
+            <meta name="image" content={data.image} />
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content={`https://chakulabora.net/post/${data.blob}`} />
+            <meta property="og:title" content={data.title} />
+            <meta property="og:description" content={data.body} />
+            <meta property="og:image" content={data.image} />
+            <meta property="twitter:card" content="summary_large_image" />
+            <meta property="twitter:url" content={`https://chakulabora.net/post/${data.blob}`} />
+            <meta property="twitter:title" content={data.title} />
+            <meta property="twitter:description" content={data.body} />
+            <meta property="twitter:image" content={data.image} />
           </Head>
           <div className="text-center">
             <h1 className="mb-4">{data.title}</h1>
