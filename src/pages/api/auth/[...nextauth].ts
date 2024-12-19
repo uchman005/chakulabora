@@ -36,7 +36,7 @@ const authOptions: NextAuthOptions = {
         // Any object returned will be saved in `user` property of the JWT
         if (user !== null && user !== undefined) {
           // This function will be called anytime to send mails
-          if (await bcrypt.compare(req.body?.password, user.password)) {
+          if (await bcrypt.compare(req.body?.password, user.password as string)) {
             return {
               id: `${user._id}`,
               email: `${user._id}`,
