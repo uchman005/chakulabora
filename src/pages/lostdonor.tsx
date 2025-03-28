@@ -30,7 +30,7 @@ export default function Coc() {
       </Head>
 
       <Navbar />
-      <div className='max-w-7xl flex flex-col justify-between items-center h-[92vh]'>
+      <div className='max-w-7xl flex flex-col justify-between items-center'>
         <div className="text-center flex flex-col justify-center items-center py-20 md:py-28 space-y-8 md:space-y-10">
 
           <h1 className="text-blue-400 text-3xl md:text-4xl sm:text-3xl lg:text-6xl">
@@ -40,11 +40,11 @@ export default function Coc() {
             We are sorry to see you go.
           </p>
           <p>
-            If you have any questions or concerns, please feel free to contact us at <Link href="mailto:admin@passionofhope.org">admin@passionofhope.org</Link>.
+            If you have any questions or concerns, please feel free to contact us at <Link href="mailto:admin@passionofhope.org" className="text-blue-500">admin@passionofhope.org</Link>
           </p>
         </div>
-        <Footer />
       </div>
+        <Footer />
     </>
   )
 

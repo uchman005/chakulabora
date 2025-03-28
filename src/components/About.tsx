@@ -1,7 +1,7 @@
 import Link from 'next/link';
 export default function About() {
   return (
-    <div className='max-w-7xl'>
+    <div className='max-w-7xl mt-5'>
       <div className="text-center flex flex-col justify-center items-center py-20 md:py-28 space-y-8 md:space-y-10">
 
         <h1 className="font-semibold text-3xl sm:text-4xl md:text-6xl leading-110 font-bold">

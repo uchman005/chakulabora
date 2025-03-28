@@ -29,7 +29,7 @@ export default function Coc() {
       </Head>
 
       <Navbar />
-      <div className='max-w-7xl'>
+      <div className='max-w-7xl px-2 mx-auto mt-5'>
         <div className="text-center flex flex-col justify-center items-center py-20 md:py-28 space-y-8 md:space-y-10">
 
           <h1>Chakula Bora Network Engagement & Community{' '}
@@ -37,7 +37,7 @@ export default function Coc() {
               Code of Conduct
             </span>
           </h1>
-          <ul>
+          <ul className='text-xl'>
             <li>Treat all users and colleagues fairly and equally. Stimulate conversation, be respectful of {"others'"} views, and refrain from personal attacks.</li>
             <li>Respect legitimate intellectual property rights, do not plagiarize work, and give credit to the originators of ideas.</li>
             <li>{"Don't"} share the posts of others without permission.</li>

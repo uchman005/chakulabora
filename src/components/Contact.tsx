@@ -81,7 +81,7 @@ export default function Contact() {
             })
     }
     return (
-        <div className='flex flex-col md:flex-row gap-3 items-center justify-center my-[7%] mx-[7%] px-[3%]' >
+        <div className='flex flex-col md:flex-row gap-3 items-center justify-center my-[12%] mx-[7%] px-[3%]' >
             <div className='flex-1 md:text-2xl lg:text-4xl'>
                 Get in touch with us
             </div>

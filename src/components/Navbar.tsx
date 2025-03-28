@@ -18,14 +18,14 @@ export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <div className=''>
+    <div className='fixed top-0 rigth-0 left-0 w-full'>
       <div className='bg-white dark:bg-gray-800 text-gray-600 dark:text-white border border-gray-200 dark:border-gray-900 py-2 px-2 justify-center flex items-center w-full'>
         <div className="lg:hidden mr-4 md:flex-none ml-[-1px]">
-          <button onClick={onToggle} aria-label={'Toggle Navigation'} className='text-gray-600'>
-            {isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
+          <button onClick={onToggle} aria-label={'Toggle Navigation'} className='text-gray-600 transition-all duration-300'>
+            {isOpen ? <CloseIcon w={3} h={3} className='rotate-90' /> : <HamburgerIcon w={5} h={5} />}
           </button>
         </div>
-        <div className="flex flex-1 justify-center md:justify-start">
+        <div className="flex flex-1 justify-center md:justify-start items-center">
           <h1 className={`text-2xl font-bold ${useBreakpointValue({ base: 'text-center', md: 'text-left' })} ${useColorModeValue('text-gray-800', 'text-white')}`}>
             Chakula Bora Network
           </h1>
@@ -34,11 +34,11 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="flex flex-1 justify-end md:flex-none md:justify-end">
-          <NextLink href="/auth/signin" className="font-medium text-sm mt-1 text-gray-500 hover:text-gray-900">
+        <div className="flex flex-1 justify-end md:flex-none md:justify-end gap-2">
+          <NextLink href="/auth/signin" className="font-medium text-md mt-1 text-gray-500 hover:text-gray-900">
             Sign in
           </NextLink>
-          <NextLink href="/auth/signup" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 ml-1 font-bold text-white bg-blue-400 rounded hover:bg-blue-300">
+          <NextLink href="/auth/signup" className="inline-flex text-md items-center justify-center px-2 lg:px-4 py-1 lg:py-2 lg:ml-4 ml-1 font-bold text-white bg-blue-400 rounded hover:bg-blue-300">
             Get started
           </NextLink>
         </div>
@@ -56,13 +56,13 @@ const DesktopNav = () => {
   const linkHoverColor = useColorModeValue('text-gray-800', 'white');
   // const [sublink, setSublink] = useState(true);
   return (
-    <div className='flex flex-row p-1'>
+    <div className='flex flex-row p-1 h-[60px] items-center'>
       {NAV_ITEMS.map((navItem) => (
         <div key={navItem.label}>
           <Popover>
             <PopoverTrigger>
               <NextLink
-                className={`p-2 text-sm text-semibold ${linkColor} hover:${linkHoverColor}`}
+                className={`p-2 text-md text-semibold ${linkColor} hover:${linkHoverColor}`}
                 href={navItem.href ?? '#'}
               >
                 {navItem.label}
@@ -70,7 +70,7 @@ const DesktopNav = () => {
             </PopoverTrigger>
 
             {navItem.children && (
-              <div className="shadow-xl bg-white rounded-xl p-4 min-w-sm hidden">
+              <div className="shadow-xl bg-white rounded-xl p-4 min-w-md hidden">
                 <div className='flex flex-col'>
                   {navItem.children.map((child) => (
                     <DesktopSubNav key={child.label} {...child} />
@@ -82,7 +82,7 @@ const DesktopNav = () => {
         </div>
       ))}
 
-      <NextLink href="https://www.paypal.com/donate/?hosted_button_id=TRAK8ZMG52U6S" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">Donate</NextLink>
+      {/* <NextLink href="https://www.paypal.com/donate/?hosted_button_id=TRAK8ZMG52U6S" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">Donate</NextLink> */}
     </div>
   );
 };
@@ -114,7 +114,7 @@ const MobileNav = () => {
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
-      <NextLink href="https://www.paypal.com/donate/?hosted_button_id=TRAK8ZMG52U6S" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">Donate</NextLink>
+      {/* <NextLink href="https://www.paypal.com/donate/?hosted_button_id=TRAK8ZMG52U6S" className="inline-flex text-sm items-center justify-center lg:px-4 py-1 lg:py-2 lg:ml-4 mr-1 font-bold text-white bg-red-400 rounded hover:bg-red-300">Donate</NextLink> */}
     </div>
   );
 };

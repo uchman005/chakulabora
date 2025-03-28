@@ -30,8 +30,8 @@ export default function Privacy() {
             </Head>
             <Navbar />
             <main className='max-w-4xl mx-auto'>
-                <div className="text-center flex flex-col justify-center items-center py-20 md:py-28 space-y-8 md:space-y-10">
-                    <h1 className="font-semibold text-3xl sm:text-4xl md:text-6xl leading-110 font-bold" >Privacy Policy</h1>
+                <div className="text-center flex flex-col justify-center items-center py-20 md:py-28 space-y-8 md:space-y-10 text-lg">
+                    <h1 className="font-semibold text-3xl sm:text-4xl md:text-6xl leading-110 font-bold" >Privacy <span className='text-blue-400'>Policy</span></h1>
                     <section>
                         <h2 className="font-semibold text-2xl sm:text-4xl md:text-4xl">Introduction</h2>
                         <p>

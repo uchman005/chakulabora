@@ -8,8 +8,8 @@ export default function Legal() {
                 <title>Chakula bora | Legal</title>
             </Head>
             <Navbar />
-            <div className='max-w-7xl'>
-                <div className="text-center flex flex-col justify-center items-center py-20 md:py-28 space-y-8 md:space-y-10">
+            <div className='max-w-7xl mt-5 text-lg'>
+                <div className="text-center flex flex-col justify-center items-center pt-5 md:py-28 space-y-8 md:space-y-10">
                     <h1 className="font-semibold text-3xl sm:text-4xl md:text-6xl leading-110 font-bold">Legal{' '}
                         <span className='text-blue-400'>
                             Notice
@@ -34,7 +34,7 @@ export default function Legal() {
                         access to any user who does not abide by these guidelines.
                     </span>
                 </div>
-                <div className="text-center flex flex-col justify-center items-center py-20 md:py-28 space-y-8 md:space-y-10">
+                <div className="text-center flex flex-col justify-center items-center pt-2 pb-10 md:py-28 space-y-8 md:space-y-10">
                     <h1 className="font-semibold text-3xl sm:text-4xl md:text-6xl leading-110 font-bold">Limitations of {' '}
                         <span className='text-blue-400'>
                             Liability

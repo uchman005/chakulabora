@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 export default function Hero() {
   return (
-    <div className='max-w-full'>
+    <div className='max-w-full mt-5'>
       <div className="text-center flex flex-col justify-center w-full items-center py-20 md:py-28 space-y-8 md:space-y-10">
 
         <h1 className="font-semibold text-3xl sm:text-4xl md:text-6xl leading-110 font-bold">
@@ -12,7 +12,7 @@ export default function Hero() {
             made easy
           </span>
         </h1>
-        <p className='text-gray-500 max-w-3xl'>
+        <p className='text-gray-500 text-xl max-w-3xl'>
           Stay up-to-date with best practices in Sustainable Agricuture and
           environmental care.
           Chakula Bora Network is a community for farmers developed by farmers.
@@ -44,6 +44,7 @@ const Illustration = (props: IconProps) => {
       width={3000}
       height={3000}
       loading='lazy'
+      className='w-[80%] mx-auto'
     />
   );
 };

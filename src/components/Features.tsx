@@ -64,7 +64,7 @@ export default function Features() {
       <div className="flex my-5 justify-center w-full">
         <div className="flex flex-col lg:flex-row justify-center w-[85%] gap-4">
           <section className="flex flex-col items-center justify-center gap-3 p-4">
-            <Image src="/chak1.jpeg" className="w-full" width={420} height={250} alt="Young African man on his corn field" loading={"lazy"} title="Organic agriculture" />
+            <Image src="/chak1.jpeg" className="w-full object-contain rounded-md" width={420} height={250} alt="Young African man on his corn field" loading={"lazy"} title="Organic agriculture" />
             <h2>Chakula Bora</h2>
             <p>
               The Chakula Bora Digital Network is an integrated learning management system designed to grow a knowledge ecosystem through a collaborative pedagogical model and with participatory learning. The platform combines professional and academic content with medium and small-holder {"farmer's"} local, experiential knowledge in multiple formats and languages.
@@ -77,7 +77,7 @@ export default function Features() {
             </p>
           </section>
           <section className="flex flex-col items-center gap-3 p-4">
-            <Image src="/chak2.jpeg" className="w-full" width={465} height={235} alt="Women working on a vegetable field" loading={"lazy"} title="Organic agriculture" />
+            <Image src="/chak2.jpeg" className="w-full object-contain rounded-md" width={465} height={235} alt="Women working on a vegetable field" loading={"lazy"} title="Organic agriculture" />
             <h2>Triple P</h2>
             <p>
               We are grounded in the 3Ps: Planet + People = Productivity.  We anticipate our collaborations with you will give rise to innovations, actions, resources, and policies which affirm the principles of food sovereignty, agroecological balance, restored biodiversity and strengthened economies for the {"world's"} most impoverished of communities, both rural and urban.
