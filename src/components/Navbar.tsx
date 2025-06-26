@@ -26,7 +26,7 @@ export default function Navbar() {
           </button>
         </div>
         <div className="flex flex-1 justify-center md:justify-start items-center">
-          <h1 className={`text-2xl font-bold ${useBreakpointValue({ base: 'text-center', md: 'text-left' })} ${useColorModeValue('text-gray-800', 'text-white')}`}>
+          <h1 className={`text-xl md:text-2xl font-bold ${useBreakpointValue({ base: 'text-center', md: 'text-left' })} ${useColorModeValue('text-gray-800', 'text-white')}`}>
             Chakula Bora Network
           </h1>
           <div className="hidden md:flex md:ml-10">

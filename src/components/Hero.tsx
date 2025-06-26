@@ -8,12 +8,12 @@ export default function Hero() {
           <Link href='/auth/signup' className="underline text-gray-950">New here?</Link> Welcome to Chakulabora Digital Network
         </h1>
 
-        <p className='text-gray-800 text-2xl max-w-4xl tracking-wider leading-relaxed'>
+        <p className='text-gray-900 text-2xl max-w-4xl tracking-wider leading-relaxed'>
           Chakula Bora means &quot;Healthy Food,&quot; and we’re thrilled to have you join our growing community!
           This platform brings together farmers, entrepreneurs, experts, and institutions to build a sustainable,
           resilient, and healthy food system for all.
         </p>
-        <div className='flex flex-row space-x-6'>
+        <div className='flex flex-row space-x-6 text-xl'>
           <Link href="/auth/signup" className="bg-blue-500 hover:bg-blue-400 text-white rounded-full px-6 py-2 font-semibold transition duration-300 ease-in-out">
             Register Here
           </Link>
