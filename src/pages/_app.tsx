@@ -3,7 +3,7 @@ import '@/styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import type { AppProps } from 'next/app'
 import 'react-quill/dist/quill.snow.css'
-
+import {useEffect} from 'react'
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '../../store/user';
@@ -11,10 +11,10 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { SessionProvider } from 'next-auth/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router';
-//Analytics and Speed Insights
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
-
+import AOS from 'aos';
+import 'aos/dist/aos.css'; 
 function Layout() {
   const router = useRouter();
 
@@ -29,6 +29,14 @@ const store = configureStore({
   },
 });
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+    useEffect(() => {
+    AOS.init({
+      duration: 800, // Animation duration in milliseconds
+      easing: 'ease-in-out', // Easing function for smooth transitions
+      once: true, // Animations occur only once when scrolling
+    });
+  }, []);
+
   return (
     <SessionProvider session={session}>
       <Head>

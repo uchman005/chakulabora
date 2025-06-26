@@ -18,7 +18,7 @@ export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <div className='fixed top-0 rigth-0 left-0 w-full'>
+    <div className='fixed top-0 rigth-0 left-0 w-full z-10'>
       <div className='bg-white dark:bg-gray-800 text-gray-600 dark:text-white border border-gray-200 dark:border-gray-900 py-2 px-2 justify-center flex items-center w-full'>
         <div className="lg:hidden mr-4 md:flex-none ml-[-1px]">
           <button onClick={onToggle} aria-label={'Toggle Navigation'} className='text-gray-600 transition-all duration-300'>
