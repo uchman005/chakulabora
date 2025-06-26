@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Abouts from '@/components/About'
+import Features from "@/components/Features";
 import Head from 'next/head'
 export default function About() {
     return (
@@ -30,6 +31,7 @@ export default function About() {
             </Head>
             <Navbar />
             <Abouts />
+            <Features />
             <Footer />
         </>
     )

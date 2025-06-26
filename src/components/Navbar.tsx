@@ -38,8 +38,8 @@ export default function Navbar() {
           <NextLink href="/auth/signin" className="font-medium text-md mt-1 text-gray-500 hover:text-gray-900">
             Sign in
           </NextLink>
-          <NextLink href="/auth/signup" className="inline-flex text-md items-center justify-center px-2 lg:px-4 py-1 lg:py-2 lg:ml-4 ml-1 font-bold text-white bg-blue-400 rounded hover:bg-blue-300">
-            Get started
+          <NextLink href="/auth/signup" className="inline-flex text-md items-center justify-center px-2 lg:px-4 py-1 lg:py-2 lg:ml-4 ml-1 font-bold text-white bg-blue-500 rounded hover:bg-blue-400">
+            Register Here
           </NextLink>
         </div>
       </div>
