@@ -30,8 +30,10 @@ export default function About() {
                 <meta name="theme-color" content="#ffffff" />
             </Head>
             <Navbar />
-            <Abouts />
-            <Features />
+            <div className="bg-[url('/background.jpg')] bg-cover bg-fixed ">
+                <Abouts />
+                <Features />
+            </div>
             <Footer />
         </>
     )
