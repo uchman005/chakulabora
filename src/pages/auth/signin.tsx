@@ -63,12 +63,13 @@ export default function SignIn() {
   return (
     <>
       <Navbar />
-      <div className={`flex flex-col items-center justify-center min-h-screen bg-${bgColor}`}>
-            <h1 className='text-center text-4xl md:text-5xl lg:text-6xl mb-3'>Welcome back </h1>
+      <div className="bg-[url('/background.jpg')] bg-cover bg-fixed text-xl text-gray-900">
+        <div className={`pt-6 flex flex-col items-center justify-center min-h-screen bg-${bgColor}`}>
+          <h1 className='text-center text-4xl md:text-5xl lg:text-6xl mt-6 mb-3'>Welcome back </h1>
           <form onSubmit={handleClick}>
-            <div className={`rounded-lg bg-${bgColor1} shadow-lg p-8 md:min-w-[50vw] lg:min-w-[50vw]`}>
+            <div className={`rounded-lg bg-${bgColor1} shadow-xl shadow-black p-12 min-w-[50vw]`}>
               <div className='space-4'>
-                <div className="form-froup mb-4">
+                <div className="form-froup mb-4 text-xl">
                   <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
                     Email address
                   </label>
@@ -114,21 +115,22 @@ export default function SignIn() {
                       </label>
                     </div>
 
-                    <Link className='text-blue-400' href={'/auth/forgotpassword'}>Forgot password?</Link>
+                    <Link className='text-blue-600' href={'/auth/forgotpassword'}>Forgot password?</Link>
                   </div>
                   <button
-                    className='text-white bg-blue-400 rounded p-2 hover:bg-blue-500'>
+                    className='text-white bg-blue-600 rounded p-2 hover:bg-blue-500 shadow-black shadow-md hover:shadow-sm active:shadow-lg'>
                     Sign in
                   </button>
                   <div className='flex justify-between mt-2'>
                     <p>{"Don't have an account"}</p>
-                    <Link className='text-blue-400' href="/auth/signup">Signup</Link>
+                    <Link className='text-blue-600' href="/auth/signup">Signup</Link>
                   </div>
                 </div>
               </div>
             </div>
           </form>
-        
+
+        </div>
       </div>
       <Footer />
     </>
