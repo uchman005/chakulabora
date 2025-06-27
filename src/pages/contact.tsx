@@ -30,7 +30,9 @@ export default function contact() {
                 <meta name="theme-color" content="#ffffff" />
             </Head>
             <Navbar />
-            <Contact />
+            <div className="bg-[url('/background.jpg')] bg-cover bg-fixed text-xl text-gray-900">
+                <Contact />
+            </div>
             <Footer />
         </>
     )

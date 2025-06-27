@@ -157,7 +157,7 @@ export default function Footer() {
                             />
                             <button
                                 type='submit'
-                                className="bg-blue-400 hover:bg-blue-600 text-white hover:text-white py-2 px-4 rounded"
+                                className="bg-blue-400 hover:bg-blue-600 text-white hover:text-white py-2 px-4 rounded shadow-black shadow-sm hover:shadow-sm active:shadow-lg"
                                 aria-label="Subscribe"
                             ><BiMailSend /></button>
                         </form>

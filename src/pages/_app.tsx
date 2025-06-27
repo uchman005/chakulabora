@@ -31,9 +31,8 @@ const store = configureStore({
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     useEffect(() => {
     AOS.init({
-      duration: 800, // Animation duration in milliseconds
-      easing: 'ease-in-out', // Easing function for smooth transitions
-      once: true, // Animations occur only once when scrolling
+      duration: 800,
+      easing: 'ease-in-out',
     });
   }, []);
 

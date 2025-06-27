@@ -8,13 +8,15 @@ export default function Legal() {
                 <title>Chakula bora | Legal</title>
             </Head>
             <Navbar />
-            <div className='max-w-7xl mt-5 text-lg'>
+      <div className="bg-[url('/background.jpg')] bg-cover bg-fixed text-xl text-gray-900">
+
+            <div className='max-w-7xl mt-5 tracking-wider leading-relaxed'>
                 <div className="text-center flex flex-col justify-center items-center pt-5 md:py-28 space-y-8 md:space-y-10">
                     <h1 className="font-semibold text-3xl sm:text-4xl md:text-6xl leading-110 font-bold">Legal{' '}
                         <span className='text-blue-400'>
                             Notice
                         </span> </h1>
-                    <span className='text-gray-500 max-w-3xl'>
+                    <span className='max-w-3xl'>
                         Do not post any information or other material protected by copyright
                         without permission. By posting material, the posting party warrants
                         and represents that they own the copyright with respect to such material
@@ -23,7 +25,7 @@ export default function Legal() {
                         right and license to display, copy, publish, distribute, transmit,
                         print, and use such information or other material.
                     </span>
-                    <span className='text-gray-500 max-w-3xl'>
+                    <span className='max-w-3xl'>
                         Chakula Bora Network provides communication tools as a
                         service for its members. Chakula Bora Network is not
                         responsible for opinions and information posted on this
@@ -39,7 +41,7 @@ export default function Legal() {
                         <span className='text-blue-400'>
                             Liability
                         </span> </h1>
-                    <span className='text-gray-500 max-w-3xl'>
+                    <span className='max-w-3xl'>
                         To the extent allowed under law, Chakula Bora Network
                         (a) disclaims all implied warranties and representations (e.g. warranties of merchantability, fitness for a particular purpose, accuracy of data, and noninfringement);
                         (b) does not guarantee that the communications tools will function without interruption or errors, and
@@ -50,7 +52,7 @@ export default function Legal() {
                         or punitive damages, or any loss of data, opportunities, reputation, profits, or revenues, related to the communications
                         tools (e.g., offensive or defamatory statements, downtime or loss, use of, or changes to, your information or content).
                     </span>
-                    <span className='text-gray-500 max-w-3xl'>
+                    <span className='max-w-3xl'>
                         In no event shall the liability of Chakula Bora Network exceed,
                         in the aggregate for all claims, $1,000. This limitation of liability
                         is part of the basis of the bargain between you and Chakula Bora Network
@@ -60,6 +62,7 @@ export default function Legal() {
                     </span>
                 </div>
             </div >
+            </div>
             <Footer />
         </>
     )

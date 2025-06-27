@@ -33,19 +33,18 @@ const features = [
 export default function Features() {
   useEffect(() => {
     AOS.init({
-      duration: 800, // Animation duration in milliseconds
-      easing: 'ease-in-out', // Smooth easing
-      once: true, // Animations occur only once
+      duration: 800,
+      easing: 'ease-in-out',
     });
   }, []);
 
   return (
-    <div className="p-4">
+    <div className="p-4 text-gray-900 text-xl">
       <div className="text-center container my-4 max-w-3xl" data-aos="fade-up" data-aos-delay="100">
         <h2 className="text-3xl bold" id="services">
           WHAT WE OFFER
         </h2>
-        <p className="gray.600 text-xl text-center" data-aos="fade-up" data-aos-delay="200">
+        <p className="text-gray-600 text-center" data-aos="fade-up" data-aos-delay="200">
           We are looking to bring farmers together to discuss their issues regarding best practices
           around farming. As farmers, the challenges we face are finite and universal.
           You may have encountered my challenge and overcame and vice versa.
@@ -60,7 +59,7 @@ export default function Features() {
               className="flex flex-row col-sm-12 col-md-6 col-lg-3"
               key={feature.id}
               data-aos="fade-up"
-              data-aos-delay={100 + feature.id * 100} // Stagger each feature card
+              data-aos-delay={100 + feature.id * 100}
             >
               <div className="px-2 text-green-400">
                 <Icon as={CheckIcon} />

@@ -35,10 +35,10 @@ export default function Navbar() {
         </div>
 
         <div className="flex flex-1 justify-end md:flex-none md:justify-end gap-2">
-          <NextLink href="/auth/signin" className="font-medium text-md mt-1 text-gray-500 hover:text-gray-900">
+          <NextLink href="/auth/signin" className="font-medium text-lg mt-1 text-gray-500 hover:text-gray-900">
             Sign in
           </NextLink>
-          <NextLink href="/auth/signup" className="inline-flex text-md items-center justify-center px-2 lg:px-4 py-1 lg:py-2 lg:ml-4 ml-1 font-bold text-white bg-blue-500 rounded hover:bg-blue-400">
+          <NextLink href="/auth/signup" className="inline-flex text-md items-center justify-center px-2 lg:px-4 py-2 lg:py-2 lg:ml-4 ml-1 font-bold text-white bg-blue-500 rounded hover:bg-blue-400 shadow-black shadow-md hover:shadow-sm active:shadow-lg">
             Register Here
           </NextLink>
         </div>
@@ -54,15 +54,14 @@ export default function Navbar() {
 const DesktopNav = () => {
   const linkColor = useColorModeValue('text-gray-600', 'text-gray-200');
   const linkHoverColor = useColorModeValue('text-gray-800', 'white');
-  // const [sublink, setSublink] = useState(true);
   return (
-    <div className='flex flex-row p-1 h-[60px] items-center'>
+    <div className='flex flex-row p-1 h-[70px] items-center'>
       {NAV_ITEMS.map((navItem) => (
         <div key={navItem.label}>
           <Popover>
             <PopoverTrigger>
               <NextLink
-                className={`p-2 text-md text-semibold ${linkColor} hover:${linkHoverColor}`}
+                className={`p-2 text-lg text-semibold ${linkColor} hover:${linkHoverColor}`}
                 href={navItem.href ?? '#'}
               >
                 {navItem.label}
@@ -91,7 +90,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
     <NextLink
       href={href ? href : '#'}
-      className="block p-2 rounded-md group hover:bg-pink-50 text-black">
+      className="block z-11 p-2 rounded-md group hover:bg-pink-50 text-black">
       <div className='flex items-center'>
         <div className='space-y-2'>
           <span className="transition duration-300 ease-in-out group-hover:text-pink-400">
@@ -179,21 +178,10 @@ const NAV_ITEMS: Array<NavItem> = [
   //   label: 'Articles',
   //   href: '#'
   // },
-  // {
-  //   label: 'Learn Design',
-  //   children: [
-  //     {
-  //       label: 'Explore Design Work',
-  //       subLabel: 'Trending Design to inspire you',
-  //       href: '#',
-  //     },
-  //     {
-  //       label: 'New & Noteworthy',
-  //       subLabel: 'Up-and-coming Designers',
-  //       href: '#',
-  //     },
-  //   ]
-  // },
+  {
+    label: 'Under the Baobab Tree',
+    href: "/under_the_baobab_tree"
+    },
   // {
   //   label: 'Hire Designers',
   //   children: [

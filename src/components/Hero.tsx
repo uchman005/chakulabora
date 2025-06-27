@@ -9,7 +9,6 @@ export default function Hero() {
     AOS.init({
       duration: 800,
       easing: 'ease-in-out',
-      once: true, 
     });
   }, []);
 
@@ -21,10 +20,10 @@ export default function Hero() {
           data-aos="fade-up" // Animation for the heading
           data-aos-delay="100"
         >
-          <Link href="/auth/signup" className="underline text-gray-950">
+          <Link href="/auth/signup" className="underline text-gray-950 font-bold">
             New here?
           </Link>{' '}
-          Welcome to Chakulabora Digital Network
+          Welcome to Chakulabora<span className="text-blue-500"> Digital Network</span>
         </h1>
 
         <p
@@ -44,13 +43,13 @@ export default function Hero() {
         >
           <Link
             href="/auth/signup"
-            className="bg-blue-500 hover:bg-blue-400 text-white rounded-full px-6 py-2 font-semibold transition duration-300 ease-in-out"
+            className="bg-blue-500 hover:bg-blue-400 text-white rounded-full px-6 py-2 font-semibold transition duration-300 ease-in-out shadow-black shadow-md hover:shadow-sm active:shadow-lg"
           >
             Register Here
           </Link>
           <Link
-            href="/contact"
-            className="rounded-full px-6 hover:bg-gray-200 py-2 text-black bg-gray-100 font-semibold duration-300 ease-in-out"
+            href="/about"
+            className="rounded-full px-6 hover:bg-gray-200 py-2 text-black bg-gray-100 font-semibold duration-300 ease-in-out shadow-black shadow-md hover:shadow-sm active:shadow-lg"
           >
             Learn more
           </Link>
@@ -62,8 +61,8 @@ export default function Hero() {
           width={3000}
           height={3000}
           loading="lazy"
-          className="w-[90%] mx-auto rounded-[25px]"
-          data-aos="fade-up" // Animation for the image
+          className="w-[90%] mx-auto rounded-[25px] shadow-xl shadow-black"
+          data-aos="fade-up"
           data-aos-delay="400"
         />
       </div>

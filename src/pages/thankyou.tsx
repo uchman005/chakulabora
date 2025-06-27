@@ -30,6 +30,7 @@ export default function Coc() {
             </Head>
 
             <Navbar />
+      <div className="bg-[url('/background.jpg')] bg-cover bg-fixed text-xl text-gray-900">
             <main className='max-w-5xl mx-auto'>
                 <div className="text-center flex flex-col justify-center items-center py-20 md:py-28 space-y-8 md:space-y-10">
                     {/* This is a paypal donation thank you page */}
@@ -48,6 +49,7 @@ export default function Coc() {
                     </p>
                 </div>
             </main>
+            </div>
             <Footer />
         </>
     )

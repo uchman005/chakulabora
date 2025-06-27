@@ -30,6 +30,8 @@ export default function Coc() {
       </Head>
 
       <Navbar />
+      <div className="bg-[url('/background.jpg')] bg-cover bg-fixed text-xl text-gray-900">
+
       <div className='max-w-7xl flex flex-col justify-between items-center'>
         <div className="text-center flex flex-col justify-center items-center py-20 md:py-28 space-y-8 md:space-y-10">
 
@@ -43,6 +45,7 @@ export default function Coc() {
             If you have any questions or concerns, please feel free to contact us at <Link href="mailto:admin@passionofhope.org" className="text-blue-500">admin@passionofhope.org</Link>
           </p>
         </div>
+      </div>
       </div>
         <Footer />
     </>
