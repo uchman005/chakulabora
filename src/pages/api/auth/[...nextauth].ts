@@ -60,7 +60,5 @@ const authOptions: NextAuthOptions = {
     // error: "",
     // signOut: ""
   },
-  secret: "test",
-  jwt: {},
 };
 export default NextAuth(authOptions);

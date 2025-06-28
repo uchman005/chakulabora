@@ -171,7 +171,7 @@ const NAV_ITEMS: Array<NavItem> = [
     href: '/about'
   },
   {
-    label: 'Questions',
+    label: 'Chat',
     href: '/dashboard'
   },
   // {,
