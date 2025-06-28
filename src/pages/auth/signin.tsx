@@ -5,7 +5,8 @@ import { signIn, useSession } from 'next-auth/react';
 import Router from 'next/router'
 import { useColorModeValue, useToast } from '@chakra-ui/react';
 import Link from 'next/link';
-import { FaEyeSlash, FaEye } from 'react-icons/fa';
+import Image from 'next/image'
+import { FaEyeSlash, FaEye, FaGoogle } from 'react-icons/fa';
 export default function SignIn() {
   const { status } = useSession();
   useEffect(() => {
@@ -117,10 +118,27 @@ export default function SignIn() {
 
                     <Link className='text-blue-600' href={'/auth/forgotpassword'}>Forgot password?</Link>
                   </div>
+                <div className="flex justify-between max-w-[80%] md:max-w-[50%]">
                   <button
-                    className='text-white bg-blue-600 rounded p-2 hover:bg-blue-500 shadow-black shadow-md hover:shadow-sm active:shadow-lg'>
+                    className="text-white bg-blue-600 rounded py-2 px-4 hover:bg-blue-500 shadow-black shadow-md hover:shadow-sm active:shadow-lg h-10"
+                  >
                     Sign in
                   </button>
+                  <button
+                    className="bg-white border border-gray-300 text-blue-600 hover:bg-gray-100 rounded py-2 px-2 flex items-center space-x-2 shadow-black shadow-md hover:shadow-sm active:shadow-lg h-10"
+                    type="button"
+                    onClick={() => signIn("google", { redirect: false })}
+                  >
+                    <Image
+                      className="h-10 w-10 rounded-full"
+                      src="/google.jpg"
+                      width={24}
+                      height={24}
+                      alt="Google"
+                    />
+                    <span className="text-sm">Google</span>
+                  </button>
+                </div>
                   <div className='flex justify-between mt-2'>
                     <p>{"Don't have an account"}</p>
                     <Link className='text-blue-600' href="/auth/signup">Signup</Link>
@@ -129,7 +147,6 @@ export default function SignIn() {
               </div>
             </div>
           </form>
-
         </div>
       </div>
       <Footer />

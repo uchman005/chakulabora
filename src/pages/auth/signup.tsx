@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import axios from "axios";
 import { useRouter } from "next/router";
 import countriesList from "../../../utils/countries";
+import Image from "next/image";
 import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
 import Required from "@/components/Required";
 
@@ -19,16 +20,8 @@ export default function Form() {
     fname: "",
     lname: "",
     email: "",
-    phone: "",
-    country: "",
-    bio: "",
     password: "",
-    repassword: "",
-    street_address: "",
-    city: "",
-    state: "",
-    postal_code: "",
-    website: "",
+    repassword: ""
   });
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -143,86 +136,6 @@ export default function Form() {
                 <input required className="appearance-none block w-full bg-gray-200 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="email" type="email" placeholder={formData.email} name='email' value={formData.email} onChange={handleChange} />
               </div>
 
-              <div className="w-full md:w-1/2 px-3">
-                <label className="block uppercase tracking-wide font-bold mb-2" htmlFor="phone">
-                  Phone: <Required />
-                </label>
-                <input required className="appearance-none block w-full bg-gray-200 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="phone" type="text" placeholder={formData.phone} name='phone' value={formData.phone} onChange={handleChange} />
-              </div>
-            </div>
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3">
-                <label className="block uppercase tracking-wide font-bold mb-2" htmlFor="website">
-                  Website
-                </label>
-                <input className="appearance-none block w-full bg-gray-200 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="website" type="text" placeholder={formData.website} name='website' value={formData.website} onChange={handleChange} />
-              </div>
-            </div>
-
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full px-3">
-                <label className="block uppercase tracking-wide font-bold mb-2" htmlFor="bio">
-                  Bio
-                </label>
-
-                <textarea className="appearance-none block w-full bg-gray-200 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="bio" name='bio' value={formData.bio} placeholder='Write a short bio' onChange={handleChange}>
-
-                </textarea>
-              </div>
-            </div>
-            <div className="flex flex-wrap -mx-3 mb-6">
-
-              <div className="w-full md:w-1/2 px-3">
-                <label className="block uppercase tracking-wide font-bold mb-2" htmlFor="street_address">
-                  Street
-                </label>
-                <input className="appearance-none block w-full bg-gray-200 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="street_address" name='street_address' type="text" placeholder="Your street or close Landmark" value={formData.street_address} onChange={handleChange} />
-              </div>
-
-              <div className="w-full md:w-1/2 px-3">
-                <label className="block uppercase tracking-wide font-bold mb-2" htmlFor="country">
-                  Country / Region <Required />
-                </label>
-
-                <input
-                  list="country"
-                  id="country"
-                  required
-                  placeholder="Select Your country"
-                  className="appearance-none block w-full bg-gray-200 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  name="country"
-                  value={formData.country}
-                  onChange={handleChange}
-                />
-                <datalist id="country">
-                  {countriesList.map((item) => (
-                    <option value={item.name} key={item.code} />
-                  ))}
-                </datalist>
-              </div>
-            </div>
-            <div className="flex flex-wrap -mx-3 mb-2">
-              <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                <label className="block uppercase tracking-wide font-bold mb-2" htmlFor="city">
-                  City
-                </label>
-                <input className="appearance-none block w-full bg-gray-200 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="city" type="text" placeholder="Your city" name='city' value={formData.city} onChange={handleChange} />
-              </div>
-              <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                <label className="block uppercase tracking-wide font-bold mb-2" htmlFor="state">
-                  State
-                </label>
-                <div className="relative">
-                  <input className="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="state" type='text' placeholder='Your state' name='state' onChange={handleChange} value={formData.state} />
-                </div>
-              </div>
-              <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                <label className="block uppercase tracking-wide font-bold mb-2" htmlFor="postal_code">
-                  Zip
-                </label>
-                <input className="appearance-none block w-full bg-gray-200 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="postal_code" type="text" placeholder="480" value={formData.postal_code} name='postal_code' onChange={handleChange} />
-              </div>
-
             </div>
             <div className="flex flex-wrap -mx-3 mb-4 mt-4">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -245,12 +158,25 @@ export default function Form() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-center mt-3">
+            <div className="flex items-center justify-center mt-3 gap-4">
 
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px]  shadow-black shadow-md hover:shadow-sm active:shadow-lg" disabled={busy}>
-                {busy ? <FaSpinner className="animate-spin text-2xl" /> : "CREATE ACCOUNT"}
+                {busy ? <FaSpinner className="animate-spin text-2xl" /> : "Create Account"}
               </button>
-
+                <button
+                    className="bg-white border border-gray-300 text-blue-600 hover:bg-gray-100 rounded py-2 px-2 flex items-center space-x-2 shadow-black shadow-md hover:shadow-sm active:shadow-lg h-11"
+                    type="button"
+                    onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+                  >
+                    <Image
+                      className="h-10 w-10 rounded-full"
+                      src="/google.jpg"
+                      width={24}
+                      height={24}
+                      alt="Google"
+                    />
+                    <span className="text-sm">Google</span>
+                </button>
             </div>
           </form>
         </div>

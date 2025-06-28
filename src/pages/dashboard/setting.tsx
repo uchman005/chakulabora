@@ -59,7 +59,7 @@ export default function Index() {
                 <title>Chakula Bora | Settings</title>
                 <meta name="description" content="Chakula Bora | Settings" />
             </Head>
-            <form onSubmit={handleSubmit} className="lg:ml-8 shadow rounded-lg p-8 w-full max-w-lg">
+            <form onSubmit={handleSubmit} className="lg:ml-8 shadow rounded-lg p-8 w-full max-w-lg mx-auto">
                 <p className='text-center text-3xl mb-6'>Edit Profile</p>
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -81,7 +81,7 @@ export default function Index() {
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="email">
                             Email: <span className='text-red-400 italics'>*</span>
                         </label>
-                        <input required className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="email" type="email" placeholder={userData.email} name='email' value={userData.email} onChange={handleChange} />
+                        <input readOnly className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="email" type="email" placeholder={userData.email} name='email' defaultValue={userData.email} />
                     </div>
 
                     <div className="w-full md:w-1/2 px-3">
@@ -203,7 +203,7 @@ export default function Index() {
                         variant: "top-accent",
                     });
                 }
-            }} className="lg:ml-8 shadow rounded-lg p-8 w-full max-w-lg my-10">
+            }} className="lg:ml-8 shadow rounded-lg p-8 w-full max-w-lg my-10 mx-auto">
                 <p className='text-center text-3xl mb-6'>Edit Password</p>
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full  px-3 mb-6 md:mb-0">

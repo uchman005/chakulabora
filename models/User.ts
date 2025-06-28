@@ -5,10 +5,11 @@ mongoose.Promise = global.Promise;
 
 const UserSchema: Schema = new Schema({
   fname: { type: String, required: true },
-  lname: { type: String, required: true },
+  lname: { type: String },
   email: { type: String, required: true, unique: true },
   bio: String,
-  password: { type: String, required: true },
+  password: { type: String },
+  googleId: { type: String },
   postal_code: String,
   country: String,
   street_address: String,
@@ -16,7 +17,7 @@ const UserSchema: Schema = new Schema({
   state: String,
   phone: String,
   website: String,
-  role: { type: String, required: true },
+  role: { type: String, required: true, default: "Community Member" },
   pv: { type: Number, default: 0 },
   resetPasswordToken: String,
   resetPasswordExpires: Date,

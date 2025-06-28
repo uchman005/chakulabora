@@ -4,6 +4,7 @@ export interface IUser {
   lname: string;
   email: string;
   bio?: string;
+  googleId?:string;
   phone?: string;
   role?: string;
   password?: string;
