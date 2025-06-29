@@ -7,6 +7,7 @@ import { useColorModeValue, useToast } from '@chakra-ui/react';
 import Link from 'next/link';
 import Image from 'next/image'
 import { FaEyeSlash, FaEye, FaGoogle } from 'react-icons/fa';
+import Required from '@/components/Required';
 export default function SignIn() {
   const { status } = useSession();
   useEffect(() => {
@@ -67,84 +68,91 @@ export default function SignIn() {
       <div className="bg-[url('/background.jpg')] bg-cover bg-fixed text-xl text-gray-900">
         <div className={`pt-6 flex flex-col items-center justify-center min-h-screen bg-${bgColor}`}>
           <h1 className='text-center text-4xl md:text-5xl lg:text-6xl mt-6 mb-3'>Welcome back </h1>
-          <form onSubmit={handleClick}>
-            <div className={`rounded-lg bg-${bgColor1} shadow-xl shadow-black p-12 min-w-[50vw]`}>
-              <div className='space-4'>
-                <div className="form-froup mb-4 text-xl">
-                  <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
-                    Email address
-                  </label>
+          <form onSubmit={handleClick} className="lg:m-8 bg-white rounded-lg p-8 shadow-xl shadow-black">
+            <h1 className="text-center text-3xl mb-6">User Login</h1>
+            <div className="flex flex-wrap -mx-3 mb-2">
+              <div className="w-full px-3">
+                <label className="block uppercase tracking-wide font-bold mb-2" htmlFor="email">
+                  Email: <Required />
+                </label>
+                <input
+                  className="appearance-none block w-full bg-gray-200 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="email"
+                  type="email"
+                  placeholder="Enter Your email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="flex flex-wrap -mx-3 mb-2">
+              <div className="w-full px-3">
+                <label className="block uppercase tracking-wide font-bold mb-2" htmlFor="password">
+                  Password: <Required />
+                </label>
+                <div className="flex gap-3 items-center">
                   <input
-                    className="form-control shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="email"
-                    type="email"
-                    placeholder="Enter Your email"
-                    name="email"
-                    value={formData.email}
+                    className="appearance-none block w-full bg-gray-200 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="password"
+                    type={show ? "text" : "password"}
+                    placeholder="* * * * *"
+                    name="password"
+                    value={formData.password}
                     onChange={handleChange}
                   />
-                </div>
-                <div className="form-group mb-4">
-                  <label className="block text-gray-700 font-bold mb-2" htmlFor="password">
-                    Password
-                  </label>
-                  <div className='flex gap-2'>
-
-                    <input
-                      className="form-control shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      id="password"
-                      type={type}
-                      placeholder="* * * * *"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                    />
-                    <button type='button' onClick={(e) => setShow(!show)}>{show ? <FaEyeSlash /> : <FaEye />}</button>
-                  </div>
-                </div>
-                <div className=''>
-                  <div className='flex flex-col sm:flex-row items-start justify-between mb-4'>
-                    <div>
-
-                      <input
-                        type="checkbox"
-                        id="rememberMe"
-                        name="rememberMe"
-                      />
-                      <label className="text-sm" htmlFor="rememberMe">
-                        Remember me
-                      </label>
-                    </div>
-
-                    <Link className='text-blue-600' href={'/auth/forgotpassword'}>Forgot password?</Link>
-                  </div>
-                <div className="flex justify-between max-w-[80%] md:max-w-[50%]">
                   <button
-                    className="text-white bg-blue-600 rounded py-2 px-4 hover:bg-blue-500 shadow-black shadow-md hover:shadow-sm active:shadow-lg h-10"
-                  >
-                    Sign in
-                  </button>
-                  <button
-                    className="bg-white border border-gray-300 text-blue-600 hover:bg-gray-100 rounded py-2 px-2 flex items-center space-x-2 shadow-black shadow-md hover:shadow-sm active:shadow-lg h-10"
                     type="button"
-                    onClick={() => signIn("google", { redirect: false })}
+                    className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-1 rounded shadow-black shadow-md hover:shadow-sm active:shadow-lg"
+                    onClick={() => setShow(!show)}
                   >
-                    <Image
-                      className="h-10 w-10 rounded-full"
-                      src="/google.jpg"
-                      width={24}
-                      height={24}
-                      alt="Google"
-                    />
-                    <span className="text-sm">Google</span>
+                    {show ? <FaEyeSlash /> : <FaEye />}
                   </button>
-                </div>
-                  <div className='flex justify-between mt-2'>
-                    <p>{"Don't have an account"}</p>
-                    <Link className='text-blue-600' href="/auth/signup">Signup</Link>
-                  </div>
                 </div>
               </div>
+            </div>
+            <div className="flex flex-wrap -mx-3">
+              <div className="w-full px-3">
+                <div className="flex flex-col sm:flex-row items-start justify-between mb-4">
+                  <div>
+                    <input type="checkbox" id="rememberMe" name="rememberMe" />
+                    <label className="text-sm" htmlFor="rememberMe">
+                      Remember me
+                    </label>
+                  </div>
+                  <Link className="text-blue-600" href="/auth/forgotpassword">
+                    Forgot password?
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-center mt-3 gap-4">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px] shadow-black shadow-md hover:shadow-sm active:shadow-lg"
+                type="submit"
+              >
+                Sign in
+              </button>
+              <button
+                className="bg-white border border-gray-300 text-blue-600 hover:bg-gray-100 rounded py-2 px-2 flex items-center space-x-2 shadow-black shadow-md hover:shadow-sm active:shadow-lg h-11"
+                type="button"
+                onClick={() => signIn("google", { redirect: false })}
+              >
+                <Image
+                  className="h-10 w-10 rounded-full"
+                  src="/google.jpg"
+                  width={24}
+                  height={24}
+                  alt="Google"
+                />
+                <span className="text-sm">Google</span>
+              </button>
+            </div>
+            <div className="flex justify-between mt-4 px-3">
+              <p>{"Don't "}have an account?</p>
+              <Link className="text-blue-600" href="/auth/signup">
+                Signup
+              </Link>
             </div>
           </form>
         </div>
