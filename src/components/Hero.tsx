@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import Cards from './Cards';
 
 export default function Hero() {
   const visionRef = useRef<HTMLDivElement>(null);
@@ -113,7 +114,6 @@ export default function Hero() {
         <section
           className="text-gray-900 text-2xl tracking-wider leading-relaxed pb-6"
           data-aos="fade-up"
-          data-aos-delay="200"
         >
           <h2>
             Purpose of User Groups
@@ -162,7 +162,6 @@ export default function Hero() {
             loading="lazy"
             className="mx-auto rounded-[25px] shadow-xl shadow-black cover"
             data-aos="fade-up"
-            data-aos-delay="400"
           />
           <Image
             src="/carrot-tomato.jpg"
@@ -172,54 +171,12 @@ export default function Hero() {
             loading="lazy"
             className="mx-auto rounded-[25px] shadow-xl shadow-black cover"
             data-aos="fade-up"
-            data-aos-delay="400"
           />
         </section>
-        {/* <section>
+        <section className="py-6">
           <h2>Quick Links</h2>
-          <div className='flex gap-4 w-full'>
-            <Image
-              src="/carrot-tomato.jpg"
-              alt="A community instruction for rural farmers outreach"
-              width={300}
-              height={300}
-              loading="lazy"
-              className="rounded-[25px] shadow-xl shadow-black cover"
-              data-aos="fade-up"
-              data-aos-delay="400"
-            />
-            <Image
-              src="/carrot-tomato.jpg"
-              alt="A community instruction for rural farmers outreach"
-              width={300}
-              height={300}
-              loading="lazy"
-              className="rounded-[25px] shadow-xl shadow-black cover"
-              data-aos="fade-up"
-              data-aos-delay="400"
-            />
-            <Image
-              src="/carrot-tomato.jpg"
-              alt="A community instruction for rural farmers outreach"
-              width={300}
-              height={300}
-              loading="lazy"
-              className="rounded-[25px] shadow-xl shadow-black cover"
-              data-aos="fade-up"
-              data-aos-delay="400"
-            />
-            <Image
-              src="/carrot-tomato.jpg"
-              alt="A community instruction for rural farmers outreach"
-              width={300}
-              height={300}
-              loading="lazy"
-              className="rounded-[25px] shadow-xl shadow-black cover"
-              data-aos="fade-up"
-              data-aos-delay="400"
-            />
-          </div>
-        </section> */}
+          <Cards />
+        </section>
       </div>
     </main>
   );

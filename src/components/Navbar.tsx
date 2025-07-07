@@ -35,11 +35,11 @@ export default function Navbar() {
         </div>
 
         <div className="flex flex-1 justify-end md:flex-none md:justify-end gap-2">
-          <NextLink href="/auth/signin" className="font-medium text-lg mt-1 text-gray-500 hover:text-gray-900">
+          {/* <NextLink href="/auth/signin" className="font-medium text-lg mt-1 text-gray-500 hover:text-gray-900">
             Sign in
-          </NextLink>
-          <NextLink href="/auth/signup" className="inline-flex text-md items-center justify-center px-2 lg:px-4 py-2 lg:py-2 lg:ml-4 ml-1 font-bold text-white bg-blue-500 rounded hover:bg-blue-400 shadow-black shadow-md hover:shadow-sm active:shadow-lg">
-            Register Here
+          </NextLink> */}
+          <NextLink href="/auth/signin" className="inline-flex text-md items-center justify-center px-2 lg:px-4 py-2 lg:py-2 lg:ml-4 ml-1 font-bold text-white bg-blue-500 rounded hover:bg-blue-400 shadow-black shadow-md hover:shadow-sm active:shadow-lg">
+            Sign in
           </NextLink>
         </div>
       </div>
@@ -174,10 +174,6 @@ const NAV_ITEMS: Array<NavItem> = [
     label: 'Chat',
     href: '/dashboard'
   },
-  // {,
-  //   label: 'Articles',
-  //   href: '#'
-  // },
   {
     label: 'Under the Baobab Tree',
     href: "/under_the_baobab_tree"
