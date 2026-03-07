@@ -18,40 +18,60 @@ export default function SignIn() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-  })
+  });
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
   const handleClick = async (e: any) => {
     e.preventDefault();
-    const res = await signIn("credentials", {
-      email: formData.email,
-      password: formData.password,
-      redirect: false
-    });
-    if (res != undefined) {
-      if (res.ok === true && res.status === 200) {
-        toast({
-          title: 'Sign in Success',
-          description: "You have been signed in successfully",
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-          position: "top",
-          size: { width: '300', height: '200' },
-          variant: 'top-accent'
-        });
-        Router.push("/dashboard");
-      } else if (res.ok === false && res.status === 401) {
-        toast({
-          title: 'Sign in Error',
-          description: res.error,
-          status: 'warning',
-          duration: 5000,
-          isClosable: true,
-          position: "top",
-          size: { width: '300', height: '200' },
-          variant: 'top-accent'
-        });
+    setLoading(true);
+    try {
+      const res = await signIn("credentials", {
+        email: formData.email,
+        password: formData.password,
+        redirect: false
+      });
+      console.log(res);
+
+      if (res != undefined) {
+        if (res.ok === true && res.status === 200) {
+          toast({
+            title: 'Sign in Success',
+            description: "You have been signed in successfully",
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            position: "top",
+            size: { width: '300', height: '200' },
+            variant: 'top-accent'
+          });
+          Router.push("/dashboard");
+        } else if (res.ok === false && res.status === 401) {
+          toast({
+            title: 'Sign in Error',
+            description: res.error,
+            status: 'warning',
+            duration: 5000,
+            isClosable: true,
+            position: "top",
+            size: { width: '300', height: '200' },
+            variant: 'top-accent'
+          });
+        }
       }
+    } catch (error) {
+      toast({
+        title: 'Sign in Error',
+        description: "Something went wrong",
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+        size: { width: '300', height: '200' },
+        variant: 'top-accent'
+      });
+    }
+    finally {
+      setLoading(false);
     }
   }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,7 +151,7 @@ export default function SignIn() {
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded min-w-[100px] shadow-black shadow-md hover:shadow-sm active:shadow-lg"
                 type="submit"
               >
-                Sign in
+                {loading ? "Signinig..." : "Sign in"}
               </button>
               <button
                 className="bg-white border border-gray-300 text-blue-600 hover:bg-gray-100 rounded py-2 px-2 flex items-center space-x-2 shadow-black shadow-md hover:shadow-sm active:shadow-lg h-11"

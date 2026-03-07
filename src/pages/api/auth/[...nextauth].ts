@@ -25,12 +25,13 @@ const authOptions: NextAuthOptions = {
           const { email } = req.body;
           user = await User.findOne({
             email: email,
-          });
+          });          
         }
         if (user !== null && user !== undefined) {
           if (
             await bcrypt.compare(req.body?.password, user.password as string)
           ) {
+              console.log("Here");
             return {
               id: `${user._id}`,
               email: `${user._id}`,
@@ -66,8 +67,8 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, profile }) {
       if (!account) return false;
-      if (!profile) return false;
       if (account.provider === "google") {
+        if (!profile) return false;
         const googleUser = {
           id: profile.sub,
           email: profile.email,
