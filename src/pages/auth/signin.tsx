@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { signIn, useSession } from 'next-auth/react';
 import Router from 'next/router'
 import { useColorModeValue, useToast } from '@chakra-ui/react';
 import Link from 'next/link';
-import Image from 'next/image'
 import { FaEyeSlash, FaEye, FaGoogle } from 'react-icons/fa';
 import Required from '@/components/Required';
 export default function SignIn() {
@@ -15,13 +14,13 @@ export default function SignIn() {
       Router.replace("/dashboard")
     }
   }, [status]);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{email: string, password: string}>({
     email: '',
     password: '',
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const toast = useToast();
-  const handleClick = async (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -74,13 +73,12 @@ export default function SignIn() {
       setLoading(false);
     }
   }
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     let { value, name } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
   const bgColor = useColorModeValue("gray.50", "gray.800");
-  const bgColor1 = useColorModeValue("white", "gray.700");
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState<boolean>(false);
   const type = show ? 'text' : 'password';
   return (
     <>
@@ -88,7 +86,7 @@ export default function SignIn() {
       <div className="bg-[url('/background.jpg')] bg-cover bg-fixed text-xl text-gray-900">
         <div className={`pt-6 flex flex-col items-center justify-center min-h-screen bg-${bgColor}`}>
           <h1 className='text-center text-4xl md:text-5xl lg:text-6xl mt-6 mb-3'>Welcome back </h1>
-          <form onSubmit={handleClick} className="lg:m-8 bg-white rounded-lg p-8 shadow-xl shadow-black">
+          <form onSubmit={handleSubmit} className="lg:m-8 bg-white rounded-lg p-8 shadow-xl shadow-black">
             <h1 className="text-center text-3xl mb-6">User Login</h1>
             <div className="flex flex-wrap -mx-3 mb-2">
               <div className="w-full px-3">
@@ -115,7 +113,7 @@ export default function SignIn() {
                   <input
                     className="appearance-none block w-full bg-gray-200 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="password"
-                    type={show ? "text" : "password"}
+                    type={type}
                     placeholder="* * * * *"
                     name="password"
                     value={formData.password}
@@ -158,13 +156,7 @@ export default function SignIn() {
                 type="button"
                 onClick={() => signIn("google", { redirect: false })}
               >
-                <Image
-                  className="h-10 w-10 rounded-full"
-                  src="/google.jpg"
-                  width={24}
-                  height={24}
-                  alt="Google"
-                />
+                <FaGoogle className='text-red-500' />
                 <span className="text-sm">Google</span>
               </button>
             </div>
