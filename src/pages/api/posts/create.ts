@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { dbCon } from "../../../../models";
 import { ResponseFunctions } from "../../../../interface";
 import SendMail from "../../../../lib/send-mail";
+import approve from "./approve";
 
 export const config = {
   api: {
@@ -32,6 +33,7 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
           fname: data.author.fname,
           lname: data.author.lname,
         },
+        approved: true, // change this to false after testing
         category: data.category,
         image: data.image,
         upvotes: [],
