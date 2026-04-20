@@ -22,14 +22,11 @@ export default function Hero() {
     <main className="max-w-full mt-5 border-5">
       <div className="text-center flex flex-col justify-center w-full items-center py-20 md:py-28 space-y-8 md:space-y-10">
         <h1
-          className="font-semibold text-3xl md:text-6xl leading-110 font-bold max-w-4xl"
+          className="font-semibold text-2xl md:text-4xl leading-110 font-bold max-w-4xl"
           data-aos="fade-up"
           data-aos-delay="100"
         >
-          <button onClick={() => scrollToSection(visionRef)} className="underline text-blue-500  font-bold">
-            New here?
-          </button>{' '}
-          Welcome to Chakulabora<span className="text-blue-500"> Digital Network</span>
+          Connecting Food and Agricultural Practitioners across Geographies
         </h1>
 
         <p
@@ -37,7 +34,7 @@ export default function Hero() {
           data-aos="fade-up"
           data-aos-delay="200"
         >
-          Chakula Bora means {'"Healthy Food,"'} and we’re thrilled to have you join our growing community!
+          We’re thrilled to have you join our growing community!
           This platform brings together farmers, entrepreneurs, experts, and institutions to build a sustainable,
           resilient, and healthy food system for all.
         </p>

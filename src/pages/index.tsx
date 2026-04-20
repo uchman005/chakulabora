@@ -33,13 +33,15 @@ export default function Index() {
         <meta property="twitter:image" content="/hero.png" />
 
       </Head>
-      <div className="bg-[url('/background.jpg')] bg-cover bg-fixed ">
-      <Navbar />
-      <Hero />
-      {/* <Features /> */}
-      <Footer />
+      <div className="relative bg-[url('/HF.jpg')] bg-cover bg-no-repeat bg-fixed">
+        <div className="absolute inset-0 bg-white/70 z-0" />
+        <div className="relative z-10">
+          <Navbar />
+          <Hero />
+          {/* <Features /> */}
+          <Footer />
+        </div>
       </div>
-    
     </>
   )
 }
