@@ -171,7 +171,7 @@ export default function Hero() {
           />
         </section>
         <section className="py-6">
-          <h2>Quick Links</h2>
+          <h2>User Groups</h2>
           <Cards />
         </section>
       </div>

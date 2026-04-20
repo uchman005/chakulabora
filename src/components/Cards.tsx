@@ -2,12 +2,12 @@ import Link from 'next/link';
 import { FaLeaf, FaSitemap, FaSeedling, FaApple, FaFire } from 'react-icons/fa';
 
 const cards = [
-  { icon: FaLeaf, text: "Agro Ecology", link: "#" },
-  { icon: FaSitemap, text: "Chama organization templates", link: "#" },
-  { icon: FaSeedling, text: "Seeds and Soil", link: "#" },
-  { icon: FaLeaf, text: "Native medicinal plants and their value", link: "#" },
-  { icon: FaApple, text: "Healthy Food Choices and connection to health", link: "#" },
-  { icon: FaFire, text: "Indigenous food preparation", link: "#" },
+  { icon: FaLeaf, text: "Farmers", link: "#" },
+  { icon: FaSitemap, text: "Researchers", link: "#" },
+  { icon: FaSeedling, text: "Agribusinesses", link: "#" },
+  { icon: FaLeaf, text: "Financial Institutions", link: "#" },
+  { icon: FaApple, text: "Supply Chains", link: "#" },
+  { icon: FaFire, text: "Consumers", link: "#" },
 ];
 
 export default function Cards() {
