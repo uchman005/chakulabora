@@ -1,8 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { dbCon } from "@/models";
+import { requireSelfOrModerator } from "@/lib/session";
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ user: string }> }) {
   const { user: userId } = await params;
+  const auth = await requireSelfOrModerator(userId);
+  if (auth instanceof NextResponse) return auth;
   const { Post, Answer } = await dbCon();
   try {
     const [posts, answers] = await Promise.all([

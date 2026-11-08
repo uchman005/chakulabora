@@ -4,8 +4,11 @@ import { dbCon } from "@/models";
 import notifyAdmin from "@/utils/notifyAdmin";
 import { escapeHtml } from "@/lib/sanitize";
 import { readJson } from "@/lib/http";
+import { requireModerator } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
+  const auth = await requireModerator();
+  if (auth instanceof NextResponse) return auth;
   const { _id } = await readJson<{ _id?: string }>(req);
   const { Post } = await dbCon();
   let post;

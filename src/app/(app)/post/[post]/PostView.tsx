@@ -8,10 +8,11 @@ import useSWR from "swr";
 import parse from "html-react-parser";
 import { AiFillDislike, AiFillLike, AiOutlineDislike, AiOutlineLike } from "react-icons/ai";
 import RichTextEditor from "@/components/RichTextEditor";
+import ShareButtons from "@/components/ShareButtons";
 import { useAppSelector } from "@/store";
 import { notify } from "@/lib/toast";
-import { displayName } from "@/lib/user";
-import type { IAnswer, IPost, IUser } from "@/types";
+import { displayName, isModerator } from "@/lib/user";
+import type { IAnswer, IPost } from "@/types";
 import AnswerItem from "./AnswerItem";
 
 const postJson = async <T,>(url: string, body?: unknown): Promise<T> => {
@@ -23,8 +24,6 @@ const postJson = async <T,>(url: string, body?: unknown): Promise<T> => {
   return res.json();
 };
 const fetcher = <T,>(url: string) => postJson<T>(url);
-
-const isModerator = (user: IUser) => !!user.role && user.role !== "Community Member";
 
 interface PostViewProps {
   blob: string;
@@ -55,13 +54,8 @@ export default function PostView({ blob, initialPost, initialAnswers }: PostView
     const active = like ? upvoted : downvoted;
     // Same endpoint semantics as before: "dislike" removes an existing vote, "like" adds one.
     const api = active ? "/api/posts/dislike" : "/api/posts/like";
-    const ok = await postJson<boolean>(api, {
-      like,
-      post_id: post._id,
-      author_id: post.author.id,
-      user_id: user.id,
-    });
-    if (ok) {
+    const ok = await postJson<unknown>(api, { like, post_id: post._id });
+    if (ok === true) {
       mutate();
       notify({
         title: like ? (active ? "Like Removed" : "Post Liked") : active ? "Dislike Removed" : "Post Disliked",
@@ -104,7 +98,6 @@ export default function PostView({ blob, initialPost, initialAnswers }: PostView
     try {
       const { answer, message } = await postJson<{ answer: IAnswer | null; message: string }>("/api/answers/create", {
         body: value,
-        author: user,
         post: post._id,
         blob: post.blob,
       });
@@ -221,6 +214,8 @@ export default function PostView({ blob, initialPost, initialAnswers }: PostView
           </>
         )}
       </div>
+
+      {post.blob && <ShareButtons title={post.title ?? ""} blob={post.blob} />}
 
       <section aria-labelledby="answers-heading" className="m-2 p-1">
         <h2 id="answers-heading" className="text-xl">

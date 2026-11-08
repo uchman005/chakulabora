@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { getAnswersForPost, getPostByBlob, plainText } from "@/lib/posts";
+import { getAnswersForPost, getPostByBlob, plainText, redactUnapproved } from "@/lib/posts";
 import { pageMetadata } from "@/lib/metadata";
 import { SITE_URL } from "@/lib/site";
 import { displayName } from "@/lib/user";
@@ -69,7 +69,7 @@ export default async function PostPage({ params }: Props) {
   const answers = post.approved && post._id ? ((await getAnswersForPost(post._id)) ?? []) : [];
   // Never embed an unapproved post's content in the HTML/RSC payload; moderators
   // receive the full post when the client revalidates.
-  const initialPost: IPost = post.approved ? post : { ...post, body: "", image: "", author: { ...post.author, email: "" } };
+  const initialPost: IPost = post.approved ? post : redactUnapproved(post);
 
   return (
     <>

@@ -2,7 +2,8 @@ export interface IUser {
   id?: string;
   fname?: string;
   lname?: string;
-  email: string;
+  email?: string;
+  loginPhone?: string;
   bio?: string;
   googleId?:string;
   phone?: string;

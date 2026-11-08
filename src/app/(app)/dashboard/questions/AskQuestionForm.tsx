@@ -7,7 +7,6 @@ import { FaSpinner } from "react-icons/fa";
 import { Image as IKImage, ImageKitAbortError, upload } from "@imagekit/next";
 import RichTextEditor from "@/components/RichTextEditor";
 import agricultureCategories from "@/utils/category";
-import { useAppSelector } from "@/store";
 import { notify } from "@/lib/toast";
 
 const placeholder =
@@ -31,7 +30,6 @@ async function authenticator() {
 
 export default function AskQuestionForm() {
   const { status } = useSession();
-  const user = useAppSelector((state) => state.user);
   const [postData, setPostData] = useState(emptyPost);
   const [busy, setBusy] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -95,7 +93,7 @@ export default function AskQuestionForm() {
       const response = await fetch("/api/posts/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...postData, author: user }),
+        body: JSON.stringify(postData),
       });
       const { post, message } = await response.json();
       if (post === null) {

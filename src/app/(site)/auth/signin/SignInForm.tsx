@@ -12,7 +12,7 @@ import { notify } from "@/lib/toast";
 export default function SignInForm() {
   const router = useRouter();
   const { status } = useSession();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ identifier: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
 
@@ -25,7 +25,7 @@ export default function SignInForm() {
     setLoading(true);
     try {
       const res = await signIn("credentials", {
-        email: formData.email,
+        identifier: formData.identifier,
         password: formData.password,
         redirect: false,
       });
@@ -59,20 +59,26 @@ export default function SignInForm() {
           User Login
         </h2>
         <div className="mb-4">
-          <label className="form-label" htmlFor="email">
-            Email: <Required />
+          <label className="form-label" htmlFor="identifier">
+            Email or phone number: <Required />
           </label>
           <input
-            className="form-field-filled mb-3"
-            id="email"
-            type="email"
-            name="email"
-            autoComplete="email"
+            className="form-field-filled"
+            id="identifier"
+            type="text"
+            name="identifier"
+            autoComplete="username"
+            autoCapitalize="none"
+            spellCheck={false}
             required
-            placeholder="Enter Your email"
-            value={formData.email}
+            placeholder="you@example.com or +254712345678"
+            aria-describedby="identifier-help"
+            value={formData.identifier}
             onChange={handleChange}
           />
+          <p id="identifier-help" className="mt-1 mb-3 text-sm text-gray-700">
+            Phone numbers need the country code, starting with +
+          </p>
         </div>
         <div className="mb-4">
           <label className="form-label" htmlFor="password">

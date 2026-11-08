@@ -168,6 +168,23 @@ describe("server-rendered content (SEO)", () => {
     expect(text).toContain("1 answer for this post");
   });
 
+  test("approved post shows WhatsApp, Facebook and X share links pointing at the public URL", async () => {
+    const { text } = await html(`/post/${BLOB}`);
+    const decoded = text.replace(/&amp;/g, "&");
+    const postLink = encodeURIComponent(`https://chakulabora.net/post/${BLOB}`);
+    expect(text).toContain("Share this post");
+    expect(decoded).toContain('href="https://wa.me/?text=Best+cover+crops+for+maize%3F%0A' + postLink + '"');
+    expect(decoded).toContain(`href="https://www.facebook.com/sharer/sharer.php?u=${postLink}"`);
+    expect(decoded).toContain(`href="https://x.com/intent/post?text=Best+cover+crops+for+maize%3F&url=${postLink}"`);
+    expect(text.match(/rel="noopener noreferrer"/g)?.length).toBeGreaterThanOrEqual(3);
+  });
+
+  test("unapproved post has no share links", async () => {
+    const { text } = await html(`/post/${PENDING_BLOB}`);
+    expect(text).not.toContain("Share this post");
+    expect(text).not.toContain("wa.me");
+  });
+
   test("hostile stored content cannot inject markup or scripts", async () => {
     const { status, text } = await html(`/post/${HOSTILE_BLOB}`);
     expect(status).toBe(200);
@@ -239,16 +256,80 @@ describe("authentication over HTTP (NextAuth credentials)", () => {
     expect(session?.user?.email).toBe(ids.user);
   });
 
+  test("phone sign-up then phone sign-in over HTTP creates a session", async () => {
+    const created = await fetch(`${BASE}/api/users/create`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ loginPhone: "+254 700 111 222", password: "phone-pass" }),
+    }).then((r) => r.json());
+    expect(created.loginPhone).toBe("+254700111222");
+
+    const csrfRes = await fetch(`${BASE}/api/auth/csrf`);
+    const { csrfToken } = await csrfRes.json();
+    const cookies = csrfRes.headers.getSetCookie().map((c) => c.split(";")[0]);
+    const res = await fetch(`${BASE}/api/auth/callback/credentials`, {
+      method: "POST",
+      redirect: "manual",
+      headers: { "Content-Type": "application/x-www-form-urlencoded", Cookie: cookies.join("; ") },
+      body: new URLSearchParams({ csrfToken, identifier: "+254700111222", password: "phone-pass", json: "true", callbackUrl: `${BASE}/dashboard` }),
+    });
+    const all = [...cookies, ...res.headers.getSetCookie().map((c) => c.split(";")[0])];
+    const session = await fetch(`${BASE}/api/auth/session`, { headers: { Cookie: all.join("; ") } }).then((r) => r.json());
+    expect(session?.user?.email).toBe(created._id);
+  });
+
+  test("sign-in and sign-up pages offer both email and phone", async () => {
+    expect((await html("/auth/signin")).text).toContain("Email or phone number");
+    const signup = (await html("/auth/signup")).text;
+    expect(signup).toContain('name="email"');
+    expect(signup).toContain('name="loginPhone"');
+  });
+
   test("wrong password does not create a session and reports the error", async () => {
     const { body, session } = await signIn("e2e@example.com", "wrong");
     expect(String(body.url)).toContain("error=");
     expect(session?.user).toBeUndefined();
   });
 
-  test("signed-in user can load their own profile via the API", async () => {
-    const res = await fetch(`${BASE}/api/${ids.user}/user`);
+  test("a real session cookie opens your own profile; without one it is refused", async () => {
+    expect((await fetch(`${BASE}/api/${ids.user}/user`)).status).toBe(401);
+    const { cookies } = await signIn("e2e@example.com", "e2e-pass");
+    const res = await fetch(`${BASE}/api/${ids.user}/user`, { headers: { Cookie: cookies.join("; ") } });
+    expect(res.status).toBe(200);
     const user = await res.json();
     expect(user.email).toBe("e2e@example.com");
     expect(user.password).toBeUndefined();
   });
+
+  test("a forged session cookie is refused", async () => {
+    const res = await fetch(`${BASE}/api/${ids.user}/user`, { headers: { Cookie: "next-auth.session-token=forged.jwt.value" } });
+    expect(res.status).toBe(401);
+  });
+
+  test("a member's real session can't touch another account or moderate; a moderator's can moderate", async () => {
+    const post = (url: string, body: unknown, cookie: string) =>
+      fetch(BASE + url, { method: "POST", headers: { "Content-Type": "application/json", Cookie: cookie }, body: JSON.stringify(body) });
+    const make = (email: string) => post("/api/users/create", { email, password: "pw-e2e" }, "").then((r) => r.json());
+    const member = await make("member-e2e@example.com");
+    const mod = await make("mod-e2e@example.com");
+    const { User, Post } = await dbCon();
+    await User.updateOne({ _id: mod._id }, { role: "Moderator" });
+    const memberCookie = (await signIn("member-e2e@example.com", "pw-e2e")).cookies.join("; ");
+    const modCookie = (await signIn("mod-e2e@example.com", "pw-e2e")).cookies.join("; ");
+
+    expect((await post(`/api/${ids.user}/update`, { fname: "Hacked" }, memberCookie)).status).toBe(403);
+    expect((await post("/api/posts/unapproved", {}, memberCookie)).status).toBe(403);
+    expect((await post("/api/posts/approve", { _id: "000000000000000000000000" }, "")).status).toBe(401);
+
+    const pending = await post("/api/posts/" + PENDING_BLOB, {}, memberCookie).then((r) => r.json());
+    expect(pending.body).toBe("");
+    const full = await post("/api/posts/" + PENDING_BLOB, {}, modCookie).then((r) => r.json());
+    expect(full.body).toContain("Not yet visible");
+    expect((await post("/api/posts/unapproved", {}, modCookie)).status).toBe(200);
+
+    // Creating a post with a real session records the session's user as author.
+    const created = await post("/api/posts/create", { title: "E2E session post", body: "<p>x</p>", category: "Test", author: { id: ids.user } }, memberCookie).then((r) => r.json());
+    expect(created.post.author.id).toBe(member._id);
+    await Post.deleteOne({ _id: created.post._id });
+  }, 30_000);
 });

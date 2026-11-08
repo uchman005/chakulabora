@@ -5,11 +5,15 @@ import SendMail from "@/lib/send-mail";
 import { readJson } from "@/lib/http";
 
 export async function POST(req: NextRequest) {
-  const { email } = await readJson<{ email?: string }>(req);
+  const { email } = await readJson<{ email?: unknown }>(req);
+  // Strings only, and never query with a missing value (it would match phone-only accounts).
+  if (typeof email !== "string" || !email) {
+    return NextResponse.json({ success: false, message: "User not found" });
+  }
   const { User } = await dbCon();
   try {
     const user = await User.findOne({ email });
-    if (!user || !email) {
+    if (!user) {
       return NextResponse.json({ success: false, message: "User not found" });
     }
     const token = randomBytes(20).toString("hex");

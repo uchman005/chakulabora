@@ -27,7 +27,7 @@ export default function Profile({ user }: { user: IUser }) {
         <div className="p-6">
           <div className="mb-5 flex flex-col items-center justify-center">
             <h1 className="text-xl font-medium text-nowrap lg:text-2xl">
-              {displayName(user, user?.email)}
+              {displayName(user, user?.email || user?.phone)}
             </h1>
             <span className="text-gray-600">{user?.role}</span>
           </div>

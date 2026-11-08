@@ -3,17 +3,15 @@ import { dbCon } from "@/models";
 import notifyAdmin from "@/utils/notifyAdmin";
 import { readJson } from "@/lib/http";
 import { escapeHtml, sanitizeRichText } from "@/lib/sanitize";
-import type { IUser } from "@/types";
+import { getCurrentUser } from "@/lib/session";
+import { publicAuthor } from "@/lib/user";
 
+/** Public: signed-out visitors answer anonymously. The author always comes from the session. */
 export async function POST(req: NextRequest) {
-  const { author, body: rawBody = "", post, blob } = await readJson<{
-    author?: IUser;
-    body?: string;
-    post?: string;
-    blob?: string;
-  }>(req);
+  const { body: rawBody, post, blob } = await readJson<{ body?: unknown; post?: string; blob?: string }>(req);
+  const author = await getCurrentUser();
   // Sanitize before the emptiness check so e.g. "<script>…</script>" counts as empty.
-  const body = sanitizeRichText(rawBody);
+  const body = sanitizeRichText(typeof rawBody === "string" ? rawBody : "");
   let answer = null;
   let message: string;
   const isEmpty = body.replace(/<\/?[^>]+(>|$)/g, "").trim() === "";
@@ -21,7 +19,7 @@ export async function POST(req: NextRequest) {
   if (body.trim() !== "" && !isEmpty) {
     const { Answer } = await dbCon();
     try {
-      answer = new Answer({ body, author, post, upvotes: [], downvotes: [] });
+      answer = new Answer({ body, author: publicAuthor(author), post, upvotes: [], downvotes: [] });
       await answer.save();
       notifyAdmin(
         "New answer",

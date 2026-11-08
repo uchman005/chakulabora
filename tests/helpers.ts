@@ -25,3 +25,8 @@ export function clearMail() {
 }
 
 export const sentMail = () => globalThis.__sentMail;
+
+/** Sign in as a user id (or out with null) for route handlers under test. */
+export function signInAs(userId: string | null) {
+  globalThis.__session = userId ? { user: { email: userId } } : null;
+}

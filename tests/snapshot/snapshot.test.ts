@@ -11,7 +11,7 @@ import fs from "node:fs";
 import path from "node:path";
 import type { Subprocess } from "bun";
 import type mongoose from "mongoose";
-import { ctx, json, jsonRequest } from "../helpers";
+import { ctx, json, jsonRequest, signInAs } from "../helpers";
 import { hasSnapshot, readCollection, readManifest, restoreSnapshot } from "./load";
 import { dbCon } from "@/models";
 import { getAnswersForPost, getApprovedPosts, getPostByBlob, plainText } from "@/lib/posts";
@@ -165,6 +165,7 @@ suite("snapshot: read paths and APIs", () => {
   test("every user profile loads without secrets; counts match the data", async () => {
     for (const u of raw.users) {
       const id = u._id.toString();
+      signInAs(id);
       const { status, body } = await json(userGet.GET(jsonRequest(`/api/${id}/user`), ctx({ user: id })));
       expect(status).toBe(200);
       expect(body.email).toBe(u.email);
@@ -191,6 +192,7 @@ suite("snapshot: read paths and APIs", () => {
     const existing = raw.posts.find((p) => slug(p.title) === p.blob);
     if (!existing) return;
     const author = raw.users[0];
+    signInAs(author._id.toString());
     const { body } = await json(
       postsCreate.POST(
         jsonRequest("/api/posts/create", {
@@ -198,7 +200,6 @@ suite("snapshot: read paths and APIs", () => {
           body: "<p>copy</p>",
           category: "Test",
           image: "",
-          author: { id: author._id.toString(), email: author.email },
         })
       )
     );

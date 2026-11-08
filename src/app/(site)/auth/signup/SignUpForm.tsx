@@ -14,10 +14,15 @@ export default function SignUpForm() {
   const [show, setShow] = useState(false);
   const [busy, setBusy] = useState(false);
   const [mismatch, setMismatch] = useState(false);
-  const [formData, setFormData] = useState({ fname: "", lname: "", email: "", password: "", repassword: "" });
+  const [identifierError, setIdentifierError] = useState("");
+  const [formData, setFormData] = useState({ fname: "", lname: "", email: "", loginPhone: "", password: "", repassword: "" });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!formData.email.trim() && !formData.loginPhone.trim()) {
+      setIdentifierError("Enter an email address or a phone number.");
+      return;
+    }
     if (formData.password !== formData.repassword) {
       setMismatch(true);
       notify({
@@ -35,6 +40,10 @@ export default function SignUpForm() {
         body: JSON.stringify(formData),
       });
       const user = await response.json();
+      if (user?.error) {
+        setIdentifierError(user.error);
+        return;
+      }
       if (user === null) {
         notify({
           title: "Account creation failed.",
@@ -46,7 +55,7 @@ export default function SignUpForm() {
       }
       notify({ title: "Account created.", description: "We've created your account for you.", status: "success" });
 
-      const res = await signIn("credentials", { email: user.email, password: formData.password, redirect: false });
+      const res = await signIn("credentials", { identifier: user.email ?? user.loginPhone, password: formData.password, redirect: false });
       if (res?.ok) {
         notify({ title: "Sign in Success", description: "You have been signed in successfully", status: "success" });
         router.push("/dashboard");
@@ -63,6 +72,7 @@ export default function SignUpForm() {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     if (name === "password" || name === "repassword") setMismatch(false);
+    if (name === "email" || name === "loginPhone") setIdentifierError("");
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -85,14 +95,33 @@ export default function SignUpForm() {
               <input autoComplete="family-name" className="form-field-filled" id="last-name" type="text" name="lname" value={formData.lname} onChange={handleChange} />
             </div>
           </div>
-          <div className="-mx-3 mb-2 flex flex-wrap">
-            <div className="w-full px-3 md:w-1/2">
-              <label className="form-label" htmlFor="email">
-                Email: <Required />
-              </label>
-              <input required autoComplete="email" className="form-field-filled mb-3" id="email" type="email" name="email" value={formData.email} onChange={handleChange} />
+          <fieldset className="mb-2">
+            <legend className="mb-3 text-base text-gray-700">
+              Enter an email address, a phone number, or both. <Required />
+            </legend>
+            <div className="-mx-3 flex flex-wrap">
+              <div className="w-full px-3 md:w-1/2">
+                <label className="form-label" htmlFor="email">
+                  Email:
+                </label>
+                <input autoComplete="email" className="form-field-filled mb-3" id="email" type="email" name="email" value={formData.email} onChange={handleChange} aria-describedby={identifierError ? "signup-identifier-error" : undefined} aria-invalid={!!identifierError} />
+              </div>
+              <div className="w-full px-3 md:w-1/2">
+                <label className="form-label" htmlFor="loginPhone">
+                  Phone number:
+                </label>
+                <input autoComplete="tel" inputMode="tel" className="form-field-filled" id="loginPhone" type="tel" name="loginPhone" placeholder="+254712345678" value={formData.loginPhone} onChange={handleChange} aria-describedby={`phone-help${identifierError ? " signup-identifier-error" : ""}`} aria-invalid={!!identifierError} />
+                <p id="phone-help" className="mt-1 mb-3 text-sm text-gray-700">
+                  Include the country code, starting with +
+                </p>
+              </div>
             </div>
-          </div>
+            {identifierError && (
+              <p id="signup-identifier-error" role="alert" className="text-base text-red-700">
+                {identifierError}
+              </p>
+            )}
+          </fieldset>
           <div className="-mx-3 mt-2 mb-2 flex flex-wrap">
             <div className="mb-6 w-full px-3 md:mb-0 md:w-1/2">
               <label className="form-label" htmlFor="password">
