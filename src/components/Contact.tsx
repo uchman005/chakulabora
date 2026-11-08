@@ -1,111 +1,80 @@
-import { ChangeEvent, FormEvent, useState } from "react"
-import { useToast } from "@chakra-ui/react"
-export default function Contact() {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        message: '',
-        subject: '',
-    });
-    const toast = useToast();
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData((prev) => {
-            const { name, value } = e.target;
-            return { ...prev, [name]: value }
-        })
-    }
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        fetch('/api/users/contact', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data) {
-                    toast({
-                        title: 'Message Sent',
-                        description: "Your messagge was sent successfully, we'll reply to you soon",
-                        status: 'success',
-                        duration: 5000,
-                        isClosable: true,
-                        position: "top",
-                        size: { width: '300', height: '200' },
-                        variant: 'top-accent'
-                    })
-                    setFormData({
-                        name: '',
-                        email: '',
-                        subject: '',
-                        message: ''
-                    })
-                } else {
-                    toast({
-                        title: 'Message failed to send',
-                        description: 'Something went wrong on our end, retry in a few minutes',
-                        status: 'warning',
-                        duration: 5000,
-                        isClosable: true,
-                        position: "top",
-                        size: { width: '300', height: '200' },
-                        variant: 'top-accent'
-                    })
-                    setFormData({
-                        name: '',
-                        email: '',
-                        subject: '',
-                        message: ''
-                    })
-                }
-            }).catch((error) =>{
-                toast({
-                    title: 'Message failed to send',
-                    description: 'Something went wrong on our end'+ error.message,
-                    status: 'warning',
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top",
-                    size: { width: '300', height: '200' },
-                    variant: 'top-accent'
-                })
-                setFormData({
-                    name: '',
-                    email: '',
-                    subject: '',
-                    message: ''
-                })
+"use client";
 
-            })
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import { notify } from "@/lib/toast";
+
+const emptyForm = { name: "", email: "", subject: "", message: "" };
+
+export default function Contact() {
+  const [formData, setFormData] = useState(emptyForm);
+  const [busy, setBusy] = useState(false);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setBusy(true);
+    try {
+      const res = await fetch("/api/users/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data) {
+        notify({
+          title: "Message Sent",
+          description: "Your message was sent successfully, we'll reply to you soon",
+          status: "success",
+        });
+      } else {
+        notify({
+          title: "Message failed to send",
+          description: "Something went wrong on our end, retry in a few minutes",
+          status: "warning",
+        });
+      }
+    } catch (error) {
+      notify({
+        title: "Message failed to send",
+        description: "Something went wrong on our end " + (error as Error).message,
+        status: "warning",
+      });
+    } finally {
+      setFormData(emptyForm);
+      setBusy(false);
     }
-    return (
-        <div className='flex flex-col md:flex-row gap-3 items-center justify-center py-[12%] mx-[7%] px-[3%]' >
-            <div className='flex-1 md:text-2xl lg:text-4xl'>
-                Get in touch with us
-            </div>
-            <div className='flex-1 border rounded-md px-3 py-7 bg-gray-900 text-white'>
-                <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
-                    <div className='form-group'>
-                        <label>Your Name</label>
-                        <input type='text' name='name' className='form-control' placeholder='Enter Your Name' onChange={handleChange} value={formData.name} required />
-                    </div>
-                    <div className='form-group'>
-                        <label>Your Email</label>
-                        <input type='email' name='email' className='form-control' placeholder='Enter Your Email' onChange={handleChange} value={formData.email} required />
-                    </div>
-                    <div className='form-group'>
-                        <label>Subject</label>
-                        <input type='text' name='subject' className='form-control' placeholder='Subject' onChange={handleChange} value={formData.subject} required />
-                    </div>
-                    <div className='form-group'>
-                        <label>Message</label>
-                        <textarea className='form-control' name="message" placeholder='Message goes here' onChange={handleChange} value={formData.message} required></textarea>
-                    </div>
-                    <button type='submit' className='btn rounded-lg btn-primary hover:bg-blue-300 active:bg-blue-300 text-white btn-block'>Send</button>
-                </form>
-            </div>
-        </div>
-    )
+  };
+
+  return (
+    <div className="mx-[7%] flex flex-col items-center justify-center gap-3 px-[3%] py-[12%] md:flex-row">
+      <h1 className="flex-1 text-2xl font-normal md:text-2xl lg:text-4xl">Get in touch with us</h1>
+      <div className="w-full flex-1 rounded-md border bg-gray-900 px-3 py-7 text-white">
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="contact-name" className="mb-2">Your Name</label>
+            <input id="contact-name" type="text" name="name" autoComplete="name" className="form-field" placeholder="Enter Your Name" onChange={handleChange} value={formData.name} required />
+          </div>
+          <div>
+            <label htmlFor="contact-email" className="mb-2">Your Email</label>
+            <input id="contact-email" type="email" name="email" autoComplete="email" className="form-field" placeholder="Enter Your Email" onChange={handleChange} value={formData.email} required />
+          </div>
+          <div>
+            <label htmlFor="contact-subject" className="mb-2">Subject</label>
+            <input id="contact-subject" type="text" name="subject" className="form-field" placeholder="Subject" onChange={handleChange} value={formData.subject} required />
+          </div>
+          <div>
+            <label htmlFor="contact-message" className="mb-2">Message</label>
+            <textarea id="contact-message" className="form-field min-h-28" name="message" placeholder="Message goes here" onChange={handleChange} value={formData.message} required />
+          </div>
+          <button type="submit" disabled={busy} aria-busy={busy} className="btn btn-primary w-full rounded-lg">
+            {busy ? "Sending…" : "Send"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }

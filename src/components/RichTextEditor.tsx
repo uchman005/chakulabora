@@ -1,69 +1,56 @@
-import dynamic from 'next/dynamic'
-import parse from 'html-react-parser'
-import { useState } from 'react'
-import 'quill/dist/quill.snow.css';
+"use client";
 
-const QuillNoSSRWrapper = dynamic(import('react-quill'), {
+import dynamic from "next/dynamic";
+import "react-quill-new/dist/quill.snow.css";
+
+// Quill touches `document`, so it only renders in the browser.
+const ReactQuill = dynamic(() => import("react-quill-new"), {
   ssr: false,
-  loading: () => <p>Loading ...</p>,
-})
+  loading: () => (
+    <p role="status" className="rounded-md border border-gray-300 p-4 text-gray-600">
+      Loading editor...
+    </p>
+  ),
+});
 
-// getContents(index: Number = 0, length: Number = remaining): Delta
 const modules = {
   toolbar: [
-    [{ header: '1' }, { header: '2' }, { font: [] }],
+    [{ header: "1" }, { header: "2" }, { font: [] }],
     [{ size: [] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [
-      { list: 'ordered' },
-      { list: 'bullet' },
-      { indent: '-1' },
-      { indent: '+1' },
-    ],
-    ['link', 'image'],
-    ['clean'],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+    ["link"],
+    ["clean"],
   ],
   clipboard: {
     // toggle to add extra line breaks when pasting HTML:
     matchVisual: false,
   },
+};
+
+// Quill 2 merged "bullet" into "list".
+const formats = ["font", "header", "size", "bold", "italic", "underline", "strike", "blockquote", "list", "indent", "link"];
+
+interface RichTextEditorProps {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  /** Accessible name for the editable area. */
+  label: string;
+  className?: string;
 }
-/*
- * Quill editor formats
- * See https://quilljs.com/docs/formats/
- */
-const formats = [
-  'font',
-  'header',
-  'size',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'blockquote',
-  'list',
-  'bullet',
-  'indent',
-  'link',
-  'image',
-]
-const placeholder = "Start Editing, Please be as detailed as possible. You can Use Images to further describe your point."
-const scrollingContainer = "auto-grow"
-export default function RichTextEditor() {
-  const [value, setValue] = useState('');
+
+export default function RichTextEditor({ value, onChange, placeholder, label, className }: RichTextEditorProps) {
   return (
-    <div>
-      <QuillNoSSRWrapper
-        modules={modules}
-        value={value}
-        onChange={setValue}
-        placeholder={placeholder}
-        formats={formats}
+    <div className={`bg-white ${className ?? ""}`} aria-label={label} role="group">
+      <ReactQuill
         theme="snow"
-        scrollingContainer={scrollingContainer}
+        modules={modules}
+        formats={formats}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
       />
-      <p>{value}</p>
-      {parse(value)}
     </div>
-  )
+  );
 }
