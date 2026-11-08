@@ -1,6 +1,7 @@
 import "server-only";
 import { dbCon } from "@/models";
 import { sanitizeRichText } from "@/lib/sanitize";
+import { publicAuthor } from "@/lib/user";
 import type { IAnswer, IPost } from "@/types";
 
 /** Convert Mongoose docs (ObjectIds, Dates) into plain JSON-safe objects. */
@@ -18,17 +19,22 @@ export async function getPostByBlob(blob: string): Promise<IPost | null> {
     const post = await Post.findOne({ blob }).lean();
     if (!post) return null;
     const plain = toPlain<IPost>(post);
-    return { ...plain, body: sanitizeRichText(plain.body) };
+    return { ...plain, author: publicAuthor(plain.author) as IPost["author"], body: sanitizeRichText(plain.body) };
   } catch {
     return null;
   }
+}
+
+/** What anyone but a moderator may see of a post that is awaiting approval. */
+export function redactUnapproved(post: IPost): IPost {
+  return { ...post, body: "", image: "" };
 }
 
 /** Approved posts without bodies, newest first (used by the dashboard list). */
 export async function getApprovedPosts(): Promise<IPost[]> {
   const { Post } = await dbCon();
   const posts = await Post.find({ approved: true }, { body: 0 }).sort({ _id: -1 }).lean();
-  return toPlain<IPost[]>(posts);
+  return toPlain<IPost[]>(posts).map((p) => ({ ...p, author: publicAuthor(p.author) as IPost["author"] }));
 }
 
 /** Answers for a post, most upvoted first. */
@@ -40,7 +46,12 @@ export async function getAnswersForPost(postId: string): Promise<IAnswer[] | nul
       { $addFields: { upvotesCount: { $size: { $ifNull: ["$upvotes", []] } } } },
       { $sort: { upvotesCount: -1 } },
     ]);
-    return toPlain<IAnswer[]>(answers).map((a) => ({ ...a, body: sanitizeRichText(a.body) }));
+    return toPlain<IAnswer[]>(answers).map((a) => ({
+      ...a,
+      body: sanitizeRichText(a.body),
+      // Older answers stored the author's whole profile; only expose the public fields.
+      author: publicAuthor(a.author) as IAnswer["author"],
+    }));
   } catch (err) {
     console.error(err);
     return null;

@@ -70,10 +70,10 @@ function SettingsFields({ user }: { user: IUser }) {
       const res = await fetch("/api/users/updatepassword", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password, id: user.id }),
+        body: JSON.stringify({ password }),
       });
       const updated = await res.json();
-      if (!updated) throw new Error();
+      if (updated !== true) throw new Error();
       notify({ title: "Password Update successful", description: "Password update was successful", status: "success" });
       setPassword("");
       setRepassword("");

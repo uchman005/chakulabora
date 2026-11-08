@@ -16,7 +16,8 @@
     "db:local": "bun scripts/local-db.ts",
     "db:sanitize": "bun --preload ./scripts/preload-server-only.ts scripts/sanitize-db.ts",
     "db:mirror": "bun scripts/snapshot-db.ts --mirror && bun scripts/local-db.ts --reset",
-    "db:verify": "bun scripts/verify-mirror.ts"
+    "db:verify": "bun scripts/verify-mirror.ts",
+    "db:migrate-phone": "bun scripts/migrate-phone-login.ts"
   },
   "dependencies": {
     "@imagekit/next": "^2.1.6",
@@ -28,6 +29,7 @@
     "bcrypt": "^6.0.0",
     "html-react-parser": "^6.1.9",
     "imagekit": "^6.0.0",
+    "libphonenumber-js": "^1.13.15",
     "moment": "^2.30.1",
     "mongoose": "^9.12.0",
     "next": "16.4.5",

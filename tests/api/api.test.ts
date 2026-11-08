@@ -5,7 +5,7 @@
  */
 import { beforeAll, describe, expect, test } from "bun:test";
 import bcrypt from "bcrypt";
-import { clearMail, ctx, json, jsonRequest, sentMail } from "../helpers";
+import { clearMail, ctx, json, jsonRequest, sentMail, signInAs } from "../helpers";
 
 import { dbCon } from "@/models";
 import { authOptions } from "@/lib/auth";
@@ -116,6 +116,7 @@ describe("users: profile", () => {
   beforeAll(async () => {
     const { User } = await dbCon();
     adaId = String((await User.findOne({ email: "ada@example.com" }))!._id);
+    signInAs(adaId);
   });
 
   test("GET /api/[user]/user never exposes password or reset token", async () => {
@@ -129,9 +130,13 @@ describe("users: profile", () => {
     await User.updateOne({ _id: adaId }, { $unset: { resetPasswordToken: 1, resetPasswordExpires: 1 } });
   });
 
-  test("GET with a malformed id returns 400", async () => {
+  test("GET with a malformed id returns 400 for a moderator", async () => {
+    const { User } = await dbCon();
+    const mod = await User.create({ email: "api-mod@example.com", role: "Moderator" });
+    signInAs(String(mod._id));
     const { status } = await json(userGet.GET(jsonRequest("/api/nope/user"), ctx({ user: "nope" })));
     expect(status).toBe(400);
+    signInAs(adaId);
   });
 
   test("POST /api/[user]/update saves profile fields", async () => {
@@ -160,18 +165,13 @@ describe("users: profile", () => {
     await userUpdate.POST(jsonRequest(`/api/${adaId}/update`, { email: "ada@example.com", fname: "Ada", lname: "Lovelace" }), ctx({ user: adaId }));
   });
 
-  test("updatepassword accepts the shape the client sends ({ id, password }) — was broken in v1", async () => {
-    const { body } = await json(usersUpdatePassword.POST(jsonRequest("/api/users/updatepassword", { id: adaId, password: "new-pw" })));
+  test("updatepassword changes the signed-in user's password — was broken in v1", async () => {
+    const { body } = await json(usersUpdatePassword.POST(jsonRequest("/api/users/updatepassword", { password: "new-pw" })));
     expect(body).toBe(true);
     expect(await authorize({ email: "ada@example.com", password: "new-pw" }, {})).toMatchObject({ id: adaId });
   });
 
-  test("updatepassword still accepts the legacy { data: { id, password } } shape", async () => {
-    const { body } = await json(usersUpdatePassword.POST(jsonRequest("/api/users/updatepassword", { data: { id: adaId, password: "pw-ada" } })));
-    expect(body).toBe(true);
-  });
-
-  test("updatepassword with missing fields returns false", async () => {
+  test("updatepassword with a missing password returns false", async () => {
     const { body } = await json(usersUpdatePassword.POST(jsonRequest("/api/users/updatepassword", {})));
     expect(body).toBe(false);
   });
@@ -220,6 +220,123 @@ describe("users: password reset flow", () => {
 });
 
 // ---------------------------------------------------------------------------
+describe("users: phone number sign-up and sign-in", () => {
+  const PHONE = "+254712345678";
+
+  test("phone + password is enough; the number is normalised and no email is stored", async () => {
+    const { status, body } = await createUser({ loginPhone: "+254 712 345 678", password: "phone-pw" });
+    expect(status).toBe(200);
+    expect(body.loginPhone).toBe(PHONE);
+    expect(body.email).toBeUndefined();
+    expect(body.password).toBeUndefined();
+  });
+
+  test("many phone-only accounts can coexist (no collision on the missing email)", async () => {
+    const { body } = await createUser({ loginPhone: "+2348031234567", password: "phone-pw-2" });
+    expect(body.loginPhone).toBe("+2348031234567");
+  });
+
+  test("a phone number can only register once, however it is formatted", async () => {
+    const { status, body } = await createUser({ loginPhone: "+254-712-345-678", password: "x" });
+    expect(status).toBe(200);
+    expect(body).toBeNull();
+  });
+
+  test("invalid or local-format numbers are rejected with a helpful error", async () => {
+    for (const loginPhone of ["0712345678", "12345", "not-a-phone"]) {
+      const { status, body } = await createUser({ loginPhone, password: "x" });
+      expect(status).toBe(400);
+      expect(body.error).toMatch(/country code/);
+    }
+  });
+
+  test("signing up with neither email nor phone is rejected", async () => {
+    const { status, body } = await createUser({ password: "x", email: "  ", loginPhone: "" });
+    expect(status).toBe(400);
+    expect(body.error).toMatch(/email address or a phone number/);
+  });
+
+  test("email and phone together: either one signs in", async () => {
+    const { body } = await createUser({ email: "both@example.com", loginPhone: "+254722000111", password: "both-pw" });
+    expect(await authorize({ identifier: "both@example.com", password: "both-pw" }, {})).toMatchObject({ id: body._id });
+    expect(await authorize({ identifier: "+254722000111", password: "both-pw" }, {})).toMatchObject({ id: body._id });
+  });
+
+  test("sign in by phone accepts any formatting and returns the Mongo id", async () => {
+    const { User } = await dbCon();
+    const u = await User.findOne({ loginPhone: PHONE });
+    for (const identifier of [PHONE, "+254 712 345 678", " +254-712-345-678 "]) {
+      expect(await authorize({ identifier, password: "phone-pw" }, {})).toEqual({ id: String(u!._id), email: String(u!._id) });
+    }
+  });
+
+  test("wrong password, unknown number and malformed input are all refused", async () => {
+    await expect(authorize({ identifier: PHONE, password: "nope" }, {})).rejects.toThrow("Password did not Match user Password");
+    await expect(authorize({ identifier: "+254733999888", password: "phone-pw" }, {})).rejects.toThrow(/User not found/);
+    await expect(authorize({ identifier: "garbage", password: "phone-pw" }, {})).rejects.toThrow(/User not found/);
+  });
+
+  test("email sign-in still works through the original `email` credential", async () => {
+    await createUser({ email: "still-works@example.com", password: "email-pw" });
+    expect(await authorize({ email: "still-works@example.com", password: "email-pw" }, {})).toBeTruthy();
+    expect(await authorize({ identifier: "still-works@example.com", password: "email-pw" }, {})).toBeTruthy();
+  });
+
+  test("a blank-looking email cannot sign in to a phone-only account", async () => {
+    await expect(authorize({ identifier: "", email: "", password: "phone-pw" }, {})).rejects.toThrow(/required/);
+  });
+
+  test("forgot password does not match phone-only accounts when email is missing", async () => {
+    const { body } = await json(usersForgot.POST(jsonRequest("/api/users/forgotpassword", {})));
+    expect(body.success).toBe(false);
+    const { User } = await dbCon();
+    expect((await User.findOne({ loginPhone: PHONE }))!.resetPasswordToken).toBeUndefined();
+  });
+
+  test("a phone-only user can update their profile without gaining an email", async () => {
+    const { User } = await dbCon();
+    const u = await User.findOne({ loginPhone: PHONE });
+    const id = String(u!._id);
+    signInAs(id);
+    const { body } = await json(userUpdate.POST(jsonRequest(`/api/${id}/update`, { fname: "Wanjiru", email: "" }), ctx({ user: id })));
+    expect(body.fname).toBe("Wanjiru");
+    expect(body.email).toBeUndefined();
+    expect(body.loginPhone).toBeUndefined();
+  });
+
+  test("the profile API does not return the sign-in number field", async () => {
+    const { User } = await dbCon();
+    const id = String((await User.findOne({ loginPhone: PHONE }))!._id);
+    signInAs(id);
+    const { body } = await json(userGet.GET(jsonRequest(`/api/${id}/user`), ctx({ user: id })));
+    expect(body.loginPhone).toBeUndefined();
+  });
+});
+
+describe("answers: author privacy", () => {
+  const fullProfile = { id: "abc", fname: "Ada", lname: "O", email: "a@example.com", phone: "+254712345678", loginPhone: "+254712345678", street_address: "1 Road", city: "Nairobi" };
+
+  test("only public author fields are saved, and older answers are trimmed when read", async () => {
+    const postId = "privacy-post";
+    const { User } = await dbCon();
+    signInAs(String((await User.findOne({ email: "ada@example.com" }))!._id));
+    const created = await json(answersCreate.POST(jsonRequest("/api/answers/create", { body: "<p>hello</p>", post: postId, blob: "x" })));
+    expect(Object.keys(created.body.answer.author).sort()).toEqual(["fname", "id", "lname"]);
+
+    const { Answer } = await dbCon();
+    await Answer.collection.insertOne({ body: "<p>old</p>", author: fullProfile, post: postId, upvotes: [], downvotes: [] });
+    const list = await json(answersById.POST(jsonRequest(`/api/answers/${postId}`, {}), ctx({ id: postId })));
+    expect(list.body).toHaveLength(2);
+    for (const a of list.body) {
+      expect(a.author.phone).toBeUndefined();
+      expect(a.author.loginPhone).toBeUndefined();
+      expect(a.author.street_address).toBeUndefined();
+      expect(a.author.email).toBeUndefined();
+    }
+    await Answer.deleteMany({ post: postId });
+  });
+});
+
 describe("users: subscribe + contact", () => {
   test("subscribe-email accepts the old un-typed body and rejects duplicates", async () => {
     // The v1 footer posted JSON without a Content-Type header.
@@ -256,8 +373,10 @@ describe("posts", () => {
     voter = String((await User.findOne({ email: "minimal@example.com" }))!._id);
   });
 
-  const createPost = (title: string, extra: Record<string, unknown> = {}) =>
-    json(postsCreate.POST(jsonRequest("/api/posts/create", { title, body: "<p>My soil is <b>heavy</b> clay.</p>", category: "Soil Science", image: "", author, ...extra })));
+  const createPost = (title: string, extra: Record<string, unknown> = {}, as: string = author.id) => {
+    signInAs(as);
+    return json(postsCreate.POST(jsonRequest("/api/posts/create", { title, body: "<p>My soil is <b>heavy</b> clay.</p>", category: "Soil Science", image: "", ...extra })));
+  };
 
   test("create: slug from title, auto-approved, admin emailed", async () => {
     clearMail();
@@ -279,13 +398,14 @@ describe("posts", () => {
 
   test("create: author without a name still works (names optional)", async () => {
     clearMail();
-    const { body } = await createPost("Nameless question", { author: { id: voter, email: "minimal@example.com" } });
+    const { body } = await createPost("Nameless question", {}, voter);
     expect(body.post).not.toBeNull();
     expect(sentMail()[0].text).toContain("minimal@example.com");
   });
 
   test("create: validation error is reported, post is null", async () => {
-    const { body } = await json(postsCreate.POST(jsonRequest("/api/posts/create", { title: "No body", author })));
+    signInAs(author.id);
+    const { body } = await json(postsCreate.POST(jsonRequest("/api/posts/create", { title: "No body" })));
     expect(body.post).toBeNull();
     expect(body.message).toMatch(/body/i);
   });
@@ -308,31 +428,30 @@ describe("posts", () => {
     const { User, Post } = await dbCon();
     const pv = async () => (await User.findById(author.id))!.pv as number;
     const before = await pv();
+    signInAs(voter);
 
-    const liked = await json(postsLike.POST(jsonRequest("/api/posts/like", { like: true, post_id: postId, author_id: author.id, user_id: voter })));
+    const liked = await json(postsLike.POST(jsonRequest("/api/posts/like", { like: true, post_id: postId })));
     expect(liked.body).toBe(true);
-    await Bun.sleep(50); // saves are fire-and-forget in the original logic
     expect((await Post.findById(postId))!.upvotes).toEqual([voter]);
     expect(await pv()).toBe(before + 1);
 
     // A second like must not duplicate the vote.
-    await postsLike.POST(jsonRequest("/api/posts/like", { like: true, post_id: postId, author_id: author.id, user_id: voter }));
-    await Bun.sleep(50);
+    await postsLike.POST(jsonRequest("/api/posts/like", { like: true, post_id: postId }));
     expect((await Post.findById(postId))!.upvotes).toEqual([voter]);
+    expect(await pv()).toBe(before + 1);
 
-    const removed = await json(postsDislike.POST(jsonRequest("/api/posts/dislike", { like: true, post_id: postId, author_id: author.id, user_id: voter })));
+    const removed = await json(postsDislike.POST(jsonRequest("/api/posts/dislike", { like: true, post_id: postId })));
     expect(removed.body).toBe(true);
-    await Bun.sleep(50);
     expect((await Post.findById(postId))!.upvotes).toEqual([]);
+    expect(await pv()).toBe(before);
   });
 
   test("dislike → remove dislike", async () => {
     const { Post } = await dbCon();
-    await postsLike.POST(jsonRequest("/api/posts/like", { like: false, post_id: postId, author_id: author.id, user_id: voter }));
-    await Bun.sleep(50);
+    signInAs(voter);
+    await postsLike.POST(jsonRequest("/api/posts/like", { like: false, post_id: postId }));
     expect((await Post.findById(postId))!.downvotes).toEqual([voter]);
-    await postsDislike.POST(jsonRequest("/api/posts/dislike", { like: false, post_id: postId, author_id: author.id, user_id: voter }));
-    await Bun.sleep(50);
+    await postsDislike.POST(jsonRequest("/api/posts/dislike", { like: false, post_id: postId }));
     expect((await Post.findById(postId))!.downvotes).toEqual([]);
   });
 
@@ -360,7 +479,8 @@ describe("posts", () => {
   });
 
   test("like on an unknown post returns false", async () => {
-    const { body } = await json(postsLike.POST(jsonRequest("/api/posts/like", { like: true, post_id: "000000000000000000000000", author_id: author.id, user_id: voter })));
+    signInAs(voter);
+    const { body } = await json(postsLike.POST(jsonRequest("/api/posts/like", { like: true, post_id: "000000000000000000000000" })));
     expect(body).toBe(false);
   });
 
@@ -368,6 +488,8 @@ describe("posts", () => {
     const { Post } = await dbCon();
     const { body } = await createPost("Pending question");
     await Post.updateOne({ _id: body.post._id }, { approved: false });
+    const { User } = await dbCon();
+    signInAs(String((await User.findOne({ email: "api-mod@example.com" }))!._id));
 
     const pending = await json(postsUnapproved.POST());
     expect(pending.body.map((p: { title: string }) => p.title)).toContain("Pending question");
@@ -394,45 +516,50 @@ describe("posts", () => {
     let answerB: string;
 
     test("empty editor content is rejected", async () => {
-      const { body } = await json(answersCreate.POST(jsonRequest("/api/answers/create", { body: "<p><br></p>", author, post: postId, blob })));
+      const { body } = await json(answersCreate.POST(jsonRequest("/api/answers/create", { body: "<p><br></p>", post: postId, blob })));
       expect(body).toEqual({ answer: null, message: "The post cannot be empty" });
     });
 
     test("an answer that is only a script counts as empty after sanitizing", async () => {
-      const { body } = await json(answersCreate.POST(jsonRequest("/api/answers/create", { body: "<script>alert(1)</script>", author, post: postId, blob })));
+      const { body } = await json(answersCreate.POST(jsonRequest("/api/answers/create", { body: "<script>alert(1)</script>", post: postId, blob })));
       expect(body).toEqual({ answer: null, message: "The post cannot be empty" });
     });
 
     test("create answers (named and anonymous); admins notified", async () => {
       clearMail();
-      const a = await json(answersCreate.POST(jsonRequest("/api/answers/create", { body: "<p>Add compost.</p>", author, post: postId, blob })));
+      signInAs(author.id);
+      const a = await json(answersCreate.POST(jsonRequest("/api/answers/create", { body: "<p>Add compost.</p>", post: postId, blob })));
       expect(a.body.message).toBe("Post success");
       answerA = a.body.answer._id;
-      const b = await json(answersCreate.POST(jsonRequest("/api/answers/create", { body: "<p>Use gypsum.</p>", author: null, post: postId, blob })));
+      signInAs(null);
+      const b = await json(answersCreate.POST(jsonRequest("/api/answers/create", { body: "<p>Use gypsum.</p>", post: postId, blob })));
       answerB = b.body.answer._id;
       await Bun.sleep(20);
       expect(sentMail().filter((m) => m.subject === "New answer")).toHaveLength(6); // 3 admins × 2 answers
     });
 
     test("answer votes + listing sorted by upvotes", async () => {
-      const liked = await json(answersLike.POST(jsonRequest("/api/answers/like", { like: true, answer_id: answerB, author_id: author.id, user_id: voter })));
+      signInAs(voter);
+      const liked = await json(answersLike.POST(jsonRequest("/api/answers/like", { like: true, answer_id: answerB })));
       expect(liked.body).toBe(true);
-      await Bun.sleep(50);
       const list = await json(answersById.POST(jsonRequest(`/api/answers/${postId}`, {}), ctx({ id: postId })));
       expect(list.body.map((a: { _id: string }) => a._id)).toEqual([answerB, answerA]);
       expect(await getAnswersForPost(postId)).toHaveLength(2);
 
-      const unliked = await json(answersDislike.POST(jsonRequest("/api/answers/dislike", { like: true, answer_id: answerB, author_id: author.id, user_id: voter })));
+      const unliked = await json(answersDislike.POST(jsonRequest("/api/answers/dislike", { like: true, answer_id: answerB })));
       expect(unliked.body).toBe(true);
     });
 
     test("count: questions and answers per user", async () => {
+      signInAs(author.id);
       const { body } = await json(userCount.GET(jsonRequest(`/api/${author.id}/count`), ctx({ user: author.id })));
       expect(body).toEqual({ posts: 3, answers: 1 });
     });
 
-    test("GET /api/answers/[id] deletes the answer", async () => {
-      const { body } = await json(answersById.GET(jsonRequest(`/api/answers/${answerA}`), ctx({ id: answerA })));
+    test("DELETE /api/answers/[id] deletes the answer", async () => {
+      const { User } = await dbCon();
+      signInAs(String((await User.findOne({ email: "api-mod@example.com" }))!._id));
+      const { body } = await json(answersById.DELETE(jsonRequest(`/api/answers/${answerA}`, undefined, { method: "DELETE" }), ctx({ id: answerA })));
       expect(body).toEqual({ success: true, message: "Answer deleted" });
       expect(await getAnswersForPost(postId)).toHaveLength(1);
     });
@@ -444,6 +571,7 @@ describe("users: delete", () => {
   test("POST /api/[user]/delete removes the account", async () => {
     const { User } = await dbCon();
     const u = await User.create({ email: "bye@example.com", password: "x" });
+    signInAs(String(u._id));
     const { body } = await json(userDelete.POST(jsonRequest(`/api/${u._id}/delete`, {}), ctx({ user: String(u._id) })));
     expect(body).toMatchObject({ acknowledged: true, deletedCount: 1 });
   });

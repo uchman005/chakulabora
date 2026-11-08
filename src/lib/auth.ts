@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcrypt";
 import { dbCon } from "@/models";
 import handleGoogleUser from "@/lib/google";
+import { normalizePhone } from "@/lib/phone";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -18,22 +19,30 @@ export const authOptions: NextAuthOptions = {
       type: "credentials",
       name: "Chakulabora",
       credentials: {
+        identifier: { label: "Email or phone number", type: "text" },
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const email = credentials?.email;
+        // `identifier` is an email or phone number; `email` is kept for existing callers.
+        const identifier = (credentials?.identifier || credentials?.email)?.trim();
         const password = credentials?.password;
-        if (!email || !password) {
-          throw new Error("Email and password are required");
+        if (!identifier || !password) {
+          throw new Error("Email or phone number and password are required");
         }
 
         const { User } = await dbCon();
-        const user = await User.findOne({ email });
+        const loginPhone = identifier.includes("@") ? null : normalizePhone(identifier);
+        // Never query with a missing value: it would match accounts lacking that field.
+        const user = identifier.includes("@")
+          ? await User.findOne({ email: identifier })
+          : loginPhone
+            ? await User.findOne({ loginPhone })
+            : null;
 
         if (!user) {
           throw new Error(
-            `User not found, Check the email to ensure there are no typos`
+            `User not found, Check the email or phone number (with country code) to ensure there are no typos`
           );
         }
         if (!user.password || !(await bcrypt.compare(password, user.password as string))) {

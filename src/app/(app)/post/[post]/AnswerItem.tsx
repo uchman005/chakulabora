@@ -7,7 +7,7 @@ import { AiFillDelete, AiFillDislike, AiFillLike, AiOutlineDislike, AiOutlineLik
 import { useAppSelector } from "@/store";
 import { notify } from "@/lib/toast";
 import type { IAnswer } from "@/types";
-import { displayName } from "@/lib/user";
+import { displayName, isModerator } from "@/lib/user";
 
 export default function AnswerItem({ data, mutate }: { data: IAnswer; mutate: () => void }) {
   const { status } = useSession();
@@ -26,9 +26,9 @@ export default function AnswerItem({ data, mutate }: { data: IAnswer; mutate: ()
     const res = await fetch(api, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ like, answer_id: data._id, author_id: data.author?.id, user_id: user.id }),
+      body: JSON.stringify({ like, answer_id: data._id }),
     });
-    if (await res.json()) {
+    if ((await res.json()) === true) {
       mutate();
       notify({
         title: like ? (active ? "Like Removed" : "Answer Liked") : active ? "Dislike Removed" : "Answer Disliked",
@@ -48,7 +48,7 @@ export default function AnswerItem({ data, mutate }: { data: IAnswer; mutate: ()
     notify({ title: "You are not signed in", description: `You must be signed in to ${action}`, status: "info" });
 
   const deleteAnswer = async () => {
-    const res = await fetch(`/api/answers/${data._id}`);
+    const res = await fetch(`/api/answers/${data._id}`, { method: "DELETE" });
     const result = await res.json();
     if (result.success) {
       notify({ title: "Answer deleted", description: "The answer has been deleted.", status: "success", duration: 3000 });
@@ -97,7 +97,7 @@ export default function AnswerItem({ data, mutate }: { data: IAnswer; mutate: ()
         <div className="flex flex-wrap items-center gap-4 text-base">
           <span>{authorName}</span>
           <time>{data.time}</time>
-          {user.role === "Moderator" && (
+          {isModerator(user) && (
             <button type="button" onClick={() => dialogRef.current?.showModal()} aria-label="Delete answer" className="rounded-md p-1 hover:bg-red-50">
               <AiFillDelete className="text-2xl text-red-600" aria-hidden />
             </button>

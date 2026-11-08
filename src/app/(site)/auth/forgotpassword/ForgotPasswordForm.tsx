@@ -60,6 +60,13 @@ export default function ForgotPasswordForm() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+          <p className="mb-4 text-base text-gray-700">
+            Signed up with only a phone number?{" "}
+            <Link className="text-blue-700 underline" href="/contact">
+              Contact us
+            </Link>{" "}
+            to reset your password.
+          </p>
           <button
             type="submit"
             className="rounded-sm bg-blue-600 p-2 text-white hover:bg-blue-800 disabled:opacity-65"

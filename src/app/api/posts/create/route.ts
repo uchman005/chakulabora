@@ -3,18 +3,16 @@ import { dbCon } from "@/models";
 import SendMail from "@/lib/send-mail";
 import { sanitizeRichText } from "@/lib/sanitize";
 import { readJson } from "@/lib/http";
-import type { IUser } from "@/types";
-import { displayName } from "@/lib/user";
+import { getCurrentUser } from "@/lib/session";
+import { displayName, publicAuthor } from "@/lib/user";
 
 export async function POST(req: NextRequest) {
-  const data = await readJson<{
-    title: string;
-    body: string;
-    author: IUser;
-    category: string;
-    image: string;
-  }>(req);
-  const blob: string = (data.title ?? "")
+  const author = await getCurrentUser();
+  if (!author) {
+    return NextResponse.json({ post: null, message: "You must be signed in to ask a question" }, { status: 401 });
+  }
+  const data = await readJson<{ title: string; body: string; category: string; image: string }>(req);
+  const blob: string = String(data.title ?? "")
     .toLowerCase()
     .replaceAll(" ", "-")
     .replace(/[^\w-]+/g, "")
@@ -26,12 +24,7 @@ export async function POST(req: NextRequest) {
     post = new Post({
       title: data.title,
       body: sanitizeRichText(data.body),
-      author: {
-        id: data.author?.id,
-        email: data.author?.email,
-        fname: data.author?.fname,
-        lname: data.author?.lname,
-      },
+      author: publicAuthor(author), // from the session, never from the request
       approved: true, // change this to false after testing
       category: data.category,
       image: data.image,
@@ -44,7 +37,7 @@ export async function POST(req: NextRequest) {
     message = "Post created successfully";
     const mailMessage =
       "A new post has been created on the platform by " +
-      displayName(data.author, data.author?.email) +
+      displayName(author, author.email || author.phone) +
       ". Please, review the post and approve it.";
     await SendMail("uchenna@passionofhope.org", "New Post Created", mailMessage, mailMessage);
   } catch (err) {

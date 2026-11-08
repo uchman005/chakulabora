@@ -15,14 +15,18 @@ export interface SentMail {
 declare global {
   var __sentMail: SentMail[];
   var __mongo: MongoMemoryServer;
+  var __session: { user: { email: string } } | null;
 }
 
 globalThis.__sentMail = [];
+globalThis.__session = null;
 
 // `server-only` throws outside React Server Components; route handlers import it.
 mock.module("server-only", () => ({}));
 // revalidatePath needs a Next.js request store; it is a no-op under test.
 mock.module("next/cache", () => ({ revalidatePath: () => {}, revalidateTag: () => {} }));
+// Only the session lookup is stubbed (it needs a Next.js request); see signInAs in helpers.ts.
+mock.module("next-auth", () => ({ getServerSession: async () => globalThis.__session, default: () => {} }));
 // Never send real email: record calls instead.
 mock.module(path.resolve(import.meta.dir, "../src/lib/send-mail.ts"), () => ({
   default: async (to: string, subject: string, text: string) => {

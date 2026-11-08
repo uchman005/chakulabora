@@ -12,7 +12,7 @@ import { useAppSelector } from "@/store";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 import { notify } from "@/lib/toast";
 import type { IUser } from "@/types";
-import { displayName } from "@/lib/user";
+import { displayName, isModerator } from "@/lib/user";
 
 interface LinkItem {
   name: string;
@@ -27,8 +27,6 @@ const PUBLIC_LINKS: LinkItem[] = [
 ];
 const AUTH_LINKS: LinkItem[] = [...PUBLIC_LINKS, { name: "Settings", icon: FiSettings, link: "/dashboard/setting" }];
 const MODERATOR_LINKS: LinkItem[] = [...AUTH_LINKS, { name: "Approve posts", icon: FiStar, link: "/dashboard/approve" }];
-
-const isModerator = (user: IUser) => !!user.role && user.role !== "Community Member";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
@@ -258,7 +256,7 @@ function TopBar({ user, status, drawerId, drawerOpen, openerRef, onOpen }: TopBa
             <Image className="size-8 rounded-full object-cover" src="/placeholder.png" alt="" width={32} height={32} />
             <span className="hidden text-left md:flex md:flex-col">
               <span className="text-sm">
-                {displayName(user, user.email)}
+                {displayName(user, user.email || user.phone)}
               </span>
               <span className="text-xs text-gray-600">{user.role}</span>
             </span>

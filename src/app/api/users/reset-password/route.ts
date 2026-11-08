@@ -4,14 +4,18 @@ import { dbCon } from "@/models";
 import { readJson } from "@/lib/http";
 
 export async function POST(req: NextRequest) {
-  const { token, password } = await readJson<{ token?: string; password?: string }>(req);
+  const { token, password } = await readJson<{ token?: unknown; password?: unknown }>(req);
+  // Strings only: an object like {"$ne": null} would otherwise match any pending reset.
+  if (typeof token !== "string" || !token || typeof password !== "string" || !password) {
+    return NextResponse.json({ success: false, message: "User not found or token is invalid" });
+  }
   const { User } = await dbCon();
   try {
     const user = await User.findOne({
       resetPasswordToken: token,
       resetPasswordExpires: { $gt: Date.now() },
     });
-    if (!user || !password) {
+    if (!user) {
       return NextResponse.json({ success: false, message: "User not found or token is invalid" });
     }
     const salt = await genSalt(10);
