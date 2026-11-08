@@ -1,4 +1,4 @@
-import SendMail from "../lib/send-mail";
+import SendMail from "@/lib/send-mail";
 const peopleToNotify: string[] = [
   "victor@passionofhope.org",
   "brian@passionofhope.org",
@@ -12,7 +12,7 @@ const peopleToNotify: string[] = [
  * @description - this function sends an email to the admins of the site
  */
 export default function notifyAdmin(subject: string, message: string): void {
-  let html = `
+  const html = `
     <h1>${subject}</h1>
     <p>${message}</p>
     <p>You are getting this automatic email because the site admin included your email as one of the people to get notified for activities on the chakula bora network</p>

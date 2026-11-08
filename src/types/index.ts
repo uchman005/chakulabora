@@ -1,7 +1,7 @@
 export interface IUser {
   id?: string;
-  fname: string;
-  lname: string;
+  fname?: string;
+  lname?: string;
   email: string;
   bio?: string;
   googleId?:string;
@@ -33,10 +33,6 @@ export interface IPost {
   blob?: string;
 }
 
-export interface ResponseFunctions {
-  GET?: Function;
-  POST?: Function;
-}
 
 export interface IAnswer {
   body: string;

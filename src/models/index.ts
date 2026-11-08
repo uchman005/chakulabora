@@ -1,57 +1,52 @@
-import { Connection, ConnectOptions, connect } from "mongoose";
+import "server-only";
+import { Connection, connect } from "mongoose";
 import User from "./User";
 import Post from "./Post";
 import Answer from "./Answer";
 import Subscriber from "./Subscribe";
 import Contact from "./Contact";
 
-const { MONGODB_URL_LOCAL } = process.env;
+type MongooseCache = {
+  conn: Connection | null;
+  promise: Promise<Connection> | null;
+};
 
-if (!MONGODB_URL_LOCAL) {
-  throw new Error("Please define the MONGODB_URL_LOCAL environment variable");
-}
+// Cache on globalThis so dev hot-reloads and serverless warm starts reuse
+// a single connection instead of opening a new one per module evaluation.
+const globalForMongoose = globalThis as unknown as { _mongoose?: MongooseCache };
+const cached: MongooseCache = (globalForMongoose._mongoose ??= {
+  conn: null,
+  promise: null,
+});
 
-let cachedConnection: { conn: Connection | null; promise: Promise<Connection> | null } = { conn: null, promise: null };
+const models = { User, Post, Answer, Subscriber, Contact };
 
 export const dbCon = async () => {
-  // If a connection is already established, return it.
-  if (cachedConnection.conn) {
-    return {
-      conn: cachedConnection.conn,
-      User,
-      Post,
-      Answer,
-      Subscriber,
-      Contact,
-    };
+  if (cached.conn) {
+    return { conn: cached.conn, ...models };
   }
 
-  // If a connection promise is not yet set, initialize it.
-  if (!cachedConnection.promise) {
-    const options: ConnectOptions = {};
-    
-    // Establish a new connection and store it in the promise.
-    cachedConnection.promise = connect(MONGODB_URL_LOCAL, options).then((mongoose) => mongoose.connection);
+  const { MONGODB_URL_LOCAL } = process.env;
+  if (!MONGODB_URL_LOCAL) {
+    throw new Error("Please define the MONGODB_URL_LOCAL environment variable");
   }
 
-  // Await the promise and set the connection.
-  cachedConnection.conn = await cachedConnection.promise;
+  if (!cached.promise) {
+    cached.promise = connect(MONGODB_URL_LOCAL).then((mongoose) => {
+      const conn = mongoose.connection;
+      conn.on("error", (err: unknown) => {
+        console.error(`Mongoose default connection has occurred ${err} error`);
+      });
+      return conn;
+    });
+  }
 
-  // Setup event listeners for the connection, ensuring they're added only once.
-  cachedConnection.conn.on("connected", () => {
-    console.log("Mongoose default connection is open");
-  });
+  try {
+    cached.conn = await cached.promise;
+  } catch (err) {
+    cached.promise = null;
+    throw err;
+  }
 
-  cachedConnection.conn.on("error", (err: any) => {
-    console.error(`Mongoose default connection has occurred ${err} error`);
-  });
-
-  return {
-    conn: cachedConnection.conn,
-    User,
-    Post,
-    Answer,
-    Subscriber,
-    Contact,
-  };
+  return { conn: cached.conn, ...models };
 };

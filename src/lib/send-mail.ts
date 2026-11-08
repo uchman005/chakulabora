@@ -21,8 +21,8 @@ const SendMail = async (
       text: text,
       html: html,
     });
-  } catch (err: any) {
-    console.log("Mail sending failed: " + err.message);
+  } catch (err) {
+    console.log("Mail sending failed: " + (err as Error).message);
   }
 };
 export default SendMail;

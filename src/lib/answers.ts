@@ -1,4 +1,4 @@
-import { dbCon } from "../models";
+import { dbCon } from "@/models";
 export const like_answer = async (
   like: boolean,
   answer_id: string,
@@ -20,8 +20,8 @@ export const like_answer = async (
     if (answer.downvotes === undefined) {
       answer.downvotes = [];
     }
-    let upvoted = answer.upvotes.includes(user_id);
-    let downvoted = answer.downvotes.includes(user_id);
+    const upvoted = answer.upvotes.includes(user_id);
+    const downvoted = answer.downvotes.includes(user_id);
     if (!upvoted && !downvoted) {
       if (like) {
         answer.upvotes.push(user_id);
@@ -30,7 +30,7 @@ export const like_answer = async (
       }
       answer.save();
     }
-  } catch (error) {
+  } catch {
     answer = false;
   }
 
@@ -49,7 +49,7 @@ export const like_answer = async (
       user.pv -= 1;
     }
     user.save();
-  } catch (error) {
+  } catch {
     user = false;
   }
 
@@ -81,8 +81,8 @@ export const dislike_answer = async (
     if (answer.downvotes === undefined) {
       answer.downvotes = [];
     }
-    let upvoted = answer.upvotes.includes(user_id);
-    let downvoted = answer.downvotes.includes(user_id);
+    const upvoted = answer.upvotes.includes(user_id);
+    const downvoted = answer.downvotes.includes(user_id);
     if (upvoted || downvoted) {
       if (like) {
         answer.upvotes = answer.upvotes.filter((item: string) => item !== user_id);
@@ -91,7 +91,7 @@ export const dislike_answer = async (
       }
       answer.save();
     }
-  } catch (error) {
+  } catch {
     answer = false;
   }
 
@@ -110,7 +110,7 @@ export const dislike_answer = async (
       user.pv += 1;
     }
     user.save();
-  } catch (error) {
+  } catch {
     user = false;
   }
 

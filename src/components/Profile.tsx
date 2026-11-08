@@ -1,68 +1,59 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import useSWR from 'swr';
-import axios from 'axios';
-const fetcher = async (url: string) => {
-    const res = await axios.get(url);
-    const data = res.data;
-    return data;
-}
-export default function Profile({ user }: any) {
-    const { data } = useSWR(`/api/${user.id}/count`, fetcher);
+"use client";
 
-    return (
-        <div className='flex py-6 w-[70%]'>
-            <div className="max-w-270 w-full bg-white shadow-2xl rounded-md overflow-hidden">
+import Link from "next/link";
+import Image from "next/image";
+import useSWR from "swr";
+import type { IUser } from "@/types";
+import { displayName } from "@/lib/user";
 
-                <div className='justify-center mt-12'>
-                    <div className="relative rounded-full overflow-hidden w-40 h-40 mx-auto mb-5">
-                        <Image
-                            width={1}
-                            height={1}
-                            className="w-full h-full object-cover"
-                            src="/placeholder.png"
-                            alt="Profile avatar"
-                        />
-                        <div className="absolute inset-0 bg-black opacity-40"></div>
-                    </div>
-                </div>
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-                <div className='p-6'>
-                    <div className="flex flex-col justify-center items-center mb-5">
-                        <h2 className="md:text-xl lg:text-2xl font-medium text-nowrap">{user?.fname} {user?.lname}</h2>
-                        <span className="text-gray-500">{user?.role}</span>
-                    </div>
+export default function Profile({ user }: { user: IUser }) {
+  const { data } = useSWR<{ posts: number; answers: number }>(
+    user.id ? `/api/${user.id}/count` : null,
+    fetcher
+  );
 
-
-                    <div className='flex justify-center space-6 gap-4'>
-                        <div className='flex flex-col space-0 items-center'>
-                            <span className='font-semibold'>{data?.posts}</span>
-                            <p className='font-sm text-gray-500'>
-                                Questions
-                            </p>
-                        </div>
-                        <div className='flex flex-col space-0 items-center justify-center'>
-                            <span className='font-semibold'>{data?.answers}</span>
-                            <p className='font-sm text-gray-500'>
-                                Answers
-                            </p>
-                        </div>
-                        <div className='flex flex-col space-0 items-center justify-center'>
-                            <span className='font-semibold'>{user?.pv}</span>
-                            <p className='font-sm text-gray-500'>
-                                Points
-                            </p>
-                        </div>
-
-                    </div>
-                    <button
-                        className="w-full mt-8 bg-blue-800 text-white rounded-md py-2 px-4 hover:bg-blue-700 transition-all duration-200"
-                    >
-                        <Link href='/dashboard/setting'>Settings</Link>
-                    </button>
-
-                </div>
-            </div>
+  return (
+    <div className="flex w-full py-6 md:w-[70%]">
+      <div className="w-full overflow-hidden rounded-md bg-white shadow-2xl">
+        <div className="mt-12 justify-center">
+          <div className="relative mx-auto mb-5 size-40 overflow-hidden rounded-full">
+            <Image width={160} height={160} className="size-full object-cover" src="/placeholder.png" alt="" />
+            <div className="absolute inset-0 bg-black opacity-40" />
+          </div>
         </div>
-    );
+
+        <div className="p-6">
+          <div className="mb-5 flex flex-col items-center justify-center">
+            <h1 className="text-xl font-medium text-nowrap lg:text-2xl">
+              {displayName(user, user?.email)}
+            </h1>
+            <span className="text-gray-600">{user?.role}</span>
+          </div>
+
+          <dl className="flex justify-center gap-4">
+            <div className="flex flex-col-reverse items-center">
+              <dt className="text-gray-600">Questions</dt>
+              <dd className="m-0 font-semibold">{data?.posts ?? "–"}</dd>
+            </div>
+            <div className="flex flex-col-reverse items-center">
+              <dt className="text-gray-600">Answers</dt>
+              <dd className="m-0 font-semibold">{data?.answers ?? "–"}</dd>
+            </div>
+            <div className="flex flex-col-reverse items-center">
+              <dt className="text-gray-600">Points</dt>
+              <dd className="m-0 font-semibold">{user?.pv}</dd>
+            </div>
+          </dl>
+          <Link
+            href="/dashboard/setting"
+            className="mt-8 block w-full rounded-md bg-blue-800 px-4 py-2 text-center text-white transition-all duration-200 hover:bg-blue-700"
+          >
+            Settings
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 }

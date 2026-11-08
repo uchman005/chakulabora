@@ -1,18 +1,21 @@
-import { IUser } from "../interface";
-import { dbCon } from "../models";
+import { dbCon } from "@/models";
 
 /**
  * Handles saving or updating user data when signing in with Google.
  * @param {Object} googleUser - The user data returned from Google authentication.
  * @returns {Promise<IUser>} - The saved or updated user document.
  */
-export default async function handleGoogleUser(googleUser: any) {
+export default async function handleGoogleUser(googleUser: {
+  id?: string;
+  email?: string | null;
+  given_name?: string | null;
+}) {
   const { id, email, given_name } = googleUser;
   const { User } = await dbCon();
   let user = await User.findOne({ $or: [{ email }, { googleId: id }] });
 
   if (user) {
-    user.fname = given_name;
+    if (given_name) user.fname = given_name;
     user.googleId = id;
     await user.save();
   } else {

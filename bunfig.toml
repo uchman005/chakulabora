@@ -1,0 +1,4 @@
+[test]
+preload = ["./tests/setup.ts"]
+# First run downloads/starts mongod; give hooks room.
+timeout = 60000

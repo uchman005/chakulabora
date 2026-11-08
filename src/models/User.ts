@@ -1,11 +1,11 @@
-import mongoose, { Schema, model, models } from "mongoose";
-import { IUser } from "../interface";
+import { Schema, model, models } from "mongoose";
+import { IUser } from "@/types";
 
-mongoose.Promise = global.Promise;
 
 const UserSchema: Schema = new Schema({
-  fname: { type: String, required: true },
-  lname: { type: String },
+  // Only email is required at signup; profile fields are filled in later from Settings.
+  fname: { type: String, trim: true },
+  lname: { type: String, trim: true },
   email: { type: String, required: true, unique: true },
   bio: String,
   password: { type: String },

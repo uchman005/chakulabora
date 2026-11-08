@@ -1,8 +1,8 @@
-import mongoose, { Schema, model, models } from "mongoose";
-import { IPost } from "../interface";
+import { Schema, model, models } from "mongoose";
+import { IPost } from "@/types";
 import moment from "moment";
-let now = moment().format("LLL");
-mongoose.Promise = global.Promise;
+// Evaluated per document (previously computed once at server start).
+const now = () => moment().format("LLL");
 
 const PostSchema: Schema = new Schema({
   title: { type: String, required: true },
@@ -17,37 +17,25 @@ const PostSchema: Schema = new Schema({
   },
   category: String,
   image: String,
-  upvotes: Array<String>,
-  downvotes: Array<String>,
+  upvotes: [String],
+  downvotes: [String],
   blob: { type: String, required: true },
   time: { type: String, default: now },
   approved: { type: Boolean, default: false },
   solved: { type: Boolean, default: false },
   body: { type: String, required: true },
 });
-PostSchema.pre("save", async function (next) {
-  const doc = this;
-
-  // Only modify the blob during creation
-  if (doc.isNew) {
-    try {
-      let isUnique = false;
-
-      // Ensure uniqueness for blob field
-      while (!isUnique) {
-        const existingDoc = await models.Post.findOne({ blob: doc.blob });
-        if (!existingDoc) {
-          isUnique = true;
-        } else {
-          doc.blob = `${doc.blob}-${Math.floor(Math.random() * 1000)}`;
-        }
-      }
-    } catch (error) {
-      return next();
+// Mongoose 9: async middleware resolves instead of calling `next()`.
+PostSchema.pre("save", async function () {
+  // Only make the blob (URL slug) unique when the post is first created.
+  if (!this.isNew) return;
+  try {
+    while (await this.model("Post").exists({ blob: this.get("blob") })) {
+      this.set("blob", `${this.get("blob")}-${Math.floor(Math.random() * 1000)}`);
     }
+  } catch {
+    // Lookup failure: save with the original blob, as before.
   }
-
-  next();
 });
 
 const Post = models.Post || model<IPost>("Post", PostSchema);

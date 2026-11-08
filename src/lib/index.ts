@@ -1,4 +1,4 @@
-import { dbCon } from "../models";
+import { dbCon } from "@/models";
 export const like_post = async (
   like: boolean,
   post_id: string,
@@ -20,8 +20,8 @@ export const like_post = async (
     if (post.downvotes === undefined) {
       post.downvotes = [];
     }
-    let upvoted = post.upvotes.includes(user_id);
-    let downvoted = post.downvotes.includes(user_id);
+    const upvoted = post.upvotes.includes(user_id);
+    const downvoted = post.downvotes.includes(user_id);
     if (!upvoted && !downvoted) {
       if (like) {
         post.upvotes.push(user_id);
@@ -30,7 +30,7 @@ export const like_post = async (
       }
       post.save();
     }
-  } catch (error) {
+  } catch {
     post = false;
   }
 
@@ -49,7 +49,7 @@ export const like_post = async (
       user.pv -= 1;
     }
     user.save();
-  } catch (error) {
+  } catch {
     user = false;
   }
 
@@ -81,8 +81,8 @@ export const dislike_post = async (
     if (post.downvotes === undefined) {
       post.downvotes = [];
     }
-    let upvoted = post.upvotes.includes(user_id);
-    let downvoted = post.downvotes.includes(user_id);
+    const upvoted = post.upvotes.includes(user_id);
+    const downvoted = post.downvotes.includes(user_id);
     if (upvoted || downvoted) {
       if (like) {
         post.upvotes = post.upvotes.filter((item: string) => item !== user_id);
@@ -91,7 +91,7 @@ export const dislike_post = async (
       }
       post.save();
     }
-  } catch (error) {
+  } catch {
     post = false;
   }
 
@@ -110,7 +110,7 @@ export const dislike_post = async (
       user.pv += 1;
     }
     user.save();
-  } catch (error) {
+  } catch {
     user = false;
   }
 

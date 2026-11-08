@@ -1,8 +1,8 @@
-import mongoose, { Schema, model, models } from "mongoose";
-import { ISubscriber } from "../interface";
+import { Schema, model, models } from "mongoose";
+import { ISubscriber } from "@/types";
 import moment from "moment";
-let now = moment().format("LLL");
-mongoose.Promise = global.Promise;
+// Evaluated per document (previously computed once at server start).
+const now = () => moment().format("LLL");
 
 const SubscriberSchema: Schema = new Schema({
   email: { type: String, required: true, unique: true },

@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+archive/
 /.pnp
 .pnp.js
 
@@ -27,10 +28,13 @@ yarn-error.log*
 
 # local env files
 .env*.local
-
+.env
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local database snapshots (contain production user data)
+/.data/

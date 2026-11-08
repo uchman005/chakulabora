@@ -1,169 +1,140 @@
-import {
-    chakra,
-    VisuallyHidden,
-    useColorModeValue,
-    useToast,
-} from '@chakra-ui/react';
-import { ReactNode, useState, ChangeEvent, FormEvent } from 'react';
-import { FaFacebook, FaLinkedin } from 'react-icons/fa';
-import { BiMailSend } from 'react-icons/bi';
-import Link from 'next/link'
-const Logo = (props: any) => {
-    return (
-        <h1 className='bold text-3xl'>Chakula Bora Network</h1>
-    );
-};
+"use client";
 
-const SocialButton = ({
-    children,
-    label,
-    href,
-}: {
-    children: ReactNode;
-    label: string;
-    href: string;
-}) => {
-    return (
-        <chakra.button
-            bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
-            rounded={'full'}
-            w={8}
-            h={8}
-            cursor={'pointer'}
-            as={'a'}
-            target={href ? '_blank' : '_self'}
-            href={href}
-            display={'inline-flex'}
-            alignItems={'center'}
-            justifyContent={'center'}
-            transition={'background 0.3s ease'}
-            _hover={{
-                bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
-            }}>
-            <VisuallyHidden>{label}</VisuallyHidden>
-            {children}
-        </chakra.button>
-    );
-};
+import { useState, type FormEvent, type ReactNode } from "react";
+import Link from "next/link";
+import { FaFacebook, FaLinkedin } from "react-icons/fa";
+import { BiMailSend } from "react-icons/bi";
+import { notify } from "@/lib/toast";
 
-const ListHeader = ({ children }: { children: ReactNode }) => {
-    return (
-        <p className='text-base text-lg mb-2'>
-            {children}
-        </p>
-    );
-};
+const SocialButton = ({ children, label, href }: { children: ReactNode; label: string; href: string }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex size-8 items-center justify-center rounded-full bg-black/10 transition-colors hover:bg-black/20"
+  >
+    <span className="sr-only">{label} (opens in a new tab)</span>
+    {children}
+  </a>
+);
+
+const ListHeader = ({ children }: { children: ReactNode }) => (
+  <h2 className="mb-2 text-lg font-medium">{children}</h2>
+);
 
 export default function Footer() {
-    const bg = useColorModeValue('gray-100', 'gray-900');
-    const text = useColorModeValue('gray-700', 'gray-200')
-    const [email, setEmail] = useState('');
-    const toast = useToast();
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        fetch('/api/users/subscribe-email', {
-            method: 'POST',
-            body: JSON.stringify({ email })
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data === null) {
-                    toast({
-                        title: 'Subscription Failed',
-                        description: 'Email subscription failed, you\'ve subscribed before',
-                        status: 'warning',
-                        duration: 5000,
-                        isClosable: true,
-                        position: "top",
-                        size: { width: '300', height: '200' },
-                        variant: 'top-accent'
-                    });
-                    setEmail('');
-                    return;
-                }
-                const { message } = data;
-                toast({
-                    title: 'Subscribed successfully',
-                    description: 'Thanks for subscribing, we\'ll keep in touch',
-                    status: 'success',
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top",
-                    size: { width: '300', height: '200' },
-                    variant: 'top-accent'
-                })
-                setEmail('');
-            })
-            .catch((error) => {
-                toast({
-                    title: 'Subscription Failed',
-                    description: 'Email subscription failed, check network connectivity' + error.message,
-                    status: 'warning',
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top",
-                    size: { width: '300', height: '200' },
-                    variant: 'top-accent'
-                });
-                setEmail('');
-            })
-    }
-    return (
-        <footer className={`bg-${bg} text-${text} bottom-0 left-0 right-0`}>
-            <div className='flex py-10 px-10' >
-                <div className='grid md:grid-cols-4 gap-8'>
-                    <div className='space-y-6'>
-                        <div>
-                            <Logo color={useColorModeValue('gray.700', 'white')} />
-                        </div>
-                        <span className='text-sm'>
-                            © 2021 - {new Date().getFullYear()} Chakula Bora. All rights reserved
-                        </span>
-                        <div className='flex gap-4'>
+  const [email, setEmail] = useState("");
+  const [busy, setBusy] = useState(false);
 
-                            <SocialButton label={'Instagram'} href={'https://web.facebook.com/groups/675166221332788'}>
-                                <FaFacebook />
-                            </SocialButton>
-                            <SocialButton label={'Instagram'} href={'https://www.linkedin.com/company/passionofhopeinternational/'}>
-                                <FaLinkedin />
-                            </SocialButton>
-                        </div>
-                    </div>
-                    <div className='flex flex-col gap-2'>
-                        <ListHeader>Company</ListHeader>
-                        <Link href={'/about'}>About us</Link>
-                        <Link href={'/contact'}>Contact us</Link>
-                        <Link href={'https://www.paypal.com/donate/?hosted_button_id=TRAK8ZMG52U6S'}>Donate</Link>
-                    </div>
-                    <div className='flex flex-col gap-2'>
-                        <ListHeader>Support</ListHeader>
-                        <Link href={'/contact'}>Help Center</Link>
-                        <Link href={'/coc'}>Terms of Service</Link>
-                        <Link href={'/legal'}>Legal</Link>
-                        <Link href={'/privacy'}>Privacy Policy</Link>
-                    </div>
-                    <div className='flex flex-col gap-2'>
-                        <ListHeader>Stay up to date</ListHeader>
-                        <form className='flex flex-row' onSubmit={handleSubmit}>
-                            <input
-                                type="email"
-                                name='email'
-                                placeholder="Your email address"
-                                className="bg-black-100 form-control text-black focus:bg-white-300"
-                                value={email}
-                                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                    setEmail(e.target.value)
-                                }}
-                            />
-                            <button
-                                type='submit'
-                                className="bg-blue-400 hover:bg-blue-600 text-white hover:text-white py-2 px-4 rounded shadow-black shadow-sm hover:shadow-sm active:shadow-lg"
-                                aria-label="Subscribe"
-                            ><BiMailSend /></button>
-                        </form>
-                    </div>
-                </div>
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setBusy(true);
+    try {
+      const res = await fetch("/api/users/subscribe-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (data === null) {
+        notify({
+          title: "Subscription Failed",
+          description: "Email subscription failed, you've subscribed before",
+          status: "warning",
+        });
+      } else {
+        notify({
+          title: "Subscribed successfully",
+          description: "Thanks for subscribing, we'll keep in touch",
+          status: "success",
+        });
+      }
+    } catch (error) {
+      notify({
+        title: "Subscription Failed",
+        description: "Email subscription failed, check network connectivity " + (error as Error).message,
+        status: "warning",
+      });
+    } finally {
+      setEmail("");
+      setBusy(false);
+    }
+  };
+
+  return (
+    <footer className="bg-gray-100 text-gray-700">
+      <div className="flex px-10 py-10">
+        <div className="grid gap-8 md:grid-cols-4">
+          <div className="space-y-6">
+            <p className="mb-0 text-3xl">Chakula Bora Network</p>
+            <p className="mb-0 text-sm">
+              © 2021 - {new Date().getFullYear()} Chakula Bora. All rights reserved
+            </p>
+            <div className="flex gap-4">
+              <SocialButton label="Facebook" href="https://web.facebook.com/groups/675166221332788">
+                <FaFacebook aria-hidden />
+              </SocialButton>
+              <SocialButton label="LinkedIn" href="https://www.linkedin.com/company/passionofhopeinternational/">
+                <FaLinkedin aria-hidden />
+              </SocialButton>
             </div>
-        </footer>
-    );
+          </div>
+
+          <nav aria-labelledby="footer-company" className="flex flex-col gap-2">
+            <ListHeader>
+              <span id="footer-company">Company</span>
+            </ListHeader>
+            <Link href="/about" className="hover:underline">About us</Link>
+            <Link href="/contact" className="hover:underline">Contact us</Link>
+            <a
+              href="https://www.paypal.com/donate/?hosted_button_id=TRAK8ZMG52U6S"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              Donate<span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </nav>
+
+          <nav aria-labelledby="footer-support" className="flex flex-col gap-2">
+            <ListHeader>
+              <span id="footer-support">Support</span>
+            </ListHeader>
+            <Link href="/contact" className="hover:underline">Help Center</Link>
+            <Link href="/coc" className="hover:underline">Terms of Service</Link>
+            <Link href="/legal" className="hover:underline">Legal</Link>
+            <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
+          </nav>
+
+          <div className="flex flex-col gap-2">
+            <ListHeader>Stay up to date</ListHeader>
+            <form className="flex flex-row" onSubmit={handleSubmit}>
+              <label htmlFor="footer-subscribe-email" className="sr-only">
+                Your email address
+              </label>
+              <input
+                id="footer-subscribe-email"
+                type="email"
+                name="email"
+                required
+                autoComplete="email"
+                placeholder="Your email address"
+                className="form-field rounded-r-none"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <button
+                type="submit"
+                disabled={busy}
+                className="rounded-r-md bg-blue-600 px-4 py-2 text-white shadow-xs shadow-black hover:bg-blue-700 active:shadow-lg disabled:opacity-65"
+                aria-label="Subscribe to the newsletter"
+              >
+                <BiMailSend aria-hidden />
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 }
