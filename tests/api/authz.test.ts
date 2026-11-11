@@ -233,7 +233,7 @@ describe("public data doesn't leak", () => {
   test("author email is not exposed by public post and answer reads", async () => {
     const one = await json(postsOne.POST(jsonRequest("/api/posts/authz-approved", {}), ctx({ post: "authz-approved" })));
     expect(one.body.author.email).toBeUndefined();
-    const list = await json(postsFind.POST());
+    const list = await json(postsFind.POST(jsonRequest("/api/posts/find", {})));
     expect(JSON.stringify(list.body)).not.toContain("victim@authz.test");
     const answers = await json(answersById.POST(jsonRequest(`/api/answers/${approvedPost}`, {}), ctx({ id: approvedPost })));
     expect(JSON.stringify(answers.body)).not.toContain("victim@authz.test");

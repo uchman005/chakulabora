@@ -179,6 +179,50 @@ describe("server-rendered content (SEO)", () => {
     expect(text.match(/rel="noopener noreferrer"/g)?.length).toBeGreaterThanOrEqual(3);
   });
 
+  test("search: server-rendered results, highlighted, filterable by topic, noindexed", async () => {
+    const hit = await html("/dashboard?q=mucuna");
+    expect(hit.status).toBe(200);
+    // Answers are not searched, only posts.
+    expect(hit.text).toContain("No questions match your search");
+
+    const content = await html("/dashboard?q=seasons");
+    expect(content.text).toContain(`href="/post/${BLOB}"`);
+    expect(content.text).toMatch(/<mark[^>]*>seasons<\/mark>/);
+    expect(content.text).toMatch(/matching “seasons”/);
+    expect(content.text).toContain('name="robots" content="noindex');
+    expect(content.text).toContain('<link rel="canonical" href="https://chakulabora.net/dashboard"');
+
+    const title = await html("/dashboard?q=COVER+crops");
+    expect(title.text).toContain(`href="/post/${BLOB}"`);
+    expect(title.text).toMatch(/<mark[^>]*>cover<\/mark>/i);
+
+    const topic = await html("/dashboard?topic=Crop+Production");
+    expect(topic.text).toContain(`href="/post/${BLOB}"`);
+    expect(topic.text).not.toContain(`href="/post/${HOSTILE_BLOB}"`);
+    expect(topic.text).toMatch(/<option value="Crop Production" selected/);
+
+    const none = await html("/dashboard?q=zzzz-no-match");
+    expect(none.text).toContain("No questions match your search");
+    expect(none.text).toContain('href="/dashboard"'); // Clear search link
+  });
+
+  test("search form is an accessible GET form that works without JavaScript", async () => {
+    const { text } = await html("/dashboard");
+    const form = text.match(/<form[^>]*>/)?.[0] ?? "";
+    expect(form).toContain('role="search"');
+    expect(form).toContain('action="/dashboard"');
+    expect(text).toContain('<label for="search-q"');
+    expect(text).toContain('<label for="search-topic"');
+    expect(text).toContain('name="q"');
+    expect(text).not.toContain('name="robots" content="noindex');
+  });
+
+  test("hostile search input is shown as text, never as markup", async () => {
+    const { status, text } = await html("/dashboard?q=%3Cscript%3Ealert(1)%3C%2Fscript%3E");
+    expect(status).toBe(200);
+    expect(text).not.toContain("<script>alert(1)</script>");
+  });
+
   test("unapproved post has no share links", async () => {
     const { text } = await html(`/post/${PENDING_BLOB}`);
     expect(text).not.toContain("Share this post");
