@@ -32,6 +32,8 @@ export interface IPost {
   downvotes?: Array<string>;
   category?: string;
   blob?: string;
+  /** Search results only: plain-text snippet around a match in the body. */
+  excerpt?: string;
 }
 
 

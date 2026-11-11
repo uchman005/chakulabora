@@ -6,10 +6,17 @@ import Image from "next/image";
 import useSWR from "swr";
 import { AiOutlineDislike, AiOutlineLike } from "react-icons/ai";
 import { FiCalendar, FiChevronLeft, FiChevronRight, FiUser } from "react-icons/fi";
+import Highlight from "@/components/Highlight";
+import { parseSearch } from "@/lib/search-query";
 import { displayName } from "@/lib/user";
 import type { IPost } from "@/types";
 
-const postFetcher = (url: string) => fetch(url, { method: "POST" }).then((res) => res.json());
+const postFetcher = ([url, q, topic]: [string, string?, string?]) =>
+  fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: q || topic ? JSON.stringify({ q, topic }) : undefined,
+  }).then((res) => res.json());
 
 const PAGE_SIZE = 12;
 
@@ -26,11 +33,14 @@ interface PostCardsProps {
   label: string;
   initialData?: IPost[];
   emptyMessage?: string;
+  /** Active search, if any: sent to the endpoint and used to highlight matches. */
+  search?: { q: string; topic: string };
 }
 
 /** Responsive, accessible card grid of posts with pagination. */
-export default function PostCards({ endpoint, label, initialData, emptyMessage = "There are no questions to display yet." }: PostCardsProps) {
-  const { data, isLoading } = useSWR<IPost[]>(endpoint, postFetcher, { fallbackData: initialData });
+export default function PostCards({ endpoint, label, initialData, emptyMessage = "There are no questions to display yet.", search }: PostCardsProps) {
+  const { data, isLoading } = useSWR<IPost[]>([endpoint, search?.q, search?.topic], postFetcher, { fallbackData: initialData });
+  const terms = search ? parseSearch(search.q).terms : [];
   const [page, setPage] = useState(0);
   const regionRef = useRef<HTMLElement>(null);
   const headingId = `${label.replace(/\W+/g, "-").toLowerCase()}-heading`;
@@ -79,13 +89,13 @@ export default function PostCards({ endpoint, label, initialData, emptyMessage =
         {label}
       </h2>
       <p className="m-0 text-base text-gray-700" aria-live="polite">
-        {`Showing ${start + 1}–${start + visible.length} of ${posts.length} ${posts.length === 1 ? "post" : "posts"}`}
+        {`Showing ${start + 1}–${start + visible.length} of ${posts.length} ${posts.length === 1 ? "post" : "posts"}${searchSummary(search)}`}
       </p>
 
       <ul className="m-0 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 xl:grid-cols-3">
         {visible.map((post) => (
           <li key={post._id ?? post.blob}>
-            <PostCard post={post} />
+            <PostCard post={post} terms={terms} />
           </li>
         ))}
       </ul>
@@ -117,7 +127,13 @@ export default function PostCards({ endpoint, label, initialData, emptyMessage =
   );
 }
 
-function PostCard({ post }: { post: IPost }) {
+/** e.g. ' matching “clay soil” in Soil Science' */
+function searchSummary(search?: { q: string; topic: string }): string {
+  if (!search) return "";
+  return `${search.q ? ` matching “${search.q}”` : ""}${search.topic ? ` in ${search.topic}` : ""}`;
+}
+
+function PostCard({ post, terms }: { post: IPost; terms: string[] }) {
   const likes = post.upvotes?.length ?? 0;
   const dislikes = post.downvotes?.length ?? 0;
   const metaId = `post-meta-${post._id ?? post.blob}`;
@@ -141,16 +157,21 @@ function PostCard({ post }: { post: IPost }) {
             aria-describedby={metaId}
             className="after:absolute after:inset-0 after:content-[''] group-hover:text-blue-800 group-hover:underline focus-visible:outline-none"
           >
-            {post.title}
+            <Highlight text={post.title ?? ""} terms={terms} />
           </Link>
         </h3>
+        {post.excerpt && (
+          <p className="m-0 text-base text-gray-700">
+            <Highlight text={post.excerpt} terms={terms} />
+          </p>
+        )}
 
         <dl id={metaId} className="m-0 mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-700">
           {post.category && (
             <div className="w-full">
               <dt className="sr-only">Category</dt>
               <dd className="m-0 inline-block rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-semibold text-green-800 ring-1 ring-green-700/30">
-                {post.category}
+                <Highlight text={post.category} terms={terms} />
               </dd>
             </div>
           )}

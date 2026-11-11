@@ -411,7 +411,7 @@ describe("posts", () => {
   });
 
   test("find: approved posts, without body, newest first", async () => {
-    const { body } = await json(postsFind.POST());
+    const { body } = await json(postsFind.POST(jsonRequest("/api/posts/find", {})));
     expect(body.length).toBeGreaterThanOrEqual(3);
     expect(body[0].title).toBe("Nameless question");
     expect(body.every((p: { body?: string }) => p.body === undefined)).toBe(true);

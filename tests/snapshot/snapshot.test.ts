@@ -17,6 +17,8 @@ import { dbCon } from "@/models";
 import { getAnswersForPost, getApprovedPosts, getPostByBlob, plainText } from "@/lib/posts";
 import { sanitizeRichText } from "@/lib/sanitize";
 import { displayName } from "@/lib/user";
+import { searchApprovedPosts } from "@/lib/search";
+import { parseSearch } from "@/lib/search-query";
 import sitemap from "@/app/sitemap";
 import * as userGet from "@/app/api/[user]/user/route";
 import * as userCount from "@/app/api/[user]/count/route";
@@ -146,7 +148,7 @@ suite("snapshot: read paths and APIs", () => {
       approved.map((p) => p._id.toString()).sort().reverse() // ObjectIds sort by creation time
     );
     expect(list.every((p) => p.body === undefined)).toBe(true);
-    const viaApi = await json(postsFind.POST());
+    const viaApi = await json(postsFind.POST(jsonRequest("/api/posts/find", {})));
     expect(viaApi.body.length).toBe(approved.length);
   });
 
@@ -176,6 +178,31 @@ suite("snapshot: read paths and APIs", () => {
         posts: raw.posts.filter((p) => (p.author as { id?: string })?.id === id).length,
         answers: raw.answers.filter((a) => (a.author as { id?: string } | null)?.id === id).length,
       });
+    }
+  });
+
+  test("search finds every real approved post by a word from its title, and by its topic", async () => {
+    for (const p of raw.posts.filter((x) => x.approved)) {
+      const word = String(p.title).split(/\W+/).filter((w) => w.length > 3)[0];
+      if (!word) continue;
+      const byWord = await searchApprovedPosts(parseSearch(word));
+      expect(byWord.map((x) => x.blob)).toContain(String(p.blob));
+      if (p.category) {
+        const byTopic = await searchApprovedPosts(parseSearch("", String(p.category)));
+        expect(byTopic.map((x) => x.blob)).toContain(String(p.blob));
+      }
+    }
+  });
+
+  test("searching real content uses plain text and returns safe excerpts", async () => {
+    for (const p of raw.posts.filter((x) => x.approved)) {
+      const words = plainText(sanitizeRichText(String(p.body)), 1e9).split(/\W+/).filter((w) => w.length > 6);
+      const word = words.find((w) => !String(p.title).toLowerCase().includes(w.toLowerCase()));
+      if (!word) continue;
+      const hit = (await searchApprovedPosts(parseSearch(word))).find((x) => x.blob === p.blob);
+      expect(hit).toBeDefined();
+      expect(hit!.excerpt?.toLowerCase()).toContain(word.toLowerCase());
+      expect(hit!.excerpt).not.toMatch(/[<>]/);
     }
   });
 
